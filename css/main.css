@@ -1,0 +1,60 @@
+body{   
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+}
+
+main{
+    flex: 1;
+}
+
+.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 120px 0;
+    background: url("../SVG/Hero_BG.svg") center bottom no-repeat;
+}
+
+.hero h4{
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.hero img{
+    width: 40%;
+}
+
+
+.text{
+    font-size: 28px;
+    padding: 0 1rem;
+}
+
+.button{
+    text-align: center;
+}
+
+.button a{
+    color: white;
+    background-color: hsl(271, 76%, 53%);
+    text-decoration: none;
+
+    display: inline-block;
+    padding: 10px 28px;
+    border: white 4px solid;
+    border-radius: 90px;
+}
+
+.button a:hover{
+    background-color: hsl(271, 85%, 43%);
+}
+
+
+
+
+
+
