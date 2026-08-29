@@ -13,9 +13,10 @@ main{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 330px;
     width: 100%;
     margin: 0;
-    padding: 120px 0;
+    padding: 130px 0;
     background: url("../SVG/Hero_BG.svg") center bottom no-repeat;
 }
 
@@ -51,6 +52,29 @@ main{
 
 .button a:hover{
     background-color: hsl(271, 85%, 43%);
+}
+
+.next {
+    text-align: center;
+    padding: 0;
+    margin: 12px 0;
+}
+
+.next a {
+    display: inline-block;
+    font-size: 5rem;
+    line-height: 1;
+    text-decoration: none;
+    color: hsl(271, 84%, 35%);
+}
+
+#next-2 a {
+    font-size: 3rem;
+}
+
+
+.next a:hover{
+    color: hsl(271, 85%, 43%);
 }
 
 .about {
@@ -112,7 +136,7 @@ main{
 
 .features{
     width: 100%;
-    padding: 80px 5%;
+    padding: 40px 5% 0px;
     box-sizing: border-box;
 }
 
@@ -130,6 +154,7 @@ main{
     box-shadow: 0 0 12px hsla(0, 0%, 0%, 0.615);
     border-radius: 40px;
     text-align: center;
+    font-weight: 600;
 }
 
 .features h3{
