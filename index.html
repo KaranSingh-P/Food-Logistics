@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login-page.css">
     <style>
         #open{
             background-color: hsl(10, 93%, 30%);
@@ -28,14 +29,15 @@
                 <a href="index.html">Food Logistics</a>
             </div>
             <ul>
-                <li><a href="#home" class="home-page" id="open">Home</a></li>
+                <li><a href="#navbar-spacer" class="home-page" id="open">Home</a></li>
                 <li><a href="#feature" class="home-page">Features</a></li>
                 <li><a href="#about" class="home-page">About Us</a></li>
-                <li><a class="login">Login / Sign Up</a></li>
+                <li><a href="#login-page" class="login">Login / Sign Up</a></li>
             </ul>
         </nav>
     </header>
 
+    <div id="navbar-spacer"></div>
 
     <main>
         <section class="hero" id="home">
@@ -46,7 +48,7 @@
                 </div>
                 <br>
                 <div class="button">
-                    <a href="">Get Started</a>
+                    <a class="login">Get Started</a>
                 </div>
             </div>
             
@@ -112,20 +114,93 @@
                 <div class="about-right"><img src="SVG/About_team.svg"></div>
             </div>
         </section>
+
+        <section class="login-page">
+            <div class="login-Container">
+
+                <div class="account-SignUp">
+                    <h1>Create a New Account</h1>
+                    <p>Create an account to get started</p>
+                    <form>
+                        <div class="form-elements">
+                            <label for="create-email">Email Address</label>
+                            <input
+                                type="email"
+                                id="create-email"
+                                name="create-email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required>
+                        </div>
+                        <div class="form-elements">
+                            <label for="create-password">Password</label>
+                            <input
+                                type="password"
+                                id="create-password"
+                                name="create-password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                required>
+                        </div>
+                        <button type="submit">
+                            Create Account
+                        </button>
+                    </form>
+                </div>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <div class="account-login">
+                    <h1>Welcome Back</h1>
+                    <p>Log in to your Account</p>
+                    <form>
+                        <div class="form-elements">
+                            <label for="login-email">Email Address</label>
+                            <input
+                                type="email"
+                                id="login-email"
+                                name="login-email"
+                                placeholder="Enter your email"
+                                autocomplete="email"
+                                required>
+                        </div>
+                        <div class="form-elements">
+                            <label for="login-password">Password</label>
+                            <input
+                                type="password"
+                                id="login-password"
+                                name="login-password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                required>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="#">Forgot password?</a>
+                        </div>
+
+                        <button type="submit">
+                            Log In
+                        </button>
+                    </form>
+                </div>
+
+
+            </div>
+        </section>
     
     </main>
-
-    
-
 
     <footer>
         <div class="footer">
         <div class="footer-column">
             <h4>Project</h4>
             <ul>
-                <li><a href="#home"  class="home-page">Home</a></li>
+                <li><a href="#navbar-spacer"  class="home-page">Home</a></li>
                 <li><a href="#feature"  class="home-page">Features</a></li>
-                <li><a href="">How it works</a></li>
+                <li><a href="">How it works [X]</a></li>
             </ul>
         </div>
 
@@ -133,16 +208,16 @@
             <h4>Team</h4>
             <ul>
                 <li><a href="#about" class="home-page">About Us</a></li>
-                <li><a href="">Contact</a></li>
-                <li><a href="">FAQ</a></li>
+                <li><a href="">Contact [X]</a></li>
+                <li><a href="">FAQ [X]</a></li>
             </ul>
         </div>
 
         <div class="footer-column">
             <h4>Account</h4>
             <ul>
-                <li><a class="login">Log in</a></li>
-                <li><a class="login">Sign Up</a></li>
+                <li><a href="#login-page" class="login">Log in</a></li>
+                <li><a href="#login-page" class="login">Sign Up</a></li>
             </ul>
         </div>
     </div>
