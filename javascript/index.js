@@ -1,6 +1,6 @@
 document.querySelectorAll(".login").forEach((login) => {
     login.addEventListener("click", () => {
-
+        
         document.querySelector(".hero").style.display = "none";
         document.querySelector(".features").style.display = "none";
         document.querySelector(".about").style.display = "none";

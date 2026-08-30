@@ -121,13 +121,13 @@
                 <div class="account-SignUp">
                     <h1>Create a New Account</h1>
                     <p>Create an account to get started</p>
-                    <form>
+                    <form action="/register" method="POST">
                         <div class="form-elements">
                             <label for="create-email">Email Address</label>
                             <input
                                 type="email"
                                 id="create-email"
-                                name="create-email"
+                                name="email"
                                 placeholder="Enter your email"
                                 autocomplete="email"
                                 required>
@@ -137,7 +137,7 @@
                             <input
                                 type="password"
                                 id="create-password"
-                                name="create-password"
+                                name="password"
                                 placeholder="Create a password"
                                 autocomplete="new-password"
                                 required>
@@ -155,13 +155,13 @@
                 <div class="account-login">
                     <h1>Welcome Back</h1>
                     <p>Log in to your Account</p>
-                    <form>
+                    <form action="/login" method="POST">
                         <div class="form-elements">
                             <label for="login-email">Email Address</label>
                             <input
                                 type="email"
                                 id="login-email"
-                                name="login-email"
+                                name="email"
                                 placeholder="Enter your email"
                                 autocomplete="email"
                                 required>
@@ -171,9 +171,9 @@
                             <input
                                 type="password"
                                 id="login-password"
-                                name="login-password"
+                                name="password"
                                 placeholder="Create a password"
-                                autocomplete="new-password"
+                                autocomplete="current-password"
                                 required>
                         </div>
 
