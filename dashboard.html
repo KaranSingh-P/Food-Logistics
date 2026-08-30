@@ -4,10 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="navbar2.css">
 </head>
 <body>
-    <h1>Welcome</h1>
-    <a href="/logout">Logout</a>
+    <header>
+        <div class="v-navbar">
+            <button id="hamburger">☰</button>
+            <span>Food Logistics</span>
+        </div>
+        <div class="account">
+            <span>[Example@gmail.com]</span>
+            <a href="/logout">Log Out</a>
+        </div>
+    </header>
 
+    <nav id="menu" style="display: none;">
+        <a href="">Dashboard</a>
+        <a href="">Inventory</a>
+    </nav>
+    
+    <main>
+        <h1>Welcome to the DashBoard</h1>
+
+    </main>
+    <script src="javascript/app.js"></script>
 </body>
 </html>
