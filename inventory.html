@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Logistics | Inventory</title>
+    <link rel="stylesheet" href="css/navbar2.css">
+    <link rel="stylesheet" href="css/body.css">
+    <link rel="stylesheet" href="css/inventory.css">
+</head>
+<body>
+    <header>
+        <div class="v-navbar">
+            <button id="hamburger">☰</button>
+            <span>Food Logistics</span>
+        </div>
+        <div class="account">
+            <span>[Example@gmail.com]</span>
+            <a href="/logout">Log Out</a>
+        </div>
+    </header>
+
+    <nav id="menu" style="display: none;">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="">Inventory</a>
+    </nav>
+
+    <main class="inventory-page">
+        <div class="inventory-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Tag</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Food</td>
+                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Food</td>
+                        <td><span class="tag canned">Canned</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Food</td>
+                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>Food</td>
+                        <td><span class="tag canned">Canned</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>Food</td>
+                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td>Food</td>
+                        <td><span class="tag canned">Canned</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td>Food</td>
+                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>8</td>
+                        <td>Food</td>
+                        <td><span class="tag canned">Canned</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>9</td>
+                        <td>Food</td>
+                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+
+                    <tr>
+                        <td>10</td>
+                        <td>Food</td>
+                        <td><span class="tag canned">Canned</span></td>
+                        <td>01 Jan 2026</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <section>
+        <nav class="pagination" aria-label="Pagination">
+            <div class="pagination-summary">
+                Showing 21–40 of 128
+            </div>
+
+            <div class="pagination-controls">
+                <button disabled aria-label="Previous page">
+                ‹ Previous
+                </button>
+
+                <button>1</button>
+                <button aria-current="page">2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+                <span aria-hidden="true">…</span>
+                <button>7</button>
+
+                <button aria-label="Next page">
+                Next ›
+                </button>
+            </div>
+
+            <label class="page-size">
+                <select>
+                <option>20</option>
+                <option>50</option>
+                <option>100</option>
+                </select>
+                per page
+            </label>
+        </nav>
+    </section>
+
+
+    <script src="javascript/app.js"></script>
+</body>
+</html>
