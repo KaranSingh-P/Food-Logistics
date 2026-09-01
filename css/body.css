@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+}
+
+.background {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.background-svg {
+    width: 40%;
+    height: auto;
+    display: block;
+    padding-top: 40px;
+}
+
+
+#welcome-block {
+    background: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 88%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px hsla(220, 20%, 20%, 0.08);
+    display: block;
+    min-height: 10rem;
+    padding: 24px;
+    width: 80%;
+    margin: 1.5rem auto 0;
+    text-align: center;
+}
