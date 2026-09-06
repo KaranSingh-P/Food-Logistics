@@ -6,7 +6,9 @@
     <title>Food Logistics | Inventory</title>
     <link rel="stylesheet" href="css/navbar2.css">
     <link rel="stylesheet" href="css/body.css">
-    <link rel="stylesheet" href="css/inventory.css">
+    <link rel="stylesheet" href="css/vertical-tools.css">
+    <link rel="stylesheet" href="css/inventory-table.css">
+    <link rel="stylesheet" href="css/inventory-navigation.css">
 </head>
 <body>
     <header>
@@ -25,7 +27,43 @@
         <a href="">Inventory</a>
     </nav>
 
-    <main class="inventory-page">
+    <section class="vertical-tools">
+        <div class="insert-item">
+            <form action="">
+                <input type="text" placeholder="Insert the food item here" id="type-item">
+                <div class="item-suggestion">
+                    <button id="">Suggestion 1</button>
+                    <button id="">Suggestion 2</button>
+                    <button id="">Suggestion 3</button>
+                </div>
+            </form>
+
+            <div class="item-details">
+                <form action="" class="select-item-tag">
+                    <select name="" id="">
+                        <option value="" selected>Select the Type of food</option>
+                        <option value="perishable">Perishable</option>
+                        <option value="highly-perishable">Highly perishable</option>
+                        <option value="semi-perishable">Semi-perishable</option>
+                        <option value="non-perishable">Non-perishable</option>
+                        <option value="canned">Canned</option>
+                        <option value="frozen">Frozen</option>
+                        <option value="dehydrated">Dehydrated</option>
+                        <option value="fermented">Fermented</option>
+                    </select>
+                </form>
+                <form action="" class="add-item-date">
+                    <label for="">Date of Purchase: </label>
+                    <input type="date" name="" id="item-date">
+                </form>
+                <form action="" class="add-item-form">
+                    <button type="submit" id="add-item-button">ADD ITEM</button>
+                </form>
+            </div>
+        <button id="automatic-insert"><i class="fa-regular fa-camera"></i></button>
+    </section>
+
+    <main class="inventory-table">
         <div class="inventory-table">
             <table>
                 <thead>
@@ -33,84 +71,128 @@
                         <th>S.No</th>
                         <th>Name</th>
                         <th>Tag</th>
-                        <th>Date</th>
+                        <th>Date of Purchase / Manufacture</th>
+                        <th>Date of Expiration</th>
+                        <th> </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr>
                         <td>1</td>
                         <td>Food</td>
-                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>
+                            <span class="tag perishable">Perishable</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>2</td>
                         <td>Food</td>
-                        <td><span class="tag canned">Canned</span></td>
+                        <td>
+                            <span class="tag canned">Canned</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>3</td>
                         <td>Food</td>
-                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>
+                            <span class="tag perishable">Perishable</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>4</td>
                         <td>Food</td>
-                        <td><span class="tag canned">Canned</span></td>
+                        <td>
+                            <span class="tag canned">Canned</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>5</td>
                         <td>Food</td>
-                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>
+                            <span class="tag perishable">Perishable</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>6</td>
                         <td>Food</td>
-                        <td><span class="tag canned">Canned</span></td>
+                        <td>
+                            <span class="tag canned">Canned</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>7</td>
                         <td>Food</td>
-                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>
+                            <span class="tag perishable">Perishable</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>8</td>
                         <td>Food</td>
-                        <td><span class="tag canned">Canned</span></td>
+                        <td>
+                            <span class="tag canned">Canned</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>9</td>
                         <td>Food</td>
-                        <td><span class="tag perishable">Perishable</span></td>
+                        <td>
+                            <span class="tag perishable">Perishable</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
 
                     <tr>
                         <td>10</td>
                         <td>Food</td>
-                        <td><span class="tag canned">Canned</span></td>
+                        <td>
+                            <span class="tag canned">Canned</span>
+                        </td>
                         <td>01 Jan 2026</td>
+                        <td>01 Jan 2026</td>
+                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </main>
-    <section>
+
+    <section class="navivation">
         <nav class="pagination" aria-label="Pagination">
             <div class="pagination-summary">
                 Showing 21–40 of 128
@@ -147,5 +229,6 @@
 
 
     <script src="javascript/app.js"></script>
+    <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
 </html>
