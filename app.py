@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request, redirect, session
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
 
@@ -7,8 +7,6 @@ app = Flask(__name__)
 
 app.secret_key = "my-secret-key"
 DATABASE = os.path.join(os.path.dirname(__file__), "users.db")
-
-
 
 def init_db():
     connection = sqlite3.connect(DATABASE)
@@ -27,7 +25,7 @@ def init_db():
 
 @app.route("/")
 def home():
-    return send_from_directory(".", "index.html")
+    return render_template("index.html")
 
 
 @app.route("/login", methods=["POST"])
@@ -77,15 +75,20 @@ def register():
     return redirect("/dashboard")
 
 
-
-
-
 @app.route("/dashboard")
 def dashboard():
     if "email" not in session:
         return redirect("/")
 
-    return send_from_directory(".", "dashboard.html")
+    return render_template("dashboard.html")
+
+
+@app.route("/inventory")
+def inventory():
+    if "email" not in session:
+        return redirect("/")
+
+    return render_template("inventory.html")
 
 
 @app.route("/logout")
@@ -94,9 +97,6 @@ def logout():
     return redirect("/")
 
 
-@app.route("/<path:filename>")
-def static_files(filename):
-    return send_from_directory(".", filename)
 
 
 if __name__ == "__main__":

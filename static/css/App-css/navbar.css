@@ -5,17 +5,23 @@
     box-sizing: border-box;
 }
 
-header{
+.navbar{
     color: white;
     background-color: hsl(211, 75%, 12%);
     height: 52px;
+    width: 100%;
 
     display: flex;
     justify-content: space-between;
     box-shadow: 0 0 10px black;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
 }
 
-header div{
+.navbar div{
     box-sizing: border-box;
     font-size: 1.2rem;
     height: 100%;
@@ -26,8 +32,12 @@ header div{
     align-items: center;
 }
 
-.v-navbar span{
+.v-.navbar span{
     padding: 12px;
+}
+
+.navbar-spacer{
+    height: 52px;
 }
 
 #hamburger {
@@ -50,7 +60,7 @@ header div{
 
 #menu {
     position: fixed;
-    top: 52px;
+    top: 0;
     left: 0;
     bottom: 0;
     width: 240px;
@@ -61,6 +71,7 @@ header div{
 
     box-sizing: border-box;
     box-shadow: 0 0 10px black;
+    z-index: 1;
 }
 
 
@@ -72,6 +83,10 @@ header div{
     border-radius: 10px;
     text-decoration: none;
     text-align: center;
+}
+
+#menu a:first-child{
+    margin-top: 52px;
 }
 
 #menu a:hover {

@@ -4,26 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Inventory</title>
-    <link rel="stylesheet" href="css/navbar2.css">
-    <link rel="stylesheet" href="css/body.css">
-    <link rel="stylesheet" href="css/vertical-tools.css">
-    <link rel="stylesheet" href="css/inventory-table.css">
-    <link rel="stylesheet" href="css/inventory-navigation.css">
+    <link rel="stylesheet" href="../static/css/App-css/navbar.css">
+    <link rel="stylesheet" href="../static/css/App-css/body.css">
+    <link rel="stylesheet" href="../static/css/App-css/Horizontal-tools.css">
+    <link rel="stylesheet" href="../static/css/App-css/inventory-table.css">
+    <link rel="stylesheet" href="../static/css/App-css/inventory-navigation.css">
 </head>
+
 <body>
     <header>
-        <div class="v-navbar">
-            <button id="hamburger">☰</button>
-            <span>Food Logistics</span>
+        <div class="navbar">
+            <div class="v-navbar">
+                <button id="hamburger">☰</button>
+                <span>Food Logistics</span>
+            </div>
+            <div class="account">
+                <span id="navbar-email-id">[Example@gmail.com]</span>
+                <a href="/logout">Log Out</a>
+            </div>
         </div>
-        <div class="account">
-            <span>[Example@gmail.com]</span>
-            <a href="/logout">Log Out</a>
-        </div>
+        <div class="navbar-spacer"></div>
     </header>
 
+
+
     <nav id="menu" style="display: none;">
-        <a href="dashboard.html">Dashboard</a>
+        <a href="dashboard">Dashboard</a>
         <a href="">Inventory</a>
     </nav>
 
@@ -64,16 +70,16 @@
     </section>
 
     <main class="inventory-table">
-        <div class="inventory-table">
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>S.No</th>
-                        <th>Name</th>
-                        <th>Tag</th>
-                        <th>Date of Purchase / Manufacture</th>
-                        <th>Date of Expiration</th>
-                        <th> </th>
+                        <th>S.No ↓</b></th>
+                        <th>Name ↓</th>
+                        <th>Tag ↓</th>
+                        <th>Date of Purchase / Manufacture ↓</th>
+                        <th>Date of Expiration ↓</th>
+                        <th> Delete</th>
                     </tr>
                 </thead>
 
@@ -228,7 +234,7 @@
     </section>
 
 
-    <script src="javascript/app.js"></script>
+    <script src="../static/javascript/app.js"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
 </html>
