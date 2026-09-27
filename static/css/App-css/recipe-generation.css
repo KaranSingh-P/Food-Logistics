@@ -1,0 +1,641 @@
+.recipe-sidebar{
+    position: fixed;
+    top: 65px;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: hsl(0, 0%, 100%);
+    border-right: 1px solid hsl(220, 13%, 91%);
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.sidebar-header{
+    padding: 24px 20px 18px;
+    border-bottom: 1px solid hsl(220, 13%, 91%);
+}
+
+.sidebar-header h2{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 650;   
+}
+
+.recipe-history{
+    padding: 12px;
+}
+
+.history-date {
+    padding: 16px 10px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(0, 0%, 47%);
+    text-transform: uppercase;
+}
+
+.history-item {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 4px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+.history-item:hover {
+    background: hsl(220, 14%, 96%);
+}
+
+.history-item.active {
+    background: hsl(135, 31%, 95%);
+}
+
+.recipe-name {
+    color: hsl(240, 4%, 16%);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.recipe-time {
+    color: #888;
+    font-size: 12px;
+}
+
+.recipe-main{
+    margin-left: 280px;
+    padding: 50px;
+    min-height: calc(100vh / 0.9);
+    background-color: hsl(220, 23%, 97%);
+}
+
+.recipe-welcome{
+    margin-bottom: 30px;
+}
+
+.recipe-welcome p{
+    color: hsl(220, 9%, 46%);
+    font-size: 15px;
+}
+
+.recipe-generation-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 35px;
+    background-color: white;
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.generate-recipe-button{
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgb(49, 0, 128);
+    color: hsl(0, 0%, 100%);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.generate-recipe-button:hover{
+    background-color: rgb(45, 3, 112);
+}
+
+.generate-recipe-button:active{
+    background-color: hsl(263, 94%, 31%);
+}
+
+.generate-recipe-hint{
+    font-size: 14px;
+    color: hsl(0, 0%, 47%);
+}
+
+.generate-recipe-customize{
+    margin-top: 24px;
+    padding: 30px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.recipe-generation-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.show-preferences-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 27%);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.show-preferences-button:hover {
+    background-color: hsl(0, 0%, 96%);
+    border-color: hsl(0, 0%, 77%);
+}
+
+.show-preferences-button i {
+    font-size: 13px;
+}
+
+.customize-header{
+    margin-bottom: 28px;
+}
+
+.customize-header h2{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.preference-group {
+    padding-top: 24px;
+    padding-bottom: 12px;
+    border-top: 1px solid #eeeeee;
+}
+
+.preference-title {
+    display: inline-block;
+    margin-bottom: 14px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.meal-options{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.meal-options input {
+    position: absolute;
+    opacity: 0;
+}
+
+
+.option-card span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 55px;
+    padding: 30px;
+    border: 1px solid hsl(0, 0%, 87%);
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 33%);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.option-card span:hover{
+    border-color: hsl(137, 54%, 44%);
+    background-color: hsl(135, 33%, 98%);
+}
+
+.option-card input:checked + span {
+    border-color: #256f3a;
+    background-color: #eef7f0;
+    color: #256f3a;
+    font-weight: 600;
+}
+
+.toggle-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 17px;
+    cursor: pointer;
+}
+
+.toggle-option input {
+    display: none;
+}
+
+.toggle {
+    position: relative;
+    flex-shrink: 0;
+    width: 42px;
+    height: 23px;
+    background: hsl(216, 12%, 84%);
+    border-radius: 30px;
+    transition: background 0.2s ease;
+}
+
+.toggle::after {
+    content: "";
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 3px;
+    left: 3px;
+    background: hsl(0, 0%, 100%);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.toggle-option input:checked + .toggle {
+    background: hsl(137, 50%, 29%);
+}
+
+.toggle-option input:checked + .toggle::after {
+    transform: translateX(18px);
+}
+
+.toggle-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.toggle-content strong {
+    font-size: 14px;
+    font-weight: 550;
+    color: hsl(225, 6%, 13%);
+}
+
+.toggle-content small {
+    color: hsl(0, 0%, 47%);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.dietary-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dietary-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.dietary-option span {
+    display: block;
+    padding: 9px 16px;
+    border: 1px solid hsl(0, 0%, 87%);
+    border-radius: 20px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 33%);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.dietary-option span:hover {
+    border-color: hsl(137, 50%, 29%);
+    background-color: hsl(135, 33%, 98%);
+}
+
+.dietary-option input:checked + span {
+    border-color: hsl(137, 50%, 29%);
+    background-color: hsl(133, 36%, 95%);
+    color: hsl(137, 50%, 29%);
+    font-weight: 600;
+}
+
+ /* =========================
+    GENERATED RECIPE
+ ========================= */
+
+.generated-recipe {
+    margin-top: 30px;
+}
+
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.generated-recipe-header {
+    margin-bottom: 24px;
+}
+
+.generated-recipe-header h2 {
+    margin: 0 0 6px;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.generated-recipe-header p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   RECIPE TITLE
+========================= */
+
+.generated-recipe-title {
+    padding: 40px 30px;
+
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.generated-recipe-title h1 {
+    margin: 0 0 12px;
+
+    font-size: 30px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.generated-recipe-title p {
+    max-width: 700px;
+
+    margin: 0 auto 20px;
+
+    color: #666666;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   RECIPE META
+========================= */
+
+.recipe-meta {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+}
+
+.recipe-meta span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #666666;
+
+    font-size: 13px;
+}
+
+.recipe-meta i {
+    color: #256f3a;
+}
+
+
+/* =========================
+   RECIPE SECTIONS
+========================= */
+
+.recipe-section {
+    padding: 28px;
+
+    margin-bottom: 20px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+}
+
+.recipe-section h3 {
+    margin: 0 0 6px;
+
+    font-size: 19px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.recipe-section-description {
+    margin: 0 0 22px;
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   INGREDIENTS
+========================= */
+
+.ingredients-list {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.ingredient-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px 4px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.ingredient-item:last-child {
+    border-bottom: none;
+}
+
+
+/* Ingredient status */
+
+.ingredient-status {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #f0f0f0;
+
+    color: #999999;
+
+    font-size: 10px;
+}
+
+
+/* Available ingredient */
+
+.ingredient-status.available {
+    background-color: #eaf5ed;
+
+    color: #256f3a;
+}
+
+
+/* Ingredient name */
+
+.ingredient-name {
+    flex: 1;
+
+    color: #333333;
+
+    font-size: 14px;
+}
+
+
+/* Ingredient amount */
+
+.ingredient-amount {
+    color: #666666;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   MISSING INGREDIENT
+========================= */
+
+.ingredient-item.missing {
+    opacity: 0.48;
+}
+
+.ingredient-item.missing .ingredient-name {
+    text-decoration: none;
+}
+
+.ingredient-item.missing .ingredient-status {
+    background-color: #f1f1f1;
+
+    color: #999999;
+}
+
+/* =========================
+   STEP-BY-STEP INSTRUCTIONS
+========================= */
+
+.instructions-list {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Individual step */
+
+.instruction-item {
+    display: grid;
+
+    grid-template-columns: 36px 1fr;
+
+    column-gap: 16px;
+
+    padding: 20px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.instruction-item:first-child {
+    padding-top: 8px;
+}
+
+.instruction-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+
+/* Step number */
+
+.instruction-number {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    margin-top: 1px;
+
+    border-radius: 50%;
+
+    background-color: #eef7f0;
+
+    color: #256f3a;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* Instruction content */
+
+.instruction-content {
+    min-width: 0;
+}
+
+.instruction-content h4 {
+    margin: 0 0 7px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.instruction-content p {
+    margin: 0;
+
+    max-width: 850px;
+
+    color: #666666;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}

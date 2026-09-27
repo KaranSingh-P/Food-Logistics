@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Inventory</title>
     <link rel="stylesheet" href="../static/css/App-css/navbar.css">
-    <link rel="stylesheet" href="../static/css/App-css/body.css">
     <link rel="stylesheet" href="../static/css/App-css/Horizontal-tools.css">
     <link rel="stylesheet" href="../static/css/App-css/inventory-table.css">
     <link rel="stylesheet" href="../static/css/App-css/inventory-navigation.css">
@@ -31,12 +30,14 @@
     <nav id="menu" style="display: none;">
         <a href="dashboard">Dashboard</a>
         <a href="">Inventory</a>
+        <a href="recipe">Recipe Generation</a>
     </nav>
 
     <section class="vertical-tools">
         <div class="insert-item">
             <form action="">
                 <input type="text" placeholder="Insert the food item here" id="type-item">
+                
                 <div class="item-suggestion">
                     <button id="">Suggestion 1</button>
                     <button id="">Suggestion 2</button>
@@ -79,7 +80,7 @@
                         <th>Tag ↓</th>
                         <th>Date of Purchase / Manufacture ↓</th>
                         <th>Date of Expiration ↓</th>
-                        <th> Delete</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -92,7 +93,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
 
                     <tr>
@@ -103,7 +114,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -114,7 +135,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -125,7 +156,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -136,7 +177,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -147,7 +198,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -158,7 +219,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -169,7 +240,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -180,7 +261,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
 
                     <tr>
@@ -191,7 +282,17 @@
                         </td>
                         <td>01 Jan 2026</td>
                         <td>01 Jan 2026</td>
-                        <td><button class="remove-btn" type="button"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="edit-btn" type="button">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>                    
                     </tr>
                 </tbody>
             </table>

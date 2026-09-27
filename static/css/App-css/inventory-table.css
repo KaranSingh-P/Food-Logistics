@@ -1,3 +1,7 @@
+html {
+    zoom: 0.9;
+}
+
 .inventory-table{
     width: 100%;
 }
@@ -135,5 +139,35 @@
 }
 
 .remove-btn i {
+    font-size: 14px;
+}
+
+.edit-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: hsl(0, 0%, 0%);
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: hsl(0, 0%, 80%);
+    color: hsl(0, 0%, 0%);
+}
+
+.edit-btn:active {
+    transform: scale(0.95);
+}
+
+.edit-btn i {
     font-size: 14px;
 }

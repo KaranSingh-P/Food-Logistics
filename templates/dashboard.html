@@ -25,17 +25,137 @@
     <nav id="menu" style="display: none;">
         <a href="">Dashboard</a>
         <a href="inventory">Inventory</a>
+        <a href="">Recipe Generation</a>
     </nav>
 
-    <main>
+    <main id="dashboard-body">
         <h1 id="welcome-block">Welcome to the Food Logistics!</h1>
 
+        <div class="second-layer">
+            <div class="allergen-alerts">
+                <div class="section-header">
+                    <span>ALLERGEN ALERTS</span>
+                </div>
+
+                <div class="table-scroll">
+                    <table>
+                        <tr>
+                            <th>S. No. (In Inventory)</th>
+                            <th>Item Name</th>
+                            <th>Allergy Detected</th>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>Item 1</td>
+                            <td>Peanuts</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>Item 2</td>
+                            <td>Milk</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>Item 3</td>
+                            <td>Gluten</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="third-layer">
+            <div class="Expiring-soon-alerts">
+                <div class="section-header">
+                <span>Expiring Soon</span>
+
+                <div class="section-actions">
+                    <a href="inventory" class="inventory-btn">VIEW FULL INVENTORY</a>
+                    <button type="button" class="recipe-btn">GENERATE RECIPE</button>
+                </div>
+            </div>
+
+
+                <div class="table-scroll">
+                    <table>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Item Name</th>
+                            <th>Expiring in</th>
+                            <th>Remove</th>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>item 1</td>
+                            <td>x days</td>
+                            <td>
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>item 2</td>
+                            <td>x days</td>
+                            <td>
+                                <button class="remove-btn" type="button">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="shopping-list-generation">
+                <div class="shopping-list-header">
+                        <span>Shopping List</span>
+                        <a href="recipe" class="history-btn">GENERATED LIST HISTORY</a>
+                    </div>
+
+                <div class="table-scroll">
+                    <table>
+                        <tr>
+                            <th>Action</th>
+                            <th>S. No.</th>
+                            <th>Item Name</th>
+                        </tr>
+
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>item 1</td>
+                        </tr>
+
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>item 2</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="shopping-list-actions">
+                    <button type="button" class="select-btn">SELECT ALL</button>
+                    <button type="button" class="select-btn">SELECT NONE</button>
+                    <button type="button" class="generate-btn">GENERATE LIST</button>
+                </div>
+            </div>
+
+        </div>
     </main>
 
-    <section class="background">
-        <img src="SVG/Checking-Boxes.svg" alt="" class="background-svg">
-    </section>
+    <!-- <section class="background">
+        <img src="../static/SVG/Checking-Boxes.svg" alt="" class="background-svg">
+    </section> -->
 
     <script src="../static/javascript/app.js"></script>
+    <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
 </html>
