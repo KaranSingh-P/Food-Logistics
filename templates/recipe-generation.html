@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Logistics | Recipe Generation</title>
+    <link rel="stylesheet" href="../static/css/App-css/navbar.css">
+    <link rel="stylesheet" href="../static/css/App-css/recipe-generation.css">
+
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="v-navbar">
+                <button id="hamburger">☰</button>
+                <span>Food Logistics</span>
+            </div>
+            <div class="account">
+                <span id="navbar-email-id">[Example@gmail.com]</span>
+                <a href="/logout">Log Out</a>
+            </div>
+        </div>
+        <div class="navbar-spacer"></div>
+    </header>
+    
+    <nav id="menu" style="display: none;">
+        <a href="dashboard">Dashboard</a>
+        <a href="inventory">Inventory</a>
+        <a href="">Recipe Generation</a>
+    </nav>
+
+    <aside class="recipe-sidebar">
+        <div class="sidebar-header">
+            <h2>Recipe History</h2>
+        </div>
+
+        <div class="recipe-history">
+            <div class="history-date">Today</div>
+
+            <div class="history-item">
+                <div class="recipe-name">Creamy Garlic Chicken Pasta</div>
+                <div class="recipe-time">8:42 PM</div>
+            </div>
+            <div class="history-item">
+                <div class="recipe-name">Vegetable Fried Rice</div>
+                <div class="recipe-time">3:18 PM</div>
+            </div>
+
+            <div class="history-date">September 25, 2026</div>
+
+            <div class="history-item">
+                <div class="recipe-name">Creamy Garlic Chicken Pasta</div>
+                <div class="recipe-time">8:42 PM</div>
+            </div>
+
+            <div class="history-item">
+                <div class="recipe-name">Vegetable Fried Rice</div>
+                <div class="recipe-time">3:18 PM</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="recipe-main">
+        <div class="recipe-welcome">
+            <h1>Recipe Generation</h1>
+            <p>Customize your preferences and generate a personalized recipe.</p>
+        </div>
+
+        <div class="recipe-generation-section">
+            <div class="recipe-generation-actions">
+
+                <button class="generate-recipe-button">
+                    Generate Recipe
+                </button>
+
+                <button
+                    type="button"
+                    class="show-preferences-button"
+                    id="showPreferencesButton">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                    <span>Hide Preferences</span>
+
+                </button>
+
+            </div>
+            <p class="generate-recipe-hint">
+                Choose your preferences below before generating a recipe.
+            </p>
+        </div>
+
+        <div class="generate-recipe-customize">
+            <div class="customize-header">
+                <h2>Recipe Preferences</h2>
+            </div>
+
+            <div class="preference-group">
+                <label class="preference-title">Meal Type</label>
+
+                <div class="meal-options">
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Breakfast">
+
+                        <span>
+                            <i class="fa-solid fa-mug-hot"></i>
+                            Breakfast
+                        </span>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Lunch">
+
+                        <span>
+                            <i class="fa-solid fa-bowl-food"></i>
+                            Lunch
+                        </span>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Dinner"
+                               checked>
+
+                        <span>
+                            <i class="fa-solid fa-utensils"></i>
+                            Dinner
+                        </span>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Brunch">
+
+                        <span>
+                            <i class="fa-solid fa-egg"></i>
+                            Brunch
+                        </span>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Snack">
+
+                        <span>
+                            <i class="fa-solid fa-cookie-bite"></i>
+                            Snack
+                        </span>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio"
+                               name="mealType"
+                               value="Dessert">
+
+                        <span>
+                            <i class="fa-solid fa-ice-cream"></i>
+                            Dessert
+                        </span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="preference-group">
+                <label class="preference-title">
+                    Ingredient Preferences
+                </label>
+
+                <label class="toggle-option">
+                    <input type="checkbox" id="useInventory" checked>
+                    <span class="toggle"></span>
+                    <span class="toggle-content">
+                        <strong>
+                            Create recipe using ingredients from my inventory
+                        </strong>
+                        <small>
+                            Prefer ingredients currently available in your inventory.
+                        </small>
+                    </span>
+                </label>
+
+                <label class="toggle-option">
+                    <input type="checkbox" id="expiringIngredients">
+                    <span class="toggle"></span>
+                    <span class="toggle-content">
+                        <strong>
+                            Prioritize ingredients that are expiring soon
+                        </strong>
+                        <small>
+                            Give priority to ingredients that should be used soon.
+                        </small>
+                    </span>
+                </label>
+
+                <label class="toggle-option">
+                    <input type="checkbox" id="avoidAllergens" checked>
+                    <span class="toggle"></span>
+                    <span class="toggle-content">
+                        <strong>
+                            Automatically avoid my saved allergens
+                        </strong>
+                        <small>
+                            Exclude ingredients associated with your saved allergens.
+                        </small>
+                    </span>
+                </label>
+            </div>
+
+            <div class="preference-group">
+                <label class="preference-title">Dietary Preferences</label>
+
+                <div class="dietary-options">
+                    <label class="dietary-option">
+                        <input type="checkbox" name="dietary-preference" value="vegetarian">
+                        <span>
+                            Vegetarian
+                        </span>
+                    </label>
+
+                    <label class="dietary-option">
+                        <input type="checkbox" name="dietary-preference" value="vegan">
+                        <span>
+                            Vegan
+                        </span>
+                    </label>
+
+                    <label class="dietary-option">
+                        <input type="checkbox" name="dietary-preference" value="high-protein">
+                        <span>
+                            High Protein
+                        </span>
+                    </label>
+
+                    <label class="dietary-option">
+                        <input type="checkbox" name="dietary-preference" value="low-calorie">
+                        <span>
+                            Low Calorie
+                        </span>
+                    </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="generated-recipe">
+
+            <!-- SECTION HEADING -->
+            <div class="generated-recipe-header">
+
+                <h2>Generated Recipe</h2>
+
+                <p>
+                    Here's a recipe based on your selected preferences.
+                </p>
+
+            </div>
+
+
+            <!-- RECIPE TITLE -->
+            <div class="generated-recipe-title">
+
+                <h1>Creamy Garlic Chicken Pasta</h1>
+
+                <p>
+                    A creamy and comforting chicken pasta made with garlic,
+                    herbs, and Parmesan cheese.
+                </p>
+
+                <div class="recipe-meta">
+
+                    <span>
+                        <i class="fa-regular fa-clock"></i>
+                        35 minutes
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-users"></i>
+                        4 servings
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- INGREDIENTS -->
+            <div class="recipe-section">
+
+                <h3>Ingredients</h3>
+
+                <p class="recipe-section-description">
+                    Ingredients currently available in your inventory
+                    are shown normally. Missing ingredients are faded.
+                </p>
+
+
+                <div class="ingredients-list">
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Chicken Breast
+                        </span>
+
+                        <span class="ingredient-amount">
+                            500 g
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Penne Pasta
+                        </span>
+
+                        <span class="ingredient-amount">
+                            300 g
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Garlic
+                        </span>
+
+                        <span class="ingredient-amount">
+                            4 cloves
+                        </span>
+
+                    </div>
+
+
+                    <!-- NOT IN INVENTORY -->
+                    <div class="ingredient-item missing">
+
+                        <div class="ingredient-status">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Heavy Cream
+                        </span>
+
+                        <span class="ingredient-amount">
+                            200 ml
+                        </span>
+
+                    </div>
+
+
+                    <!-- NOT IN INVENTORY -->
+                    <div class="ingredient-item missing">
+
+                        <div class="ingredient-status">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Parmesan Cheese
+                        </span>
+
+                        <span class="ingredient-amount">
+                            75 g
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Olive Oil
+                        </span>
+
+                        <span class="ingredient-amount">
+                            2 tbsp
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Italian Herbs
+                        </span>
+
+                        <span class="ingredient-amount">
+                            1 tsp
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+                    <div class="ingredient-item">
+
+                        <div class="ingredient-status available">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <span class="ingredient-name">
+                            Salt & Pepper
+                        </span>
+
+                        <span class="ingredient-amount">
+                            To taste
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INSTRUCTIONS -->
+            <div class="recipe-section instructions-section">
+
+                <h3>Step-by-Step Instructions</h3>
+
+
+                <div class="instructions-list">
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            1
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Cook the pasta</h4>
+
+                            <p>
+                                Bring a large pot of salted water to a boil.
+                                Cook the pasta according to the package
+                                instructions until al dente. Drain and set aside.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            2
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Prepare the chicken</h4>
+
+                            <p>
+                                Cut the chicken breast into bite-sized pieces.
+                                Season with salt, pepper, and Italian herbs.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            3
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Cook the chicken</h4>
+
+                            <p>
+                                Heat olive oil in a large pan over medium-high
+                                heat. Add the chicken and cook until golden
+                                brown and fully cooked.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            4
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Prepare the sauce</h4>
+
+                            <p>
+                                Add minced garlic and cook for one minute.
+                                Add the heavy cream and Parmesan cheese.
+                                Stir until the sauce becomes smooth and creamy.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            5
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Combine the ingredients</h4>
+
+                            <p>
+                                Add the cooked pasta and chicken to the sauce.
+                                Toss everything together until evenly coated.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="instruction-item">
+
+                        <div class="instruction-number">
+                            6
+                        </div>
+
+                        <div class="instruction-content">
+
+                            <h4>Serve</h4>
+
+                            <p>
+                                Divide the pasta between four plates.
+                                Garnish with Parmesan cheese and fresh herbs.
+                                Serve immediately.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="../static/javascript/app.js"></script>
+    <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
+</body>
+</html>

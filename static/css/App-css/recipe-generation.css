@@ -320,18 +320,9 @@
     font-weight: 600;
 }
 
- /* =========================
-    GENERATED RECIPE
- ========================= */
-
 .generated-recipe {
     margin-top: 30px;
 }
-
-
-/* =========================
-   SECTION HEADER
-========================= */
 
 .generated-recipe-header {
     margin-bottom: 24px;
@@ -339,207 +330,125 @@
 
 .generated-recipe-header h2 {
     margin: 0 0 6px;
-
     font-size: 22px;
     font-weight: 600;
-
-    color: #202124;
+    color: hsl(225, 6%, 13%);
 }
 
 .generated-recipe-header p {
     margin: 0;
-
-    color: #777777;
-
+    color: hsl(0, 0%, 47%);
     font-size: 13px;
 }
 
-
-/* =========================
-   RECIPE TITLE
-========================= */
-
 .generated-recipe-title {
     padding: 40px 30px;
-
     margin-bottom: 20px;
-
     text-align: center;
-
-    background-color: #ffffff;
-
-    border: 1px solid #e5e7eb;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
     border-radius: 12px;
 }
 
 .generated-recipe-title h1 {
     margin: 0 0 12px;
-
     font-size: 30px;
     font-weight: 600;
-
-    color: #202124;
+    color: hsl(225, 6%, 13%);
 }
 
 .generated-recipe-title p {
     max-width: 700px;
-
     margin: 0 auto 20px;
-
-    color: #666666;
-
+    color: hsl(0, 0%, 40%);
     font-size: 14px;
-
     line-height: 1.6;
 }
 
-
-/* =========================
-   RECIPE META
-========================= */
-
 .recipe-meta {
     display: flex;
-
     justify-content: center;
-
     gap: 25px;
 }
 
 .recipe-meta span {
     display: flex;
-
     align-items: center;
-
     gap: 7px;
-
-    color: #666666;
-
+    color: hsl(0, 0%, 40%);
     font-size: 13px;
 }
 
 .recipe-meta i {
-    color: #256f3a;
+    color: hsl(137, 50%, 29%);
 }
-
-
-/* =========================
-   RECIPE SECTIONS
-========================= */
 
 .recipe-section {
     padding: 28px;
-
     margin-bottom: 20px;
-
-    background-color: #ffffff;
-
-    border: 1px solid #e5e7eb;
-
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
     border-radius: 12px;
 }
 
 .recipe-section h3 {
     margin: 0 0 6px;
-
     font-size: 19px;
     font-weight: 600;
-
-    color: #202124;
+    color: hsl(225, 6%, 13%);
 }
 
 .recipe-section-description {
     margin: 0 0 22px;
-
-    color: #777777;
-
+    color: hsl(0, 0%, 47%);
     font-size: 12px;
 }
 
-
-/* =========================
-   INGREDIENTS
-========================= */
-
 .ingredients-list {
     display: flex;
-
     flex-direction: column;
 }
 
-
 .ingredient-item {
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
     padding: 13px 4px;
-
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid hsl(0, 0%, 93%);
 }
 
 .ingredient-item:last-child {
     border-bottom: none;
 }
 
-
-/* Ingredient status */
-
 .ingredient-status {
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     width: 24px;
     height: 24px;
-
     flex-shrink: 0;
-
     border-radius: 50%;
-
-    background-color: #f0f0f0;
-
-    color: #999999;
-
+    background-color: hsl(0, 0%, 94%);
+    color: hsl(0, 0%, 60%);
     font-size: 10px;
 }
 
-
-/* Available ingredient */
-
 .ingredient-status.available {
-    background-color: #eaf5ed;
-
-    color: #256f3a;
+    background-color: hsl(136, 35%, 94%);
+    color: hsl(137, 50%, 29%);
 }
-
-
-/* Ingredient name */
 
 .ingredient-name {
     flex: 1;
-
-    color: #333333;
-
+    color: hsl(0, 0%, 20%);
     font-size: 14px;
 }
 
-
-/* Ingredient amount */
-
 .ingredient-amount {
-    color: #666666;
-
+    color: hsl(0, 0%, 40%);
     font-size: 13px;
 }
-
-
-/* =========================
-   MISSING INGREDIENT
-========================= */
 
 .ingredient-item.missing {
     opacity: 0.48;
@@ -550,33 +459,21 @@
 }
 
 .ingredient-item.missing .ingredient-status {
-    background-color: #f1f1f1;
-
-    color: #999999;
+    background-color: hsl(0, 0%, 95%);
+    color: hsl(0, 0%, 60%);
 }
-
-/* =========================
-   STEP-BY-STEP INSTRUCTIONS
-========================= */
 
 .instructions-list {
     display: flex;
     flex-direction: column;
 }
 
-
-/* Individual step */
-
 .instruction-item {
     display: grid;
-
     grid-template-columns: 36px 1fr;
-
     column-gap: 16px;
-
     padding: 20px 0;
-
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid hsl(0, 0%, 93%);
 }
 
 .instruction-item:first-child {
@@ -588,32 +485,19 @@
     border-bottom: none;
 }
 
-
-/* Step number */
-
 .instruction-number {
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     width: 32px;
     height: 32px;
-
     margin-top: 1px;
-
     border-radius: 50%;
-
-    background-color: #eef7f0;
-
-    color: #256f3a;
-
+    background-color: hsl(133, 36%, 95%);
+    color: hsl(137, 50%, 29%);
     font-size: 13px;
     font-weight: 600;
 }
-
-
-/* Instruction content */
 
 .instruction-content {
     min-width: 0;
@@ -621,21 +505,15 @@
 
 .instruction-content h4 {
     margin: 0 0 7px;
-
     font-size: 15px;
     font-weight: 600;
-
-    color: #202124;
+    color: hsl(225, 6%, 13%);
 }
 
 .instruction-content p {
     margin: 0;
-
     max-width: 850px;
-
-    color: #666666;
-
+    color: hsl(0, 0%, 40%);
     font-size: 13px;
-
     line-height: 1.7;
 }

@@ -25,7 +25,7 @@
     <nav id="menu" style="display: none;">
         <a href="">Dashboard</a>
         <a href="inventory">Inventory</a>
-        <a href="">Recipe Generation</a>
+        <a href="recipe-generation">Recipe Generation</a>
     </nav>
 
     <main id="dashboard-body">
@@ -38,31 +38,21 @@
                 </div>
 
                 <div class="table-scroll">
-                    <table>
-                        <tr>
-                            <th>S. No. (In Inventory)</th>
-                            <th>Item Name</th>
-                            <th>Allergy Detected</th>
-                        </tr>
-
-                        <tr>
-                            <td>1</td>
-                            <td>Item 1</td>
-                            <td>Peanuts</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Item 2</td>
-                            <td>Milk</td>
-                        </tr>
-
-                        <tr>
-                            <td>3</td>
-                            <td>Item 3</td>
-                            <td>Gluten</td>
-                        </tr>
+                    <table id="allergenTable">
+                        <thead>
+                            <tr>
+                                <th>S. No. (In Inventory)</th>
+                                <th>Item Name</th>
+                                <th>Allergy Detected</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allergenTableBody">
+                        </tbody>
                     </table>
+                </div>
+
+                <div id="noAllergensMessage" style="display: none;">
+                    No allergens detected!
                 </div>
             </div>
         </div>
@@ -74,49 +64,36 @@
 
                 <div class="section-actions">
                     <a href="inventory" class="inventory-btn">VIEW FULL INVENTORY</a>
-                    <button type="button" class="recipe-btn">GENERATE RECIPE</button>
+                    <a href="recipe-generation" class="recipe-btn">GENERATE RECIPE</a>
                 </div>
             </div>
 
 
                 <div class="table-scroll">
-                    <table>
-                        <tr>
-                            <th>S. No.</th>
-                            <th>Item Name</th>
-                            <th>Expiring in</th>
-                            <th>Remove</th>
-                        </tr>
+                    <table id="expiringSoonTable">
+                        <thead>
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Item Name</th>
+                                <th>Expiring in</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
 
-                        <tr>
-                            <td>1</td>
-                            <td>item 1</td>
-                            <td>x days</td>
-                            <td>
-                                <button class="remove-btn" type="button">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>item 2</td>
-                            <td>x days</td>
-                            <td>
-                                <button class="remove-btn" type="button">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody id="expiringSoonTableBody">
+                        </tbody>
                     </table>
+                </div>
+
+                <div id="noExpiringItemsMessage" style="display: none;">
+                    No items are expiring soon.
                 </div>
             </div>
 
             <div class="shopping-list-generation">
                 <div class="shopping-list-header">
                         <span>Shopping List</span>
-                        <a href="recipe" class="history-btn">GENERATED LIST HISTORY</a>
+                        <a href="" class="history-btn">GENERATED LIST HISTORY</a>
                     </div>
 
                 <div class="table-scroll">
@@ -128,13 +105,13 @@
                         </tr>
 
                         <tr>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" class="shopping-item-checkbox"></td>
                             <td>1</td>
                             <td>item 1</td>
                         </tr>
 
                         <tr>
-                            <td><input type="checkbox"></td>
+                            <td><input type="checkbox" class="shopping-item-checkbox"></td>
                             <td>2</td>
                             <td>item 2</td>
                         </tr>
@@ -142,8 +119,8 @@
                 </div>
 
                 <div class="shopping-list-actions">
-                    <button type="button" class="select-btn">SELECT ALL</button>
-                    <button type="button" class="select-btn">SELECT NONE</button>
+                    <button type="button" id="selectAllBtn" class="select-btn">SELECT ALL</button>
+                    <button type="button" id="selectNoneBtn" class="select-btn">SELECT NONE</button>
                     <button type="button" class="generate-btn">GENERATE LIST</button>
                 </div>
             </div>
@@ -157,5 +134,6 @@
 
     <script src="../static/javascript/app.js"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='javascript/dashboard.js') }}"></script>
 </body>
 </html>

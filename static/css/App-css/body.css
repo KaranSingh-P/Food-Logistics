@@ -42,6 +42,14 @@ body {
     overflow: hidden;
 }
 
+#noAllergensMessage {
+    text-align: center;
+    padding: 30px 20px;
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 .allergen-alerts .section-header {
     display: flex;
     align-items: center;
@@ -285,6 +293,18 @@ th {
     font-size: 0.9rem;
     color: #555;
 }
+
+#noExpiringItemsMessage {
+    text-align: center;
+    padding: 30px 20px;
+    height: 100%;
+    color: hsl(0, 0%, 40%);
+    background-color: hsl(0, 0%, 97%);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 
 .Expiring-soon-alerts th,
 .Expiring-soon-alerts td {
