@@ -7,6 +7,8 @@ To open the functional version, open the `app.py` and run the python file.
 Login using - ["test1@gmail.com",hello123], or create your own.
 <br>
 <br>
+<h3>Dashboard</h3>
+<br>
 Dashboard has the table for allergen, which is connected to the array named 'allergen_data' in the flask, which stores data in the following syntax:- 
 <br>
 <strong>{"s_no": 1, "item_name": "Item 1", "allergy": "Peanuts"},</strong>
@@ -26,3 +28,16 @@ Dashboard has the table for shopping list suggestions, that are supposed to be g
 <strong>...</strong>
 <br>
 To do:- The shopping list page has not been created yet. Plus, this too would need a database, that needs to remember the what shopping list items were checked and unchecked.
+
+<h3>Inventory</h3>
+<br>
+Inventory is getting its data from the array named 'Inventory' in app.py. This needs to be changed to get data from individual user's database. It stores data in the following syntax:-
+<br>
+    {
+        "id": 1,
+        "name": "Food",
+        "tag": "Perishable",
+        "purchase_date": "01 Jan 2026",
+        "expiration_date": "01 Jan 2026"
+    },
+<br>
