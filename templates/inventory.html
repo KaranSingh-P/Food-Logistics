@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,13 +32,14 @@
         <a href="dashboard">Dashboard</a>
         <a href="">Inventory</a>
         <a href="recipe-generation">Recipe Generation</a>
+        <a href="shopping-list">Shopping List Generation</a>
     </nav>
 
     <section class="vertical-tools">
         <div class="insert-item">
             <form action="">
                 <input type="text" placeholder="Insert the food item here" id="type-item">
-                
+
                 <div class="item-suggestion">
                     <button id="">Suggestion 1</button>
                     <button id="">Suggestion 2</button>
@@ -67,14 +69,11 @@
                     <button type="submit" id="add-item-button">ADD ITEM</button>
                 </form>
             </div>
-        <button id="automatic-insert"><i class="fa-regular fa-camera"></i></button>
+            <button id="automatic-insert"><i class="fa-regular fa-camera"></i></button>
     </section>
 
     <section class="navivation">
-        <nav
-            class="pagination"
-            id="paginationTop"
-            aria-label="Pagination">
+        <nav class="pagination" id="paginationTop" aria-label="Pagination">
         </nav>
     </section>
 
@@ -100,10 +99,7 @@
     </main>
 
     <section class="navivation">
-        <nav
-            class="pagination"
-            id="paginationBottom"
-            aria-label="Pagination">
+        <nav class="pagination" id="paginationBottom" aria-label="Pagination">
         </nav>
     </section>
 
@@ -113,4 +109,5 @@
     <script src="{{ url_for('static', filename='javascript/inventory.js') }}"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

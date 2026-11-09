@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../static/css/App-css/navbar.css">
     <link rel="stylesheet" href="../static/css/App-css/body.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -26,6 +28,7 @@
         <a href="">Dashboard</a>
         <a href="inventory">Inventory</a>
         <a href="recipe-generation">Recipe Generation</a>
+        <a href="shopping-list">Shopping List Generation</a>
     </nav>
 
     <main id="dashboard-body">
@@ -56,17 +59,17 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="third-layer">
             <div class="Expiring-soon-alerts">
                 <div class="section-header">
-                <span>Expiring Soon</span>
+                    <span>Expiring Soon</span>
 
-                <div class="section-actions">
-                    <a href="inventory" class="inventory-btn">VIEW FULL INVENTORY</a>
-                    <a href="recipe-generation" class="recipe-btn">GENERATE RECIPE</a>
+                    <div class="section-actions">
+                        <a href="inventory" class="inventory-btn">VIEW FULL INVENTORY</a>
+                        <a href="recipe-generation" class="recipe-btn">GENERATE RECIPE</a>
+                    </div>
                 </div>
-            </div>
 
 
                 <div class="table-scroll">
@@ -92,9 +95,9 @@
 
             <div class="shopping-list-generation">
                 <div class="shopping-list-header">
-                        <span>Shopping List</span>
-                        <a href="" class="history-btn">GENERATED LIST HISTORY</a>
-                    </div>
+                    <span>Shopping List</span>
+                    <a href="shopping-list" class="history-btn">GENERATED LIST HISTORY</a>
+                </div>
 
                 <div class="table-scroll">
                     <table>
@@ -136,4 +139,5 @@
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='javascript/dashboard.js') }}"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../static/css/App-css/recipe-generation.css">
 
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -22,11 +24,12 @@
         </div>
         <div class="navbar-spacer"></div>
     </header>
-    
+
     <nav id="menu" style="display: none;">
         <a href="dashboard">Dashboard</a>
         <a href="inventory">Inventory</a>
         <a href="">Recipe Generation</a>
+        <a href="shopping-list">Shopping List Generation</a>
     </nav>
 
     <aside class="recipe-sidebar">
@@ -73,10 +76,7 @@
                     Generate Recipe
                 </button>
 
-                <button
-                    type="button"
-                    class="show-preferences-button"
-                    id="showPreferencesButton">
+                <button type="button" class="show-preferences-button" id="showPreferencesButton">
 
                     <i class="fa-solid fa-sliders"></i>
 
@@ -100,9 +100,7 @@
 
                 <div class="meal-options">
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Breakfast">
+                        <input type="radio" name="mealType" value="Breakfast">
 
                         <span>
                             <i class="fa-solid fa-mug-hot"></i>
@@ -111,9 +109,7 @@
                     </label>
 
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Lunch">
+                        <input type="radio" name="mealType" value="Lunch">
 
                         <span>
                             <i class="fa-solid fa-bowl-food"></i>
@@ -122,10 +118,7 @@
                     </label>
 
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Dinner"
-                               checked>
+                        <input type="radio" name="mealType" value="Dinner" checked>
 
                         <span>
                             <i class="fa-solid fa-utensils"></i>
@@ -134,9 +127,7 @@
                     </label>
 
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Brunch">
+                        <input type="radio" name="mealType" value="Brunch">
 
                         <span>
                             <i class="fa-solid fa-egg"></i>
@@ -145,9 +136,7 @@
                     </label>
 
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Snack">
+                        <input type="radio" name="mealType" value="Snack">
 
                         <span>
                             <i class="fa-solid fa-cookie-bite"></i>
@@ -156,9 +145,7 @@
                     </label>
 
                     <label class="option-card">
-                        <input type="radio"
-                               name="mealType"
-                               value="Dessert">
+                        <input type="radio" name="mealType" value="Dessert">
 
                         <span>
                             <i class="fa-solid fa-ice-cream"></i>
@@ -595,4 +582,5 @@
     <script src="../static/javascript/app.js"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

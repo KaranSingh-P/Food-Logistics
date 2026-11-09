@@ -1,0 +1,639 @@
+
+/* =========================================
+   SHOPPING SIDEBAR
+========================================= */
+
+.shopping-sidebar {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: hsl(0, 0%, 100%);
+    border-right: 1px solid hsl(220, 13%, 91%);
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.sidebar-header {
+    padding: 24px 20px 18px;
+    border-bottom: 1px solid hsl(220, 13%, 91%);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.shopping-history {
+    padding: 12px;
+}
+
+.history-date {
+    padding: 16px 10px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(0, 0%, 47%);
+    text-transform: uppercase;
+}
+
+.history-item {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 4px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+.history-item:hover {
+    background: hsl(220, 14%, 96%);
+}
+
+.history-item.active {
+    background: hsl(135, 31%, 95%);
+}
+
+.shopping-name {
+    color: hsl(240, 4%, 16%);
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.shopping-item-count,
+.shopping-time {
+    color: #888;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   SHOPPING MAIN
+========================================= */
+
+.shopping-main {
+    margin-left: 280px;
+    padding: 50px;
+    min-height: calc(100vh / 0.9);
+    background-color: hsl(220, 23%, 97%);
+}
+
+.shopping-welcome {
+    margin-bottom: 30px;
+}
+
+.shopping-welcome h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 650;
+}
+
+.shopping-welcome p {
+    color: hsl(220, 9%, 46%);
+    font-size: 15px;
+}
+
+
+/* =========================================
+   GENERATION SECTION
+========================================= */
+
+.shopping-generation-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 35px;
+    background-color: white;
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.shopping-generation-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.generate-shopping-button {
+    padding: 16px 32px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgb(49, 0, 128);
+    color: hsl(0, 0%, 100%);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.generate-shopping-button:hover {
+    background-color: rgb(45, 3, 112);
+}
+
+.generate-shopping-button:active {
+    background-color: hsl(263, 94%, 31%);
+}
+
+.generate-shopping-hint {
+    font-size: 14px;
+    color: hsl(0, 0%, 47%);
+}
+
+.show-preferences-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 27%);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.show-preferences-button:hover {
+    background-color: hsl(0, 0%, 96%);
+    border-color: hsl(0, 0%, 77%);
+}
+
+.show-preferences-button i {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   SHOPPING PREFERENCES
+========================================= */
+
+.generate-shopping-customize {
+    margin-top: 24px;
+    padding: 30px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.customize-header {
+    margin-bottom: 28px;
+}
+
+.customize-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.preference-group {
+    padding-top: 24px;
+    padding-bottom: 12px;
+    border-top: 1px solid #eeeeee;
+}
+
+.preference-title {
+    display: inline-block;
+    margin-bottom: 14px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   SHOPPING CATEGORY OPTIONS
+========================================= */
+
+.shopping-category-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.shopping-category-options input {
+    position: absolute;
+    opacity: 0;
+}
+
+.option-card span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 55px;
+    padding: 20px;
+    border: 1px solid hsl(0, 0%, 87%);
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 33%);
+    font-size: 13px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.option-card span:hover {
+    border-color: hsl(137, 54%, 44%);
+    background-color: hsl(135, 33%, 98%);
+}
+
+.option-card input:checked + span {
+    border-color: #256f3a;
+    background-color: #eef7f0;
+    color: #256f3a;
+    font-weight: 600;
+}
+
+.option-card span i {
+    font-size: 15px;
+}
+
+
+/* =========================================
+   TOGGLE OPTIONS
+========================================= */
+
+.toggle-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 17px;
+    cursor: pointer;
+}
+
+.toggle-option input {
+    display: none;
+}
+
+.toggle {
+    position: relative;
+    flex-shrink: 0;
+    width: 42px;
+    height: 23px;
+    background: hsl(216, 12%, 84%);
+    border-radius: 30px;
+    transition: background 0.2s ease;
+}
+
+.toggle::after {
+    content: "";
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    top: 3px;
+    left: 3px;
+    background: hsl(0, 0%, 100%);
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.toggle-option input:checked + .toggle {
+    background: hsl(137, 50%, 29%);
+}
+
+.toggle-option input:checked + .toggle::after {
+    transform: translateX(18px);
+}
+
+.toggle-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.toggle-content strong {
+    font-size: 14px;
+    font-weight: 550;
+    color: hsl(225, 6%, 13%);
+}
+
+.toggle-content small {
+    color: hsl(0, 0%, 47%);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   GENERATED SHOPPING LIST
+========================================= */
+
+.generated-shopping {
+    margin-top: 30px;
+}
+
+.generated-shopping-header {
+    margin-bottom: 24px;
+}
+
+.generated-shopping-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 600;
+    color: hsl(225, 6%, 13%);
+}
+
+.generated-shopping-header p {
+    margin: 0;
+    color: hsl(0, 0%, 47%);
+    font-size: 13px;
+}
+
+
+/* =========================================
+   SHOPPING TITLE
+========================================= */
+
+.generated-shopping-title {
+    padding: 40px 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.generated-shopping-title h1 {
+    margin: 0 0 12px;
+    font-size: 30px;
+    font-weight: 600;
+    color: hsl(225, 6%, 13%);
+}
+
+.generated-shopping-title p {
+    max-width: 700px;
+    margin: 0 auto 20px;
+    color: hsl(0, 0%, 40%);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.shopping-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.shopping-meta span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: hsl(0, 0%, 40%);
+    font-size: 13px;
+}
+
+.shopping-meta i {
+    color: hsl(137, 50%, 29%);
+}
+
+
+/* =========================================
+   SHOPPING PROGRESS
+========================================= */
+
+.shopping-progress-section {
+    padding: 25px 28px;
+    margin-bottom: 20px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.shopping-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.shopping-progress-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: hsl(225, 6%, 13%);
+}
+
+.shopping-progress-header span {
+    color: hsl(0, 0%, 47%);
+    font-size: 12px;
+}
+
+.shopping-progress-bar {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: hsl(0, 0%, 92%);
+}
+
+.shopping-progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    background-color: hsl(137, 50%, 29%);
+    transition: width 0.2s ease;
+}
+
+
+/* =========================================
+   SHOPPING ITEMS SECTION
+========================================= */
+
+.shopping-section {
+    padding: 28px;
+    margin-bottom: 20px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.shopping-section h3 {
+    margin: 0 0 6px;
+    font-size: 19px;
+    font-weight: 600;
+    color: hsl(225, 6%, 13%);
+}
+
+.shopping-section-description {
+    margin: 0 0 22px;
+    color: hsl(0, 0%, 47%);
+    font-size: 12px;
+}
+
+.shopping-items-list {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   INDIVIDUAL SHOPPING ITEM
+========================================= */
+
+.shopping-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 4px;
+    border-bottom: 1px solid hsl(0, 0%, 93%);
+    transition: background 0.15s ease;
+}
+
+.shopping-item:last-child {
+    border-bottom: none;
+}
+
+.shopping-item input {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    accent-color: hsl(137, 50%, 29%);
+    cursor: pointer;
+}
+
+.shopping-item-name {
+    flex: 1;
+    color: hsl(0, 0%, 20%);
+    font-size: 14px;
+}
+
+.shopping-item-quantity {
+    min-width: 100px;
+    color: hsl(0, 0%, 47%);
+    font-size: 13px;
+    text-align: center;
+}
+
+
+/* =========================================
+   COMPLETED ITEMS
+========================================= */
+
+.shopping-item.completed .shopping-item-name {
+    color: hsl(0, 0%, 58%);
+    text-decoration: line-through;
+}
+
+.shopping-item.completed .shopping-item-quantity {
+    color: hsl(0, 0%, 60%);
+}
+
+
+/* =========================================
+   SHOPPING SUMMARY
+========================================= */
+
+.shopping-summary {
+    padding: 28px;
+    margin-bottom: 20px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.shopping-summary h3 {
+    margin: 0 0 20px;
+    font-size: 19px;
+    font-weight: 600;
+    color: hsl(225, 6%, 13%);
+}
+
+.shopping-summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid hsl(0, 0%, 93%);
+}
+
+.shopping-summary-row span {
+    color: hsl(0, 0%, 40%);
+    font-size: 14px;
+}
+
+.shopping-summary-row strong {
+    color: hsl(225, 6%, 13%);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.shopping-summary-row.total-row {
+    padding-top: 18px;
+    border-bottom: none;
+}
+
+.shopping-summary-row.total-row span,
+.shopping-summary-row.total-row strong {
+    color: hsl(137, 50%, 29%);
+    font-size: 16px;
+    font-weight: 650;
+}
+
+
+/* =========================================
+   SHOPPING ACTION BUTTONS
+========================================= */
+
+.shopping-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 12px;
+}
+
+.shopping-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: 1px solid hsl(0, 0%, 87%);
+    border-radius: 8px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 27%);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.shopping-actions button:hover {
+    background-color: hsl(220, 14%, 96%);
+    border-color: hsl(0, 0%, 77%);
+}
+
+.shopping-actions button i {
+    font-size: 13px;
+}
+
+.save-shopping-list-button {
+    background-color: hsl(137, 50%, 29%) !important;
+    border-color: hsl(137, 50%, 29%) !important;
+    color: white !important;
+}
+
+.save-shopping-list-button:hover {
+    background-color: hsl(137, 50%, 24%) !important;
+}
+
+.clear-shopping-list-button {
+    color: hsl(0, 65%, 45%) !important;
+}
