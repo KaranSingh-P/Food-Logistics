@@ -61,7 +61,8 @@
 }
 
 #hamburger:hover {
-    background-color: hsl(211, 73%, 28%);
+    color: black;
+    background-color: white;
 }
 
 /* Nutrition Tracker Switch */
@@ -174,6 +175,7 @@
 }
 
 #menu a:hover {
-    background-color: hsl(211, 73%, 28%);
-    border-color: hsla(0, 0%, 100%, 0.15);
+    color: black;
+    background-color: white;
+    border-color: black;
 }

@@ -93,9 +93,9 @@
 
 .generate-recipe-button {
     padding: 16px 32px;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 12px;
-    background-color: rgb(49, 0, 128);
+    background-color: black;
     color: hsl(0, 0%, 100%);
     font-size: 16px;
     font-weight: 600;
@@ -103,11 +103,15 @@
 }
 
 .generate-recipe-button:hover {
-    background-color: rgb(45, 3, 112);
+    color: black;
+    background-color: white;
+    border: 1px solid black;
 }
 
 .generate-recipe-button:active {
-    background-color: hsl(263, 94%, 31%);
+    color: black;
+    background-color: rgb(215, 215, 215);
+    border: 1px solid black;
 }
 
 .generate-recipe-hint {
