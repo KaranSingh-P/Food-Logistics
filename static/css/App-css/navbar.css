@@ -1,18 +1,19 @@
-*{
+* {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.navbar{
+.navbar {
     color: white;
-    background-color: hsl(211, 75%, 12%);
+    background-color: black;
     height: 52px;
     width: 100%;
 
     display: flex;
     justify-content: space-between;
+
     box-shadow: 0 0 10px black;
 
     position: fixed;
@@ -21,7 +22,7 @@
     z-index: 999999;
 }
 
-.navbar div{
+.navbar div {
     box-sizing: border-box;
     font-size: 1.2rem;
     height: 100%;
@@ -32,13 +33,19 @@
     align-items: center;
 }
 
-.v-.navbar span{
-    padding: 12px;
+.v-navbar {
+    gap: 12px;
 }
 
-.navbar-spacer{
+.navbar-title {
+    white-space: nowrap;
+}
+
+.navbar-spacer {
     height: 52px;
 }
+
+/* Hamburger Button */
 
 #hamburger {
     height: 52px;
@@ -47,7 +54,6 @@
     border: none;
     background: transparent;
     color: white;
-    /* display: block; */
     font-size: 24px;
     line-height: 1;
     cursor: pointer;
@@ -58,13 +64,92 @@
     background-color: hsl(211, 73%, 28%);
 }
 
+/* Nutrition Tracker Switch */
+
+.switch-link {
+    color: hsl(195, 85%, 78%);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+
+    padding: 7px 12px;
+    border-radius: 8px;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.switch-link:hover {
+    color: white;
+    background-color: hsl(211, 73%, 28%);
+}
+
+/* Account Section */
+
+.account {
+    gap: 6px;
+}
+
+/* Email Button */
+
+.account #navbar-email-id {
+    color: white;
+    background-color: hsl(0, 0%, 0%);
+    text-decoration: none;
+
+    border: 1px solid white;
+    border-radius: 20px;
+
+    padding: 6px 12px;
+    font-size: 0.85rem;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.account #navbar-email-id:hover {
+    color: black;
+    background-color: whitesmoke;
+}
+
+/* Logout Link */
+
+.account .logout-link {
+    color: hsla(0, 0%, 100%, 0.75);
+    background-color: transparent;
+
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 400;
+
+    padding: 6px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 20px;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.account .logout-link:hover {
+    color: white;
+    background-color: hsla(0, 0%, 100%, 0.10);
+}
+
+.account .logout-link:active {
+    background-color: hsla(0, 0%, 100%, 0.18);
+}
+
+/* Sidebar Menu */
+
 #menu {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     width: 240px;
-    background-color: hsl(211, 50%, 16%);
+
+    background-color: black;
 
     flex-direction: column;
     gap: 8px;
@@ -74,9 +159,8 @@
     z-index: 99999;
 }
 
-
-#menu a{
-    color:white;
+#menu a {
+    color: white;
     background-color: transparent;
     padding: 12px;
     border: 1px solid transparent;
@@ -85,39 +169,11 @@
     text-align: center;
 }
 
-#menu a:first-child{
+#menu a:first-child {
     margin-top: 52px;
 }
 
 #menu a:hover {
     background-color: hsl(211, 73%, 28%);
     border-color: hsla(0, 0%, 100%, 0.15);
-}
-
-.account span, .account a{
-    padding-inline: 12px;
-}
-
-.account a{
-    color: inherit;
-    background-color: hsl(211, 73%, 29%);
-    text-decoration: none;
-    text-align: center;
-    font-weight: 500;
-
-    padding-top: 6px;
-    padding-bottom: 6px;
-
-    border: white 2px solid;
-    border-radius: 20px;
-    transition: transform 0.2s ease;
-    
-}
-
-.account a:hover{
-    transform: scale(1.1);
-}
-
-.account a:active{
-    transform: scale(0.9);
 }
