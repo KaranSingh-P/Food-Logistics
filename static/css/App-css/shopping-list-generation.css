@@ -121,7 +121,7 @@
 
 .generate-shopping-button {
     padding: 16px 32px;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 12px;
     background-color: black;
     color: hsl(0, 0%, 100%);
@@ -133,13 +133,13 @@
 .generate-shopping-button:hover {
     color: black;
     background-color: white;
-    border: 1px solid black;
+    border-color: black;
 }
 
 .generate-shopping-button:active {
     color: black;
     background-color: rgb(215, 215, 215);
-    border: 1px solid black;
+    border-color: black;
 }
 
 .generate-shopping-hint {
