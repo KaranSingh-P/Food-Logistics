@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Logistics | User Setting</title>
+    <link rel="stylesheet" href="../static/css/App-css/navbar.css">
+    <link rel="stylesheet" href="../static/css/App-css/user-setting.css">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="v-navbar">
+                <button id="hamburger">☰</button>
+                <span class="navbar-title">Food Logistics</span>
+                <a href="/nutrition-tracker" class="switch-link">
+                    Switch to Nutrition Tracker →
+                </a>
+            </div>
+            <div class="account">
+                <a href="/user-settings" id="navbar-email-id">
+                    {{ navbar_username }}
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="logout-link">
+                    Log Out
+                </a>
+            </div>
+        </div>
+        <div class="navbar-spacer"></div>
+    </header>
+
+    <nav id="menu" style="display: none;">
+        <a href="dashboard">Dashboard</a>
+        <a href="inventory">Inventory</a>
+        <a href="recipe-generation">Recipe Generation</a>
+        <a href="shopping-list">Shopping List Generation</a>
+    </nav>
+
+    <form class="settings-container" id="settings-form" action="{{ url_for('settings.user_settings_page') }}"
+        method="POST">
+
+        <input type="hidden" name="allergies" id="allergies-input">
+        <div class="settings-header">
+            <a href="dashboard" class="back-button">&#10094;</a>
+            <h1>User Settings</h1>
+        </div>
+        <section class="settings-section">
+            <h2>Account</h2>
+            <div class="setting-field">
+                <label for="username">Username</label>
+
+                <input type="text" id="username" name="username" placeholder="Enter username"
+                    value="{{ settings.username }}">
+            </div>
+            <div class="setting-field">
+                <label>Email</label>
+                <p class="static-field">{{ email }}</p>
+            </div>
+            <div class="setting-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter new password">
+            </div>
+
+            <div class="setting-field">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password">
+            </div>
+        </section>
+        <hr>
+        <section class="settings-section">
+            <h2>Theme</h2>
+            <div class="theme-options">
+                <label>
+                    <input type="radio" name="theme" value="light" {% if settings.theme=="light" %}checked{% endif %}>
+                    Light
+                </label>
+                <label>
+                    <input type="radio" name="theme" value="dark" {% if settings.theme=="dark" %}checked{% endif %}>
+                    Dark
+                </label>
+            </div>
+        </section>
+        <hr>
+        <section class="settings-section">
+            <h2>Allergies</h2>
+            <div class="allergy-search-container">
+                <input type="text" id="allergy-search" placeholder="Search allergies..." autocomplete="off">
+                <div id="allergy-dropdown" class="allergy-dropdown"></div>
+            </div>
+            <div class="selected-allergies-container">
+                <h3>Allergies Selected</h3>
+                <div id="selected-allergies" class="selected-allergies">
+                    <span class="no-allergies">No allergies selected.</span>
+                </div>
+            </div>
+        </section>
+        <hr>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="settings-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endwith %}
+
+        <button type="submit" class="save-button" id="save-settings">
+            Save Changes
+        </button>
+    </form>
+
+    <script>
+        window.initialAllergies = {{ settings.allergies | tojson }};
+    </script>
+    <script src="../static/javascript/app.js"></script>
+    <script src="../static/javascript/user-setting.js"></script>
+    <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

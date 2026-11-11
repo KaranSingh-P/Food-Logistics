@@ -110,3 +110,9 @@ Webpage gets shopping list from `generated_shopping_list` array in the format:
     ]
 
 To do: Turn the history to buttons.
+
+## User Settings
+
+Webpage temporarily stores user data in the Flask server. But it does permanently stores the changed password since the Database for it is already present.
+
+Currently the theme change don't do anything as it is not set yet.

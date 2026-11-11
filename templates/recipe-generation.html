@@ -20,8 +20,12 @@
                 </a>
             </div>
             <div class="account">
-                <a href="user-Page" id="navbar-email-id">Example@gmail.com</a>
-                <a href="/logout" class="logout-link">Log Out</a>
+                <a href="/user-settings" id="navbar-email-id">
+                    {{ navbar_username }}
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="logout-link">
+                    Log Out
+                </a>
             </div>
         </div>
         <div class="navbar-spacer"></div>
