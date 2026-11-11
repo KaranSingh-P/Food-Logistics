@@ -34,39 +34,13 @@
         <a href="">Shopping List Generation</a>
     </nav>
 
-
     <aside class="shopping-sidebar">
         <div class="sidebar-header">
             <h2>Shopping List History</h2>
         </div>
-
-        <div class="shopping-history">
-            <div class="history-date">Today</div>
-
-            <div class="history-item">
-                <div class="shopping-name">Weekly Grocery Shopping</div>
-                <div class="shopping-item-count">12 items</div>
-            </div>
-
-            <div class="history-item">
-                <div class="shopping-name">Quick Essentials</div>
-                <div class="shopping-item-count">4 items</div>
-            </div>
-
-            <div class="history-date">October 09, 2026</div>
-
-            <div class="history-item">
-                <div class="shopping-name">Monthly Grocery Shopping</div>
-                <div class="shopping-item-count">20 items</div>
-            </div>
-
-            <div class="history-item">
-                <div class="shopping-name">Weekend Shopping List</div>
-                <div class="shopping-item-count">8 items</div>
-            </div>
+        <div class="shopping-history" id="shoppingHistory">
         </div>
     </aside>
-
 
     <main class="shopping-main">
         <div class="shopping-welcome">
@@ -76,7 +50,7 @@
 
         <div class="shopping-generation-section">
             <div class="shopping-generation-actions">
-                <button class="generate-shopping-button">
+                <button type="button" class="generate-shopping-button" id="generateShoppingButton">
                     Generate Shopping List
                 </button>
                 <button type="button" class="show-preferences-button" id="showPreferencesButton">
@@ -89,7 +63,7 @@
             </p>
         </div>
 
-        <div class="generate-shopping-customize">
+        <div class="generate-shopping-customize" id="shoppingPreferences">
             <div class="customize-header">
                 <h2>Shopping Preferences</h2>
             </div>
@@ -190,183 +164,14 @@
             </div>
         </div>
 
-        <!-- GENERATED SHOPPING LIST -->
-        <div class="generated-shopping">
-
-            <!-- SECTION HEADING -->
-            <div class="generated-shopping-header">
-                <h2>Generated Shopping List</h2>
-                <p>
-                    Here's your grocery list based on your selected preferences.
-                </p>
-            </div>
-
-            <!-- SHOPPING LIST TITLE -->
-            <div class="generated-shopping-title">
-                <h1>Weekly Grocery Shopping</h1>
-                <p>
-                    A grocery list of food items based on your selected categories and inventory needs.
-                </p>
-                <div class="shopping-meta">
-                    <span>
-                        <i class="fa-solid fa-basket-shopping"></i>
-                        12 food items
-                    </span>
-                    <span>
-                        <i class="fa-regular fa-calendar"></i>
-                        Weekly Shopping
-                    </span>
-                </div>
-            </div>
-
-            <!-- SHOPPING PROGRESS -->
-            <div class="shopping-progress-section">
-                <div class="shopping-progress-header">
-                    <h3>Shopping Progress</h3>
-                    <span>3 of 12 items completed</span>
-                </div>
-                <div class="shopping-progress-bar">
-                    <div class="shopping-progress-fill" style="width: 25%;"></div>
-                </div>
-            </div>
-
-            <!-- SHOPPING ITEMS -->
-            <div class="shopping-section">
-                <h3>Shopping Items</h3>
-                <p class="shopping-section-description">
-                    Check off the food items as you add them to your shopping cart.
-                </p>
-
-                <div class="shopping-items-list">
-                    <!-- ITEM 1 -->
-                    <div class="shopping-item completed">
-                        <input type="checkbox" checked>
-                        <span class="shopping-item-name">Milk</span>
-                        <span class="shopping-item-quantity">2 litres</span>
-                    </div>
-
-                    <!-- ITEM 2 -->
-                    <div class="shopping-item completed">
-                        <input type="checkbox" checked>
-                        <span class="shopping-item-name">Bread</span>
-                        <span class="shopping-item-quantity">2 packets</span>
-                    </div>
-
-                    <!-- ITEM 3 -->
-                    <div class="shopping-item completed">
-                        <input type="checkbox" checked>
-                        <span class="shopping-item-name">Eggs</span>
-                        <span class="shopping-item-quantity">12 pieces</span>
-                    </div>
-
-                    <!-- ITEM 4 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Rice</span>
-                        <span class="shopping-item-quantity">2 kg</span>
-                    </div>
-
-                    <!-- ITEM 5 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Potatoes</span>
-                        <span class="shopping-item-quantity">1 kg</span>
-                    </div>
-
-                    <!-- ITEM 6 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Tomatoes</span>
-                        <span class="shopping-item-quantity">1 kg</span>
-                    </div>
-
-                    <!-- ITEM 7 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Onions</span>
-                        <span class="shopping-item-quantity">1 kg</span>
-                    </div>
-
-                    <!-- ITEM 8 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Cooking Oil</span>
-                        <span class="shopping-item-quantity">1 litre</span>
-                    </div>
-
-                    <!-- ITEM 9 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Sugar</span>
-                        <span class="shopping-item-quantity">1 kg</span>
-                    </div>
-
-                    <!-- ITEM 10 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Tea Powder</span>
-                        <span class="shopping-item-quantity">250 g</span>
-                    </div>
-
-                    <!-- ITEM 11 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Apples</span>
-                        <span class="shopping-item-quantity">1 kg</span>
-                    </div>
-
-                    <!-- ITEM 12 -->
-                    <div class="shopping-item">
-                        <input type="checkbox">
-                        <span class="shopping-item-name">Biscuits</span>
-                        <span class="shopping-item-quantity">2 packets</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SHOPPING SUMMARY -->
-            <div class="shopping-summary">
-                <h3>Shopping Summary</h3>
-                <div class="shopping-summary-row">
-                    <span>Total Food Items</span>
-                    <strong>12</strong>
-                </div>
-                <div class="shopping-summary-row">
-                    <span>Completed Items</span>
-                    <strong>3</strong>
-                </div>
-                <div class="shopping-summary-row total-row">
-                    <span>Items Remaining</span>
-                    <strong>9</strong>
-                </div>
-            </div>
-
-            <!-- SHOPPING ACTIONS -->
-            <div class="shopping-actions">
-                <button type="button" class="add-shopping-item-button">
-                    <i class="fa-solid fa-plus"></i>
-                    Add Item
-                </button>
-                <button type="button" class="save-shopping-list-button">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Save List
-                </button>
-                <button type="button" class="download-shopping-list-button">
-                    <i class="fa-solid fa-download"></i>
-                    Download List
-                </button>
-                <button type="button" class="clear-shopping-list-button">
-                    <i class="fa-solid fa-trash"></i>
-                    Clear List
-                </button>
-            </div>
+        <div class="generated-shopping" id="generatedShopping">
         </div>
     </main>
 
 
 
     <script src="../static/javascript/app.js"></script>
+    <script src="../static/javascript/shopping-list.js"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
 </body>
-
 </html>

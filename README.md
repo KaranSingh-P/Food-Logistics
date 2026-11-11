@@ -30,7 +30,7 @@ To do:- The shopping list page has not been created yet. Plus, this too would ne
 
 ## Inventory
 
-Inventory is getting its data from the array named 'Inventory' in app.py. This needs to be changed to get data from individual user's database. It stores data in the following syntax:-
+Inventory is getting its data from the array named 'Inventory'. This needs to be changed to get data from individual user's database. It stores data in the following syntax:-
 
     {
         "id": 1,
@@ -85,3 +85,28 @@ The Generate recipe sends User preferences to the server in the following json f
     ]
     }
 
+To do: Turn the history to buttons.
+
+## Shopping List Generation
+
+Webpage gets shopping list History from `shopping_history` array in the format: 
+
+        {
+        "id": 1,
+        "name": "Weekly Grocery Shopping",
+        "date": "Today",
+        "item_count": 12
+    },
+
+Webpage gets shopping list from `generated_shopping_list` array in the format:
+
+    "id": 1,
+    "name": "Weekly Grocery Shopping",
+    "description": "A grocery list of food items based on your selected categories and inventory needs.",
+    "shopping_type": "Weekly Shopping",
+
+    "items": [
+        {"id": 1, "name": "Milk", "quantity": "2 litres", "completed": True},
+    ]
+
+To do: Turn the history to buttons.
