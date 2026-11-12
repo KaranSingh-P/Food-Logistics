@@ -1,8 +1,8 @@
 from flask import Flask, session
-from database import init_db
+from database import init_db, get_db_connection
 
 from routes.auth import auth_bp
-from routes.settings import settings_bp, user_settings
+from routes.settings import settings_bp
 from routes.dashboard import dashboard_bp
 from routes.inventory import inventory_bp
 from routes.recipes import recipes_bp
@@ -25,18 +25,27 @@ app.register_blueprint(shopping_bp)
 
 @app.context_processor
 def inject_navbar_username():
+    user_id = session.get("user_id")
 
-    email = session.get("email")
-
-    if not email:
+    if not user_id:
         return {"navbar_username": ""}
+    with get_db_connection() as connection:
+        user = connection.execute(
+            """
+            SELECT u.email, us.username
+            FROM users u
+            JOIN user_settings us
+                ON u.user_id = us.user_id
+            WHERE u.user_id = %s
+            """,
+            (user_id,)
+        ).fetchone()
 
-    settings = user_settings.get(email, {})
-
-    username = settings.get("username", "").strip()
-
+    if not user:
+        return {"navbar_username": ""}
+    username = user["username"].strip()
     return {
-        "navbar_username": username if username else email
+        "navbar_username": username if username else user["email"]
     }
 
 if __name__ == "__main__":

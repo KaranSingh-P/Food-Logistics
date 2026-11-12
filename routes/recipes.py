@@ -115,7 +115,7 @@ generated_recipe = {
 
 @recipes_bp.route("/recipe-generation")
 def recipe_generation():
-    if "email" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     return render_template("recipe-generation.html")
@@ -124,7 +124,7 @@ def recipe_generation():
 @recipes_bp.route("/api/recipe-history", methods=["GET"])
 def get_recipe_history():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return jsonify({"error": "Not logged in"}), 401
 
     return jsonify({
@@ -135,7 +135,7 @@ def get_recipe_history():
 @recipes_bp.route("/api/generated-recipe", methods=["POST"])
 def generate_recipe():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return jsonify({"error": "Not logged in"}), 401
 
     preferences = request.get_json()
@@ -153,7 +153,7 @@ def generate_recipe():
 @recipes_bp.route("/api/generated-recipe", methods=["GET"])
 def get_generated_recipe():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return jsonify({"error": "Not logged in"}), 401
 
     return jsonify({

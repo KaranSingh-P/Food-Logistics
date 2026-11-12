@@ -4,7 +4,7 @@ shopping_bp = Blueprint("shopping", __name__)
 
 @shopping_bp.route("/shopping-list")
 def shopping_list():
-    if "email" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     return render_template("shopping-list.html")
@@ -39,7 +39,7 @@ shopping_history = [
 @shopping_bp.route("/api/shopping-history", methods=["GET"])
 def get_shopping_history():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return jsonify({"error": "Not logged in"}), 401
 
     return jsonify({"shopping_history": shopping_history})
@@ -70,7 +70,7 @@ generated_shopping_list = {
 @shopping_bp.route("/api/generated-shopping-list", methods=["GET"])
 def get_generated_shopping_list():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return jsonify({"error": "Not logged in"}), 401
 
     return jsonify({"shopping_list": generated_shopping_list})

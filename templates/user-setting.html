@@ -114,6 +114,7 @@
     <!-- Ignore the vs code error here. It is because of jinja -->
     <script>
         window.initialAllergies = {{ settings.allergies | tojson }};
+        window.availableAllergies = {{ available_allergies | tojson }};
     </script>
     <script src="../static/javascript/app.js"></script>
     <script src="../static/javascript/user-setting.js"></script>

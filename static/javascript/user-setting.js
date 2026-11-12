@@ -1,20 +1,6 @@
-
-const availableAllergies = [
-    "Peanuts",
-    "Tree Nuts",
-    "Milk",
-    "Eggs",
-    "Wheat",
-    "Soy",
-    "Fish",
-    "Shellfish",
-    "Sesame",
-    "Gluten",
-    "Mustard",
-    "Corn",
-    "Strawberries",
-    "Chocolate"
-];
+const availableAllergies = Array.isArray(window.availableAllergies)
+    ? window.availableAllergies
+    : [];
 
 let selectedAllergies = Array.isArray(window.initialAllergies)
     ? [...window.initialAllergies]

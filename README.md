@@ -6,6 +6,31 @@ To open the functional version, open the `app.py` and run the python file.
 
 Login using - ["test1@gmail.com",hello123], or create your own.
 
+Note: You need Flask(python) and PostgreSQL
+
+## Tables in PostgreSQL
+(The following values are examples.)
+
+### users
+| user_id | email         | password_hash     |
+| --------|-------------- |-------------------|
+| 1       |test@email.com | password(in hash) |
+
+### allergies
+| allergy_id | allergy_name |
+|------------|--------------|
+| 1          | Peanuts      |
+ 
+### user_allergies
+| user_id | allergy_id|
+|---------|-----------|
+| 1       | 2         |
+| 1       | 5         |
+
+### user_settings
+| user_id | username | theme |
+|---------|----------|-------|
+| 1       | Gamer    | Dark  |
 
 ## Dashboard
 
@@ -113,6 +138,11 @@ To do: Turn the history to buttons.
 
 ## User Settings
 
-Webpage temporarily stores user data in the Flask server. But it does permanently stores the changed password since the Database for it is already present.
+The User setting is stored in permanently using the PostgreSQL tables - users, user_allergies, user_settings
 
-Currently the theme change don't do anything as it is not set yet.
+Username -> user_setting
+Email(Fixed) <- users
+Password -> users
+Theme -> user_setting
+Allergies -> user_allergies (as allergy_id of allergies table)
+

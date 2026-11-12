@@ -33,7 +33,7 @@ inventory_items = [
 
 @inventory_bp.route("/inventory")
 def inventory():
-    if "email" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     return render_template("inventory.html")

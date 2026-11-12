@@ -11,7 +11,7 @@ def home():
 
 @dashboard_bp.route("/dashboard")
 def dashboard():
-    if "email" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
     return render_template("dashboard.html")

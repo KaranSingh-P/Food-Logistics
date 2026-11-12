@@ -1,34 +1,88 @@
-
 import json
 
 from flask import Blueprint, request, redirect, session, render_template, flash
+from werkzeug.security import generate_password_hash
 from database import get_db_connection
 
 settings_bp = Blueprint("settings", __name__)
-
-# Temporary storage until we implement the proper database structure.
-user_settings = {}
-
-AVAILABLE_ALLERGIES = [
-    "Peanuts", "Tree Nuts", "Milk", "Eggs", "Wheat", "Soy",
-    "Fish", "Shellfish", "Sesame", "Gluten", "Mustard", "Corn",
-    "Strawberries", "Chocolate"
-]
 
 
 @settings_bp.route("/user-settings", methods=["GET", "POST"])
 def user_settings_page():
 
-    if "email" not in session:
+    if "user_id" not in session:
         return redirect("/")
 
-    email = session["email"]
+    user_id = session["user_id"]
 
-    settings = user_settings.get(email, {
-        "username": "",
-        "theme": "light",
-        "allergies": []
-    })
+    # Retrieve existing user data from PostgreSQL.
+    with get_db_connection() as connection:
+
+        # Retrieve user's email.
+        user = connection.execute(
+            """
+            SELECT email
+            FROM users
+            WHERE user_id = %s
+            """,
+            (user_id,)
+        ).fetchone()
+
+        # Retrieve username and theme.
+        settings_record = connection.execute(
+            """
+            SELECT username, theme
+            FROM user_settings
+            WHERE user_id = %s
+            """,
+            (user_id,)
+        ).fetchone()
+
+        # Retrieve all available allergies.
+        allergy_records = connection.execute(
+            """
+            SELECT allergy_id, allergy_name
+            FROM allergies
+            ORDER BY allergy_name
+            """
+        ).fetchall()
+
+        # Retrieve this user's selected allergies.
+        selected_records = connection.execute(
+            """
+            SELECT a.allergy_name
+            FROM user_allergies ua
+            JOIN allergies a
+                ON ua.allergy_id = a.allergy_id
+            WHERE ua.user_id = %s
+            ORDER BY a.allergy_name
+            """,
+            (user_id,)
+        ).fetchall()
+
+    if not user or not settings_record:
+        return "User settings could not be found.", 404
+
+    email = user["email"]
+
+    # Available allergy names and their corresponding IDs.
+    available_allergies = [
+        allergy["allergy_name"] for allergy in allergy_records
+    ]
+
+    allergy_ids_by_name = {
+        allergy["allergy_name"]: allergy["allergy_id"]
+        for allergy in allergy_records
+    }
+
+    # Retrieve saved username and theme.
+    settings = {
+        "username": settings_record["username"],
+        "theme": settings_record["theme"],
+        "allergies": [
+            allergy["allergy_name"] for allergy in selected_records
+        ]
+    }
 
     if request.method == "POST":
 
@@ -37,7 +91,7 @@ def user_settings_page():
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm-password", "")
 
-        # Read allergies submitted by JavaScript.
+        # Read and validate submitted allergies.
         try:
             allergies = json.loads(request.form.get("allergies", "[]"))
 
@@ -45,7 +99,7 @@ def user_settings_page():
                 raise ValueError()
 
             if not all(
-                isinstance(item, str) and item in AVAILABLE_ALLERGIES
+                isinstance(item, str) and item in allergy_ids_by_name
                 for item in allergies
             ):
                 raise ValueError()
@@ -54,18 +108,27 @@ def user_settings_page():
 
         except (ValueError, TypeError):
             flash("Invalid allergy selection.", "error")
+
             return render_template(
                 "user-setting.html",
                 email=email,
-                settings=settings
+                settings=settings,
+                available_allergies=available_allergies
             )
 
+        # Validate theme.
         if theme not in ["light", "dark"]:
             flash("Invalid theme selection.", "error")
+
             return render_template(
                 "user-setting.html",
                 email=email,
-                settings=settings
+                settings={
+                    "username": username,
+                    "theme": settings["theme"],
+                    "allergies": allergies
+                },
+                available_allergies=available_allergies
             )
 
         # Check password confirmation.
@@ -79,28 +142,63 @@ def user_settings_page():
                     "username": username,
                     "theme": theme,
                     "allergies": allergies
-                }
+                },
+                available_allergies=available_allergies
             )
 
-        # Update password in the existing SQLite database.
-        if password:
-            connection = get_db_connection()
+        # Convert allergy names into their database IDs.
+        allergy_ids = [
+            allergy_ids_by_name[name] for name in allergies
+        ]
 
-            connection.execute("""
-                UPDATE users
-                SET password = ?
-                WHERE email = ?
-            """, (password, email))
+        # Save all settings in PostgreSQL.
+        with get_db_connection() as connection:
 
-            connection.commit()
-            connection.close()
+            # Save username and theme.
+            connection.execute(
+                """
+                UPDATE user_settings
+                SET username = %s,
+                    theme = %s
+                WHERE user_id = %s
+                """,
+                (username, theme, user_id)
+            )
 
-        # Save the other settings temporarily.
-        user_settings[email] = {
-            "username": username,
-            "theme": theme,
-            "allergies": allergies
-        }
+            # Update password if provided.
+            if password:
+                password_hash = generate_password_hash(password)
+
+                connection.execute(
+                    """
+                    UPDATE users
+                    SET password_hash = %s
+                    WHERE user_id = %s
+                    """,
+                    (password_hash, user_id)
+                )
+
+            # Remove previous allergy selections.
+            connection.execute(
+                """
+                DELETE FROM user_allergies
+                WHERE user_id = %s
+                """,
+                (user_id,)
+            )
+
+            # Insert newly selected allergies.
+            if allergy_ids:
+                connection.cursor().executemany(
+                    """
+                    INSERT INTO user_allergies (user_id, allergy_id)
+                    VALUES (%s, %s)
+                    """,
+                    [
+                        (user_id, allergy_id)
+                        for allergy_id in allergy_ids
+                    ]
+                )
 
         flash("Settings saved successfully!", "success")
 
@@ -109,5 +207,6 @@ def user_settings_page():
     return render_template(
         "user-setting.html",
         email=email,
-        settings=settings
+        settings=settings,
+        available_allergies=available_allergies
     )
