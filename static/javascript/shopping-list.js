@@ -5,23 +5,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadShoppingHistory() {
         try {
+            shoppingHistory.classList.add("loading-message");
             shoppingHistory.textContent = "Loading shopping history...";
             const response = await fetch("/api/shopping-history");
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.error || "Unable to load shopping history.");
             }
+            shoppingHistory.classList.remove("loading-message");
             displayShoppingHistory(data.shopping_history);
         }
         catch (error) {
             console.error("Shopping history error:", error);
+            shoppingHistory.classList.remove("loading-message");
+            shoppingHistory.classList.add("error-message");
             shoppingHistory.textContent = "Unable to load shopping history.";
         }
     }
 
     function displayShoppingHistory(lists) {
+        shoppingHistory.classList.remove("loading-message", "error-message");
         shoppingHistory.replaceChildren();
+
         if (!lists || lists.length === 0) {
+            shoppingHistory.classList.add("empty-message");
             shoppingHistory.textContent = "No shopping lists generated yet.";
             return;
         }
@@ -64,16 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadGeneratedShoppingList() {
         try {
+            generatedShopping.classList.add("loading-message");
             generatedShopping.textContent = "Loading shopping list...";
             const response = await fetch("/api/generated-shopping-list");
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.error || "Unable to load shopping list.");
             }
+            generatedShopping.classList.remove("loading-message");
             displayGeneratedShoppingList(data.shopping_list);
         }
         catch (error) {
             console.error("Shopping list error:", error);
+            generatedShopping.classList.remove("loading-message");
+            generatedShopping.classList.add("error-message");
             generatedShopping.textContent = "Unable to load shopping list.";
         }
     }
@@ -91,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!shoppingList || !Array.isArray(shoppingList.items)) {
             throw new Error("Invalid shopping list data received.");
         }
+        generatedShopping.classList.remove("loading-message", "error-message", "empty-message");
         generatedShopping.replaceChildren();
         const items = shoppingList.items;
         const totalItems = items.length;

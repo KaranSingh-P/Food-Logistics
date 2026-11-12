@@ -5,24 +5,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadRecipeHistory() {
         try {
+            recipeHistory.classList.add("loading-message");
             recipeHistory.textContent = "Loading recipe history...";
             const response = await fetch("/api/recipe-history");
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.error || "Unable to load recipe history.");
             }
+            recipeHistory.classList.remove("loading-message");
             displayRecipeHistory(data.recipes);
         }
         catch (error) {
             console.error("Recipe history error:", error);
+            recipeHistory.classList.remove("loading-message");
+            recipeHistory.classList.add("error-message");
             recipeHistory.textContent = "Unable to load recipe history.";
         }
     }
 
     function displayRecipeHistory(recipes) {
+        recipeHistory.classList.remove("loading-message", "error-message");
         recipeHistory.replaceChildren();
 
         if (!recipes || recipes.length === 0) {
+            recipeHistory.className = "empty-message";
             recipeHistory.textContent = "No recipes generated yet.";
             return;
         }
@@ -76,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadGeneratedRecipe(preferences) {
         try {
             generateRecipeButton.disabled = true;
+            generatedRecipe.className = "loading-message";
             generateRecipeButton.textContent = "Generating Recipe...";
             generatedRecipe.textContent = "Generating your recipe...";
 
@@ -95,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         catch (error) {
             console.error("Recipe generation error:", error);
+            generatedRecipe.className = "error-message";
             generatedRecipe.textContent = "Unable to generate recipe. Please try again.";
         }
         finally {
@@ -120,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
             throw new Error("Invalid recipe data received.");
         }
+        generatedRecipe.className = "";
         generatedRecipe.replaceChildren();
 
         const header = createElement("div", "generated-recipe-header");
