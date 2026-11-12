@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="account">
-                <a href="/user-settings" id="navbar-email-id">
+                <a href="{{ url_for('settings.user_settings_page') }}" id="navbar-email-id">
                     {{ navbar_username }}
                 </a>
                 <a href="{{ url_for('auth.logout') }}" class="logout-link">
@@ -32,10 +32,10 @@
     </header>
 
     <nav id="menu" style="display: none;">
-        <a href="dashboard">Dashboard</a>
-        <a href="inventory">Inventory</a>
-        <a href="shopping-generation">shopping Generation</a>
-        <a href="">Shopping List Generation</a>
+        <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('inventory.inventory') }}">Inventory</a>
+        <a href="{{ url_for('recipes.recipe_generation') }}">Recipe Generation</a>
+        <a href="{{ url_for('shopping.shopping_list') }}">Shopping List Generation</a>
     </nav>
 
     <aside class="shopping-sidebar">

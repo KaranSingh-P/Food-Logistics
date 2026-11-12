@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="account">
-                <a href="/user-settings" id="navbar-email-id">
+                <a href="{{ url_for('settings.user_settings_page') }}" id="navbar-email-id">
                     {{ navbar_username }}
                 </a>
                 <a href="{{ url_for('auth.logout') }}" class="logout-link">
@@ -32,10 +32,10 @@
     </header>
 
     <nav id="menu" style="display: none;">
-        <a href="">Dashboard</a>
-        <a href="inventory">Inventory</a>
-        <a href="recipe-generation">Recipe Generation</a>
-        <a href="shopping-list">Shopping List Generation</a>
+        <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('inventory.inventory') }}">Inventory</a>
+        <a href="{{ url_for('recipes.recipe_generation') }}">Recipe Generation</a>
+        <a href="{{ url_for('shopping.shopping_list') }}">Shopping List Generation</a>
     </nav>
 
     <main id="dashboard-body">
@@ -73,8 +73,8 @@
                     <span>Expiring Soon</span>
 
                     <div class="section-actions">
-                        <a href="inventory" class="inventory-btn">VIEW FULL INVENTORY</a>
-                        <a href="recipe-generation" class="recipe-btn">GENERATE RECIPE</a>
+                        <a href="{{ url_for('inventory.inventory') }}" class="inventory-btn">VIEW FULL INVENTORY</a>
+                        <a href="{{ url_for('recipes.recipe_generation') }}" class="recipe-btn">GENERATE RECIPE</a>
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@
             <div class="shopping-list-generation">
                 <div class="shopping-list-header">
                     <span>Shopping List</span>
-                    <a href="shopping-list" class="history-btn">GENERATED LIST HISTORY</a>
+                    <a href="{{ url_for('shopping.shopping_list') }}" class="history-btn">GENERATED LIST HISTORY</a>
                 </div>
 
                 <div class="table-scroll">
