@@ -227,4 +227,44 @@ def init_db():
             ON CONFLICT (user_id) DO NOTHING
         """)
 
+        # Inventory table
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS inventory (
+                inventory_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                user_id INTEGER NOT NULL,
+                item_name TEXT NOT NULL,
+                category VARCHAR(30) NOT NULL,
+                purchase_date DATE NOT NULL,
+                expiration_date DATE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                CONSTRAINT fk_inventory_user
+                    FOREIGN KEY (user_id)
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE,
+
+                CONSTRAINT check_inventory_category
+                    CHECK (
+                        category IN (
+                            'perishable',
+                            'highly-perishable',
+                            'semi-perishable',
+                            'non-perishable',
+                            'canned',
+                            'frozen',
+                            'dehydrated',
+                            'fermented'
+                        )
+                    ),
+
+                CONSTRAINT check_inventory_dates
+                    CHECK (expiration_date >= purchase_date)
+            );
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_inventory_user_expiration
+            ON inventory(user_id, expiration_date);
+        """)
+
 

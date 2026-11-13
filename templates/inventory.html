@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Inventory</title>
     <link rel="stylesheet" href="../static/css/App-css/navbar.css">
-    <link rel="stylesheet" href="../static/css/App-css/Horizontal-tools.css">
-    <link rel="stylesheet" href="../static/css/App-css/inventory-table.css">
-    <link rel="stylesheet" href="../static/css/App-css/inventory-navigation.css">
+    <link rel="stylesheet" href="../static/css/App-css/inventory.css">
 </head>
 
 <body>
@@ -40,42 +38,63 @@
         <a href="{{ url_for('shopping.shopping_list') }}">Shopping List Generation</a>
     </nav>
 
+
     <section class="vertical-tools">
         <div class="insert-item">
-            <form action="">
-                <input type="text" placeholder="Insert the food item here" id="type-item">
-
-                <div class="item-suggestion">
-                    <button id="">Suggestion 1</button>
-                    <button id="">Suggestion 2</button>
-                    <button id="">Suggestion 3</button>
+            <form id="add-item-form">
+                <input type="text" placeholder="Insert the food item here" id="type-item" name="item_name"
+                    autocomplete="off" minlength="3" required>
+                <div class="item-suggestion" id="item-suggestions">
                 </div>
-            </form>
 
-            <div class="item-details">
-                <form action="" class="select-item-tag">
-                    <select name="" id="">
-                        <option value="" selected>Select the Type of food</option>
-                        <option value="perishable">Perishable</option>
-                        <option value="highly-perishable">Highly perishable</option>
-                        <option value="semi-perishable">Semi-perishable</option>
-                        <option value="non-perishable">Non-perishable</option>
-                        <option value="canned">Canned</option>
-                        <option value="frozen">Frozen</option>
-                        <option value="dehydrated">Dehydrated</option>
-                        <option value="fermented">Fermented</option>
-                    </select>
-                </form>
-                <form action="" class="add-item-date">
-                    <label for="">Date of Purchase: </label>
-                    <input type="date" name="" id="item-date">
-                </form>
-                <form action="" class="add-item-form">
-                    <button type="submit" id="add-item-button">ADD ITEM</button>
-                </form>
-            </div>
-            <button id="automatic-insert"><i class="fa-regular fa-camera"></i></button>
+                <div class="item-details">
+                    <div class="select-item-tag">
+                        <select name="category" id="item-category" required>
+                            <option value="" selected disabled>
+                                Select the Type of food
+                            </option>
+                            <option value="perishable">Perishable</option>
+                            <option value="highly-perishable">Highly perishable</option>
+                            <option value="semi-perishable">Semi-perishable</option>
+                            <option value="non-perishable">Non-perishable</option>
+                            <option value="canned">Canned</option>
+                            <option value="frozen">Frozen</option>
+                            <option value="dehydrated">Dehydrated</option>
+                            <option value="fermented">Fermented</option>
+                        </select>
+                    </div>
+                    <div class="add-item-date">
+                        <label for="item-date">
+                            Date of Purchase:
+                        </label>
+                        <input type="date" name="purchase_date" id="item-date" required>
+                        <button type="button" id="purchase-today">
+                            Today
+                        </button>
+                    </div>
+                    <div class="add-item-expiry">
+                        <label for="item-expiry">
+                            Expiration Date:
+                        </label>
+                        <input type="date" name="expiration_date" id="item-expiry" required>
+                        <div class="expiry-shortcuts">
+                            <button type="button" data-days="7">Add 7 days</button>
+                            <button type="button" data-days="30">Add 30 days</button>
+                            <button type="button" data-days="90">Add 90 days</button>
+                        </div>
+                    </div>
+                    <button type="submit" id="add-item-button">
+                        ADD ITEM
+                    </button>
+                </div>
+                <div id="item-feedback"></div>
+            </form>
+            <button type="button" id="automatic-insert">
+                <i class="fa-regular fa-camera"></i>
+            </button>
+        </div>
     </section>
+
 
     <section class="navivation">
         <nav class="pagination" id="paginationTop" aria-label="Pagination">
@@ -88,11 +107,23 @@
             <table>
                 <thead>
                     <tr>
-                        <th>S.No</b></th>
-                        <th>Name</th>
+                        <th>
+                            <button type="button" class="sort-header" id="sort-id">
+                                S.No. <span class="sort-arrow">↑</span>
+                            </button>
+                        </th>
+                        <th>
+                            <button type="button" class="sort-header" id="sort-name">
+                                Name <span class="sort-arrow"></span>
+                            </button>
+                        </th>
                         <th>Tag</th>
                         <th>Date of Purchase / Manufacture</th>
-                        <th>Date of Expiration</th>
+                        <th>
+                            <button type="button" class="sort-header" id="sort-expiration">
+                                Date of Expiration <span class="sort-arrow"></span>
+                            </button>
+                        </th>
                         <th>Action</th>
                     </tr>
                 </thead>

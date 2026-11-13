@@ -32,6 +32,11 @@ Note: You need Flask(python) and PostgreSQL
 |---------|----------|-------|
 | 1       | Gamer    | Dark  |
 
+### inventory
+|inventory_id | user_id | item_name | category  | purchase_date | expiration_date | created_at |
+|-------------|---------|-----------|-----------|---------------|-----------------|------------|
+| 1           | 1       | Apple     | Perisable | 2026-11-13    | 2026-11-20      | 2026-11-13 20:15:34.786959 |
+
 ## Dashboard
 
 Dashboard has the table for allergen, which is connected to the array named 'allergen_data' in the flask, which stores data in the following syntax:- 
@@ -55,16 +60,25 @@ To do:- The shopping list page has not been created yet. Plus, this too would ne
 
 ## Inventory
 
-Inventory is getting its data from the array named 'Inventory'. This needs to be changed to get data from individual user's database. It stores data in the following syntax:-
+To Do: Put the suggestions in a seperate table in database.
+To Do: Expand the suggestions table
 
-    {
-        "id": 1,
-        "name": "Food",
-        "tag": "Perishable",
-        "purchase_date": "01 Jan 2026",
-        "expiration_date": "01 Jan 2026"
-    },
+Items are added permanently in the Database.
 
+Add Items -> User enters characters -> User is suggested item name(if available) -> User either chooses the suggestion or simply presses enter -> Item info section appears with details such as types and dates -> User adds item -> item is sent to flask -> flask adds item to DB after validating values
+
+Inventory table show following values:
+
+| S.No.↑ | Name | Tag |	Date of Purchase / Manufacture | Date of Expiration | Action |
+|--------|------|-----|--------------------------------|--------------------|--------|
+
+The following columns have functional sorting ability:
+1. S.No.
+2. Name
+3. Date of Expiration 
+
+The delete button and edit button are functional.
+Pagination works correctly.
 
 ## Recipe Generation
 
@@ -140,9 +154,9 @@ To do: Turn the history to buttons.
 
 The User setting is stored in permanently using the PostgreSQL tables - users, user_allergies, user_settings
 
-Username -> user_setting
-Email(Fixed) <- users
-Password -> users
-Theme -> user_setting
+Username -> user_setting <br>
+Email(Fixed) <- users <br>
+Password -> users <br>
+Theme -> user_setting <br>
 Allergies -> user_allergies (as allergy_id of allergies table)
 

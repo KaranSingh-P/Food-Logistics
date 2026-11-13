@@ -1,0 +1,561 @@
+.vertical-tools {
+    margin: 36px 15%;
+    box-shadow: 0 0 3px hsl(0, 0%, 0%);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+}
+
+#automatic-insert {
+    height: 48px;
+    width: 48px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    border-radius: 40px;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10;
+
+    border: none;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#type-item {
+    text-align: center;
+    font-size: 18px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 60px;
+    border: none;
+    box-shadow: 0 0 1px black;
+    border-radius: 30px;
+}
+
+#type-item:focus {
+    outline: none;
+}
+
+#type-item[readonly] {
+    caret-color: transparent;
+}
+
+.item-suggestion {
+    box-sizing: border-box;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+}
+
+.item-suggestion button {
+    font-size: medium;
+    padding: 12px 12px 12px 48px;
+    border: none;
+    background-color: transparent;
+    text-align: left;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.item-suggestion button:hover {
+    background-color: hsla(0, 0%, 50%, 0.589);
+}
+
+.item-suggestion button:active {
+    background-color: hsla(0, 0%, 0%, 0.407);
+}
+
+.suggestion-message {
+    padding: 10px 14px;
+    color: gray;
+    cursor: default;
+    font-size: 14px;
+    user-select: none;
+}
+
+.item-details {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+}
+
+.select-item-tag select {
+    box-sizing: border-box;
+    padding: 12px;
+    width: calc(100% - 24px);
+    margin: 0 12px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.545);
+}
+
+.add-item-date,
+.add-item-expiry {
+    font-size: large;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add-item-date input,
+.add-item-expiry input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 0 1px hsla(0, 0%, 0%, 0.581);
+}
+
+#add-item-button {
+    align-self: flex-end;
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: larger;
+    font-weight: 600;
+    padding: 16px 28px;
+    margin: 12px;
+    box-shadow: 0 0 2px black;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#add-item-button:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+#add-item-button:active {
+    transform: scale(0.95);
+}
+
+#item-feedback {
+    margin: 0 12px 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+}
+
+#item-feedback.success {
+    display: block;
+    color: #166534;
+    background-color: #dcfce7;
+}
+
+#item-feedback.error {
+    display: block;
+    color: #991b1b;
+    background-color: #fee2e2;
+}
+
+#purchase-today {
+    width: fit-content;
+    align-self: flex-start;
+    padding: 9px 14px;
+    margin: 8px 12px 0;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#purchase-today:hover {
+    background-color: #e5e5e5;
+}
+
+.expiry-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 12px;
+}
+
+.expiry-shortcuts button {
+    padding: 9px 14px;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.expiry-shortcuts button:hover {
+    background-color: #e5e5e5;
+}
+
+.inventory-table {
+    width: 100%;
+}
+
+.table-container {
+    width: 95%;
+    margin: 12px auto;
+    box-sizing: border-box;
+    border: 1px solid hsl(220, 13%, 91%);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px hsla(0, 0%, 0%, 0.05);
+
+    overflow-x: auto;
+}
+
+.table-container table {
+    width: 100%;
+    min-width: 350px;
+    border-collapse: collapse;
+}
+
+.inventory-table thead {
+    color: white;
+    background-color: black;
+}
+
+.inventory-table th {
+    text-align: center;
+    font-size: large;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-right: 1px solid hsla(0, 0%, 100%, 0.255);
+}
+
+.inventory-table th:nth-child(1) {
+    width: 70px;
+}
+
+.inventory-table th:nth-child(2) {
+    width: 150px;
+}
+
+.inventory-table th:nth-child(3) {
+    width: 120px;
+}
+
+.inventory-table th:nth-child(4) {
+    width: 180px;
+}
+
+.inventory-table th:nth-child(5) {
+    width: 160px;
+}
+
+.inventory-table th:nth-child(6) {
+    width: 80px;
+    border-right: none;
+}
+
+.table-container td,
+.table-container th {
+    padding: 12px 24px;
+    text-align: center;
+}
+
+.table-container td {
+    vertical-align: middle;
+    border-right: 1px solid hsl(0, 0%, 90%);
+    border-bottom: 1px solid hsl(0, 0%, 90%);
+}
+
+.inventory-table td:last-child {
+    border-right: none;
+}
+
+.inventory-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.inventory-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.inventory-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.inventory-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.sort-header {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 20px;
+}
+
+.inventory-table th {
+    padding: 0;
+}
+
+.sort-arrow {
+    font-size: 0.85em;
+}
+
+.sort-header:hover {
+    opacity: 0.75;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.tag.perishable {
+    color: #b91c1c;
+    background-color: #fee2e2;
+}
+
+.tag.canned {
+    color: #166534;
+    background-color: #dcfce7;
+}
+
+.tag.perishable {
+    color: #b91c1c;
+    background-color: #fee2e2;
+}
+
+.tag.highly-perishable {
+    color: #9f1239;
+    background-color: #ffe4e6;
+}
+
+.tag.semi-perishable {
+    color: #c2410c;
+    background-color: #ffedd5;
+}
+
+.tag.non-perishable {
+    color: #1d4ed8;
+    background-color: #dbeafe;
+}
+
+.tag.canned {
+    color: #166534;
+    background-color: #dcfce7;
+}
+
+.tag.frozen {
+    color: #0369a1;
+    background-color: #e0f2fe;
+}
+
+.tag.dehydrated {
+    color: #854d0e;
+    background-color: #fef9c3;
+}
+
+.tag.fermented {
+    color: #6b21a8;
+    background-color: #f3e8ff;
+}
+
+.inventory-table td input,
+.inventory-table td select {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 90px;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    font: inherit;
+    background-color: white;
+    color: black;
+}
+
+.inventory-table td input:focus,
+.inventory-table td select:focus {
+    outline: 2px solid #888;
+    border-color: transparent;
+}
+
+.save-edit-btn,
+.cancel-edit-btn {
+    padding: 7px 10px;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.save-edit-btn:hover:not(:disabled),
+.cancel-edit-btn:hover {
+    background-color: #e5e5e5;
+}
+
+.save-edit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.remove-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #ef4444;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.remove-btn:active {
+    transform: scale(0.95);
+}
+
+.remove-btn i {
+    font-size: 14px;
+}
+
+.edit-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: hsl(0, 0%, 0%);
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background-color: hsl(0, 0%, 80%);
+    color: hsl(0, 0%, 0%);
+}
+
+.edit-btn:active {
+    transform: scale(0.95);
+}
+
+.edit-btn i {
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.pagination-summary,
+.pagination-controls,
+.page-size {
+    background: #ffffff;
+    border-radius: 999px;
+    padding: 8px 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination button {
+    border: none;
+    background: #ffffff;
+    color: #333;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #f1f3f5;
+}
+
+.pagination button[aria-current="page"] {
+    background: #111827;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.pagination button:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.pagination-controls span {
+    padding: 0 6px;
+    color: #777;
+}
+
+.page-size {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.page-size select {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    cursor: pointer;
+}
