@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Dashboard</title>
     <link rel="stylesheet" href="../static/css/App-css/navbar.css">
-    <link rel="stylesheet" href="../static/css/App-css/body.css">
+    <link rel="stylesheet" href="../static/css/App-css/dashboard.css">
 </head>
 
 <body>
@@ -45,8 +45,13 @@
             <div class="allergen-alerts">
                 <div class="section-header">
                     <span>ALLERGEN ALERTS</span>
+                    <div class="section-actions">
+                        <a href="{{ url_for('inventory.inventory') }}" class="unverified-btn" id="unverifiedItemsBtn"
+                            style="display: none;">
+                            UNVERIFIED ITEMS DETECTED
+                        </a>
+                    </div>
                 </div>
-
                 <div class="table-scroll">
                     <table id="allergenTable">
                         <thead>

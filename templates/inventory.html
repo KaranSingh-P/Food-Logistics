@@ -38,6 +38,9 @@
         <a href="{{ url_for('shopping.shopping_list') }}">Shopping List Generation</a>
     </nav>
 
+    <button type="button" class="scroll-inventory-btn" id="scrollInventoryBtn" title="Go to inventory table">
+        <span class="down-chevron"></span>
+    </button>
 
     <section class="vertical-tools">
         <div class="insert-item">
@@ -94,7 +97,6 @@
             </button>
         </div>
     </section>
-
 
 
     <section class="allergen-section">
@@ -162,7 +164,7 @@
     </section>
 
 
-    <main class="inventory-table">
+    <main class="inventory-table" id="inventory-table">
         <div class="table-container">
             <table>
                 <thead>

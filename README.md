@@ -4,9 +4,9 @@
 
 To open the functional version, open the `app.py` and run the python file.
 
-Login using - ["test1@gmail.com",hello123], or create your own.
+For Login create your own account.
 
-Note: You need Flask(python) and PostgreSQL
+Note: You need Flask(python) and PostgreSQL for this project.
 
 ## Tables in PostgreSQL
 (The following values are examples.)

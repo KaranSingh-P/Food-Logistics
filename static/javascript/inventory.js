@@ -1154,3 +1154,15 @@ const initialPage = getInitialPage();
 loadInventory(initialPage, currentPerPage);
 loadAllergenAlerts();
 
+const scrollInventoryBtn = document.getElementById("scrollInventoryBtn");
+
+scrollInventoryBtn.addEventListener("click", () => {
+
+    const inventoryTable = document.getElementById("inventory-table");
+
+    inventoryTable.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+});

@@ -1,3 +1,7 @@
+main {
+    position: relative;
+}
+
 .vertical-tools {
     margin: 36px 15%;
     box-shadow: 0 0 3px hsl(0, 0%, 0%);
@@ -792,4 +796,42 @@
     background: transparent;
     font-size: 14px;
     cursor: pointer;
+}
+
+.scroll-inventory-btn {
+    position: absolute;
+
+    /* Adjust these to position the button */
+    top: 96px;
+    right: 120px;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid black;
+    border-radius: 50%;
+
+    background: white;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.scroll-inventory-btn:hover {
+    background: hsl(220, 13%, 94%);
+}
+
+.down-chevron {
+    width: 9px;
+    height: 9px;
+
+    border-right: 2px solid hsl(0, 0%, 30%);
+    border-bottom: 2px solid hsl(0, 0%, 30%);
+
+    transform: rotate(45deg);
+    margin-top: -4px;
 }
