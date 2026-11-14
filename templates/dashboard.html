@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="{{ current_theme }}">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Dashboard</title>
-    <link rel="stylesheet" href="../static/css/App-css/navbar.css">
-    <link rel="stylesheet" href="../static/css/App-css/dashboard.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <link rel="stylesheet" href="../static/css/dashboard.css">
 </head>
 
 <body>
@@ -68,6 +68,11 @@
 
                 <div id="noAllergensMessage" style="display: none;">
                     No allergens detected!
+                </div>
+                <div id="setupAllergiesMessage" style="display: none;">
+                    <a href="{{ url_for('settings.user_settings_page') }}#allergies">
+                        SET UP YOUR ALLERGIES
+                    </a>
                 </div>
             </div>
         </div>

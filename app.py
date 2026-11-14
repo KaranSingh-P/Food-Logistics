@@ -24,15 +24,21 @@ app.register_blueprint(shopping_bp)
 
 
 @app.context_processor
-def inject_navbar_username():
+def inject_global_settings():
+
     user_id = session.get("user_id")
 
     if not user_id:
-        return {"navbar_username": ""}
+        return {
+            "navbar_username": "",
+            "current_theme": "light"
+        }
+
     with get_db_connection() as connection:
+
         user = connection.execute(
             """
-            SELECT u.email, us.username
+            SELECT u.email, us.username, us.theme
             FROM users u
             JOIN user_settings us
                 ON u.user_id = us.user_id
@@ -42,12 +48,17 @@ def inject_navbar_username():
         ).fetchone()
 
     if not user:
-        return {"navbar_username": ""}
-    username = user["username"].strip()
-    return {
-        "navbar_username": username if username else user["email"]
-    }
+        return {
+            "navbar_username": "",
+            "current_theme": "light"
+        }
 
+    username = user["username"].strip()
+
+    return {
+        "navbar_username": username if username else user["email"],
+        "current_theme": user["theme"]
+    }
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)

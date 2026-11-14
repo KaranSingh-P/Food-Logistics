@@ -469,3 +469,22 @@ tbody tr:hover {
         max-height: 500px;
     }
 }
+
+#setupAllergiesMessage {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+#setupAllergiesMessage a {
+    display: inline-block;
+    color: hsl(43, 85%, 45%);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+#setupAllergiesMessage a:hover {
+    color: hsl(43, 85%, 35%);
+    text-decoration: underline;
+}

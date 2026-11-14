@@ -53,8 +53,6 @@ itemDetails.style.display = "none";
 
 // Display matching suggestions while typing
 
-// Display matching suggestions while typing
-
 itemInput.addEventListener("input", async () => {
     clearItemFeedback();
     const query = itemInput.value.trim();
@@ -398,6 +396,7 @@ async function loadAllergenAlerts() {
     const allergenTable = document.getElementById("allergenTable");
     const allergenTableBody = document.getElementById("allergenTableBody");
     const noAllergensMessage = document.getElementById("noAllergensMessage");
+    const setupAllergiesMessage = document.getElementById("setupAllergiesMessage");
 
     const unverifiedTable = document.getElementById("unverifiedTable");
     const unverifiedTableBody = document.getElementById("unverifiedTableBody");
@@ -413,20 +412,24 @@ async function loadAllergenAlerts() {
         allergenTableBody.replaceChildren();
         unverifiedTableBody.replaceChildren();
         // Populate detected allergens
-        data.detected.forEach((item, index) => {
+        // Populate detected allergens
+        data.detected.forEach(item => {
+
             const row = document.createElement("tr");
-            // Keep the actual database ID for future actions
             row.dataset.id = item.inventory_id;
+
             const idCell = document.createElement("td");
             idCell.textContent = item.s_no;
+
             const nameCell = document.createElement("td");
             nameCell.textContent = item.name;
+
             const allergyCell = document.createElement("td");
             allergyCell.textContent = item.allergens.join(", ");
+
             row.append(idCell, nameCell, allergyCell);
             allergenTableBody.appendChild(row);
-        });        // Populate unverified items
-
+        });
         // Populate unverified items
 
         data.unverified.forEach(item => {
@@ -545,15 +548,24 @@ async function loadAllergenAlerts() {
             row.append(idCell, nameCell, actionCell);
             unverifiedTableBody.appendChild(row);
         });
-        // Toggle tables and empty messages
-        allergenTable.style.display =
-            data.detected.length > 0 ? "table" : "none";
-        noAllergensMessage.style.display =
-            data.detected.length > 0 ? "none" : "block";
-        unverifiedTable.style.display =
-            data.unverified.length > 0 ? "table" : "none";
-        noUnverifiedMessage.style.display =
-            data.unverified.length > 0 ? "none" : "block";
+        // Toggle allergen table and messages
+
+        if (data.user_allergies.length === 0) {
+
+            allergenTable.style.display = "none";
+            noAllergensMessage.style.display = "none";
+            setupAllergiesMessage.style.display = "block";
+
+        } else {
+
+            setupAllergiesMessage.style.display = "none";
+
+            allergenTable.style.display =
+                data.detected.length > 0 ? "table" : "none";
+
+            noAllergensMessage.style.display =
+                data.detected.length > 0 ? "none" : "block";
+        }
     } catch (error) {
         console.error("Allergen detection error:", error);
     }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="{{ current_theme }}">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | User Setting</title>
-    <link rel="stylesheet" href="../static/css/App-css/navbar.css">
-    <link rel="stylesheet" href="../static/css/App-css/user-setting.css">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <link rel="stylesheet" href="../static/css/user-setting.css">
 </head>
 
 <body>
@@ -83,7 +83,7 @@
             </div>
         </section>
         <hr>
-        <section class="settings-section">
+        <section class="settings-section" id="allergies">
             <h2>Allergies</h2>
             <div class="allergy-search-container">
                 <input type="text" id="allergy-search" placeholder="Search allergies..." autocomplete="off">

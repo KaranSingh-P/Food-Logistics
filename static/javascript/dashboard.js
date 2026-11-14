@@ -16,41 +16,52 @@ async function loadAllergenAlerts() {
         const table = document.getElementById("allergenTable");
         const tableBody = document.getElementById("allergenTableBody");
         const noAllergensMessage = document.getElementById("noAllergensMessage");
+        const setupAllergiesMessage = document.getElementById("setupAllergiesMessage");
+        const hasUserAllergies = data.user_allergies.length > 0;
 
         // Clear previous rows
         tableBody.replaceChildren();
 
         // Display detected allergens
-        if (data.detected.length === 0) {
+        if (!hasUserAllergies) {
 
+            // User has not selected any allergies
             table.style.display = "none";
-            noAllergensMessage.style.display = "block";
+            noAllergensMessage.style.display = "none";
+            setupAllergiesMessage.style.display = "block";
 
         } else {
 
-            table.style.display = "table";
-            noAllergensMessage.style.display = "none";
+            setupAllergiesMessage.style.display = "none";
 
-            data.detected.forEach(item => {
+            if (data.detected.length === 0) {
 
-                const row = document.createElement("tr");
+                table.style.display = "none";
+                noAllergensMessage.style.display = "block";
 
-                // Keep the actual inventory ID for future actions
-                row.dataset.id = item.inventory_id;
+            } else {
 
-                const idCell = document.createElement("td");
-                idCell.textContent = item.s_no;
+                table.style.display = "table";
+                noAllergensMessage.style.display = "none";
 
-                const nameCell = document.createElement("td");
-                nameCell.textContent = item.name;
+                data.detected.forEach(item => {
 
-                const allergyCell = document.createElement("td");
-                allergyCell.textContent = item.allergens.join(", ");
+                    const row = document.createElement("tr");
+                    row.dataset.id = item.inventory_id;
 
-                row.append(idCell, nameCell, allergyCell);
+                    const idCell = document.createElement("td");
+                    idCell.textContent = item.s_no;
 
-                tableBody.appendChild(row);
-            });
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = item.name;
+
+                    const allergyCell = document.createElement("td");
+                    allergyCell.textContent = item.allergens.join(", ");
+
+                    row.append(idCell, nameCell, allergyCell);
+                    tableBody.appendChild(row);
+                });
+            }
         }
 
     } catch (error) {
