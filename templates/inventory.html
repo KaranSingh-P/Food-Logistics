@@ -96,6 +96,66 @@
     </section>
 
 
+
+    <section class="allergen-section">
+        <!-- Allergen Alerts -->
+        <div class="allergen-alerts">
+            <div class="section-header">
+                <span>ALLERGEN ALERTS</span>
+            </div>
+
+            <div class="table-scroll">
+                <table id="allergenTable">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Item Name</th>
+                            <th>Allergy Detected</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allergenTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div id="noAllergensMessage">
+                No allergens detected!
+            </div>
+        </div>
+        <!-- Unverified Items -->
+        <div class="unverified-alerts">
+            <div class="section-header">
+                <span>
+                    UNVERIFIED ITEMS
+                    <span class="info-tooltip" tabindex="0">
+                        <span class="info-icon">i</span>
+                        <span class="tooltip-text">
+                            These items could not be matched with our food database.
+                            Their allergen information is currently unavailable.
+                            This does not mean they are allergen-free.
+                        </span>
+                    </span>
+                </span>
+            </div>
+            <div class="table-scroll">
+                <table id="unverifiedTable">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Item Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unverifiedTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div id="noUnverifiedMessage">
+                All inventory items are recognized!
+            </div>
+        </div>
+    </section>
+
+
     <section class="navivation">
         <nav class="pagination" id="paginationTop" aria-label="Pagination">
         </nav>

@@ -23,17 +23,6 @@ expiryDateInput.max = "2100-12-31";
 const insertItemContainer = document.querySelector(".insert-item");
 let detailsHiddenByOutsideClick = false;
 
-const foodSuggestions = [
-    { name: "Apple", category: "Highly perishable" },
-    { name: "Banana", category: "Highly perishable" },
-    { name: "Milk", category: "Perishable" },
-    { name: "Rice", category: "Non-perishable" },
-    { name: "Potato", category: "Semi-perishable" },
-    { name: "Canned Beans", category: "Canned" },
-    { name: "Frozen Peas", category: "Frozen" },
-    { name: "Raisins", category: "Dehydrated" }
-];
-
 function showItemFeedback(message, type) {
     itemFeedback.textContent = message;
     itemFeedback.className = "";
@@ -49,7 +38,7 @@ function clearItemFeedback() {
     itemFeedback.className = "";
 }
 
-let selectedFood = null;
+let suggestionRequestId = 0;
 
 const itemInput = document.getElementById("type-item");
 const suggestionContainer = document.getElementById("item-suggestions");
@@ -64,16 +53,20 @@ itemDetails.style.display = "none";
 
 // Display matching suggestions while typing
 
-itemInput.addEventListener("input", () => {
+// Display matching suggestions while typing
+
+itemInput.addEventListener("input", async () => {
     clearItemFeedback();
-    const query = itemInput.value.trim().toLowerCase();
+    const query = itemInput.value.trim();
     selectedFood = null;
     categorySelect.value = "";
     itemDetails.style.display = "none";
-    suggestionContainer.innerHTML = "";
     itemInput.setCustomValidity("");
+    // Generate a new request ID
+    const requestId = ++suggestionRequestId;
     // Show how many more characters are required
     if (query.length < 3) {
+        suggestionContainer.innerHTML = "";
         const remaining = 3 - query.length;
         const message = document.createElement("div");
         message.className = "suggestion-message";
@@ -83,25 +76,46 @@ itemInput.addEventListener("input", () => {
         suggestionContainer.style.display = "flex";
         return;
     }
-    const matches = foodSuggestions.filter(food =>
-        food.name.toLowerCase().includes(query)
-    );
-    if (matches.length === 0) {
-        suggestionContainer.style.display = "none";
-        return;
-    }
-    suggestionContainer.style.display = "flex";
-    matches.slice(0, 5).forEach(food => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = food.name;
-        button.addEventListener("click", () => {
-            selectSuggestedFood(food);
+    try {
+        // Request suggestions from Flask
+        const response = await fetch(
+            `/api/food-suggestions?q=${encodeURIComponent(query)}`
+        );
+        if (!response.ok) {
+            throw new Error("Failed to retrieve food suggestions.");
+        }
+        const data = await response.json();
+        // Ignore outdated responses
+        if (requestId !== suggestionRequestId) {
+            return;
+        }
+        const matches = data.suggestions;
+        suggestionContainer.innerHTML = "";
+        // Hide suggestions if no matches exist
+        if (matches.length === 0) {
+            suggestionContainer.style.display = "none";
+            return;
+        }
+        suggestionContainer.style.display = "flex";
+        // Display up to 5 suggestions
+        matches.slice(0, 5).forEach(food => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = food.name;
+            button.addEventListener("click", () => {
+                selectSuggestedFood(food);
+            });
+            suggestionContainer.appendChild(button);
         });
-        suggestionContainer.appendChild(button);
-    });
-    itemFeedback.textContent = "";
-    itemFeedback.className = "";
+        itemFeedback.textContent = "";
+        itemFeedback.className = "";
+    } catch (error) {
+        if (requestId !== suggestionRequestId) {
+            return;
+        }
+        console.error("Error retrieving food suggestions:", error);
+        suggestionContainer.style.display = "none";
+    }
 });
 
 // When the user selects a suggestion
@@ -221,15 +235,11 @@ addItemForm.addEventListener("submit", async event => {
     };
     try {
         const response = await fetch("/api/add-item-inventory", {
-
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify(newItem)
-
         });
         const result = await response.json();
         if (!response.ok || !result.success) {
@@ -260,6 +270,7 @@ addItemForm.addEventListener("submit", async event => {
         expiryDateInput.max = "2100-12-31";
         // Refresh inventory
         loadInventory(1, currentPerPage);
+        loadAllergenAlerts();
     } catch (error) {
         console.error("Error sending item:", error);
         showItemFeedback(
@@ -381,6 +392,205 @@ document.querySelectorAll(".expiry-shortcuts button").forEach(button => {
     });
 
 });
+
+async function loadAllergenAlerts() {
+
+    const allergenTable = document.getElementById("allergenTable");
+    const allergenTableBody = document.getElementById("allergenTableBody");
+    const noAllergensMessage = document.getElementById("noAllergensMessage");
+
+    const unverifiedTable = document.getElementById("unverifiedTable");
+    const unverifiedTableBody = document.getElementById("unverifiedTableBody");
+    const noUnverifiedMessage = document.getElementById("noUnverifiedMessage");
+
+    try {
+        const response = await fetch("/api/inventory-allergens");
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load allergen information.");
+        }
+        // Clear previous rows
+        allergenTableBody.replaceChildren();
+        unverifiedTableBody.replaceChildren();
+        // Populate detected allergens
+        data.detected.forEach((item, index) => {
+            const row = document.createElement("tr");
+            // Keep the actual database ID for future actions
+            row.dataset.id = item.inventory_id;
+            const idCell = document.createElement("td");
+            idCell.textContent = item.s_no;
+            const nameCell = document.createElement("td");
+            nameCell.textContent = item.name;
+            const allergyCell = document.createElement("td");
+            allergyCell.textContent = item.allergens.join(", ");
+            row.append(idCell, nameCell, allergyCell);
+            allergenTableBody.appendChild(row);
+        });        // Populate unverified items
+
+        // Populate unverified items
+
+        data.unverified.forEach(item => {
+
+            const row = document.createElement("tr");
+            row.dataset.id = item.inventory_id;
+
+            const idCell = document.createElement("td");
+            idCell.textContent = item.s_no;
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = item.name;
+
+            const actionCell = document.createElement("td");
+            actionCell.classList.add("verification-actions");
+
+            // Green button
+            const safeButton = document.createElement("button");
+            safeButton.textContent = "Verify allergen-free";
+            safeButton.classList.add("verify-safe");
+
+            safeButton.addEventListener("click", () => {
+                saveInventoryVerification(
+                    item.inventory_id,
+                    "allergen_free",
+                    null
+                );
+            });
+
+            // Red button
+            const allergicButton = document.createElement("button");
+            allergicButton.textContent = "Verify allergic";
+            allergicButton.classList.add("verify-allergic");
+
+            // Dropdown container
+            const dropdownContainer = document.createElement("div");
+            dropdownContainer.classList.add("allergy-dropdown");
+            dropdownContainer.style.display = "none";
+
+            const allergySelect = document.createElement("select");
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Select an allergy";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+
+            allergySelect.appendChild(defaultOption);
+
+            // Populate saved user allergies
+            data.user_allergies.forEach(allergy => {
+
+                const option = document.createElement("option");
+                option.value = allergy.allergy_id;
+                option.textContent = allergy.allergy_name;
+
+                allergySelect.appendChild(option);
+            });
+
+            // Unspecified option
+            const unspecifiedOption = document.createElement("option");
+            unspecifiedOption.value = "unspecified";
+            unspecifiedOption.textContent = "Unspecified";
+
+            allergySelect.appendChild(unspecifiedOption);
+
+            // Confirm button
+            const confirmButton = document.createElement("button");
+            confirmButton.textContent = "Confirm";
+            confirmButton.classList.add("confirm-allergy");
+
+            confirmButton.addEventListener("click", () => {
+
+                if (!allergySelect.value) {
+                    alert("Please select an allergy.");
+                    return;
+                }
+
+                const allergyId =
+                    allergySelect.value === "unspecified"
+                        ? null
+                        : Number(allergySelect.value);
+
+                saveInventoryVerification(
+                    item.inventory_id,
+                    "allergic",
+                    allergyId
+                );
+            });
+
+            // Toggle dropdown and buttons
+            allergicButton.addEventListener("click", () => {
+
+                const isOpen = dropdownContainer.style.display === "flex";
+
+                if (isOpen) {
+                    dropdownContainer.style.display = "none";
+                    allergicButton.textContent = "Verify allergic";
+                    safeButton.style.display = "inline-block";
+
+                } else {
+                    dropdownContainer.style.display = "flex";
+                    allergicButton.textContent = "X";
+                    safeButton.style.display = "none";
+                }
+            });
+
+            dropdownContainer.append(allergySelect, confirmButton);
+
+            actionCell.append(
+                safeButton,
+                allergicButton,
+                dropdownContainer
+            );
+
+            row.append(idCell, nameCell, actionCell);
+            unverifiedTableBody.appendChild(row);
+        });
+        // Toggle tables and empty messages
+        allergenTable.style.display =
+            data.detected.length > 0 ? "table" : "none";
+        noAllergensMessage.style.display =
+            data.detected.length > 0 ? "none" : "block";
+        unverifiedTable.style.display =
+            data.unverified.length > 0 ? "table" : "none";
+        noUnverifiedMessage.style.display =
+            data.unverified.length > 0 ? "none" : "block";
+    } catch (error) {
+        console.error("Allergen detection error:", error);
+    }
+}
+
+
+async function saveInventoryVerification(inventoryId, status, allergyId) {
+
+    try {
+
+        const response = await fetch("/api/verify-inventory-allergen", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                inventory_id: inventoryId,
+                verification_status: status,
+                allergy_id: allergyId
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to save verification.");
+        }
+
+        // Refresh the allergen tables
+        await loadAllergenAlerts();
+
+    } catch (error) {
+
+        console.error("Verification error:", error);
+        alert(error.message);
+    }
+}
 
 
 let currentPage = 1;
@@ -608,6 +818,7 @@ async function saveEditedItem(item, row) {
         }
         // Refresh inventory after successful update
         loadInventory(currentPage, currentPerPage);
+        loadAllergenAlerts();
     } catch (error) {
         console.error("Error updating inventory item:", error);
         alert("Something went wrong while updating the item.");
@@ -615,54 +826,41 @@ async function saveEditedItem(item, row) {
 }
 
 async function removeItem(itemId) {
-
     try {
-
         const response = await fetch(
             "/api/remove-item-inventory",
             {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
                     id: itemId
                 })
             }
         );
 
-
         if (!response.ok) {
             throw new Error("Failed to remove item");
         }
 
-
         const result = await response.json();
-
-
         if (!result.success) {
             throw new Error(
                 result.message || "Failed to remove item"
             );
         }
-
-
         // Reload current page
         loadInventory(
             currentPage,
             currentPerPage
         );
-
-
+        loadAllergenAlerts();
     } catch (error) {
-
         console.error(
             "Error removing inventory item:",
             error
         );
-
     }
 }
 
@@ -952,6 +1150,7 @@ function getInitialPage() {
 
 // Initial load
 const initialPage = getInitialPage();
-loadInventory(initialPage, currentPerPage);
 
+loadInventory(initialPage, currentPerPage);
+loadAllergenAlerts();
 

@@ -484,6 +484,240 @@
     font-size: 14px;
 }
 
+.allergen-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    box-sizing: border-box;
+    padding: 0 20px;
+    margin-bottom: 12px;
+}
+
+.allergen-alerts,
+.unverified-alerts {
+    width: 100%;
+    background: hsl(0, 0%, 100%);
+    border: 1px solid hsl(220, 13%, 88%);
+    border-radius: 16px;
+    box-shadow: 0 6px 24px hsla(220, 20%, 20%, 0.08);
+    overflow: visible;
+}
+
+.allergen-alerts table,
+.unverified-alerts table {
+    overflow: hidden;
+    border-radius: 0 0 16px 16px;
+}
+
+.allergen-alerts .section-header,
+.unverified-alerts .section-header {
+    border-radius: 15px 15px 0 0;
+}
+
+.allergen-section .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 56px;
+    min-height: 56px;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+    color: hsl(0, 0%, 100%);
+    background: black;
+}
+
+.allergen-section .section-header span {
+    padding: 0;
+    color: hsl(0, 0%, 100%);
+    background: transparent;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.allergen-section .table-scroll {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.allergen-section table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.allergen-section th,
+.allergen-section td {
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    text-align: left;
+    border-bottom: 1px solid hsl(0, 0%, 88%);
+    border-right: 1px solid hsl(0, 0%, 88%);
+}
+
+.allergen-section th:last-child,
+.allergen-section td:last-child {
+    border-right: none;
+}
+
+.allergen-section th {
+    background: hsl(220, 18%, 97%);
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.allergen-section td {
+    color: hsl(0, 0%, 13%);
+}
+
+.allergen-section tbody tr:hover {
+    background: hsl(0, 0%, 98%);
+}
+
+.allergen-section th:nth-child(1),
+.allergen-section td:nth-child(1) {
+    width: 150px;
+}
+
+.allergen-section th:nth-child(2),
+.allergen-section td:nth-child(2) {
+    width: auto;
+}
+
+.allergen-section th:nth-child(3),
+.allergen-section td:nth-child(3) {
+    width: 300px;
+}
+
+#unverifiedTable td:last-child {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+#noAllergensMessage,
+#noUnverifiedMessage {
+    text-align: center;
+    padding: 30px 20px;
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.info-tooltip {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 5px;
+    cursor: help;
+}
+
+.info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 17px;
+    height: 17px;
+
+    border: 1px solid hsl(0, 0%, 75%);
+    border-radius: 50%;
+
+    color: white;
+    background: hsl(0, 0%, 25%);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tooltip-text {
+    position: absolute;
+    z-index: 999;
+
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: block;
+    width: 240px !important;
+    min-height: auto;
+    box-sizing: border-box;
+    padding: 14px 28px !important;
+
+    background-color: #222 !important;
+    color: #fff !important;
+
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: left;
+
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.2s ease;
+}
+
+/* Common verification button styles */
+.verify-safe,
+.verify-allergic,
+.confirm-allergy {
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    margin-left: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* Green: Verify allergen-free */
+.verify-safe {
+    color: hsl(145, 55%, 28%);
+    background: hsl(145, 45%, 94%);
+    border-color: hsl(145, 35%, 78%);
+}
+
+.verify-safe:hover {
+    background: hsl(145, 45%, 87%);
+    border-color: hsl(145, 40%, 65%);
+}
+
+/* Red: Verify allergic */
+.verify-allergic {
+    color: hsl(0, 60%, 42%);
+    background: hsl(0, 65%, 95%);
+    border-color: hsl(0, 45%, 82%);
+}
+
+.verify-allergic:hover {
+    background: hsl(0, 65%, 89%);
+    border-color: hsl(0, 50%, 72%);
+}
+
+.info-tooltip:hover .tooltip-text,
+.info-tooltip:focus-within .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 .pagination {
     display: flex;
     align-items: center;
