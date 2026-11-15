@@ -227,7 +227,37 @@
     </main>
 
 
+    <!-- Historical Shopping List Modal -->
+    <!-- Historical Shopping List Modal -->
+    <div class="history-modal-overlay" id="historyModalOverlay" hidden>
 
+        <div class="history-modal">
+
+            <div class="history-modal-header">
+                <div>
+                    <h2 id="historyModalTitle">Shopping List</h2>
+                    <p id="historyModalDate"></p>
+                </div>
+
+                <div class="history-modal-header-actions">
+
+                    <button type="button" id="downloadHistoryListButton" title="Download List">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+
+                    <button type="button" id="closeHistoryModalButton" title="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="history-modal-items" id="historyModalItems">
+            </div>
+
+        </div>
+
+    </div>
     <script src="../static/javascript/app.js"></script>
     <script src="../static/javascript/shopping-list.js"></script>
     <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>

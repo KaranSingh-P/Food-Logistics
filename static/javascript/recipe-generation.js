@@ -283,6 +283,79 @@ document.addEventListener("DOMContentLoaded", () => {
             ingredientsList.appendChild(ingredientItem);
         });
 
+        // Identify missing ingredients
+        const missingIngredients = recipe.ingredients.filter(
+            ingredient => ingredient.available !== true
+        );
+
+        // Add missing ingredients button
+        if (missingIngredients.length > 0) {
+
+            const addMissingIngredientsButton = createElement(
+                "button",
+                "add-missing-ingredients-button",
+                "Add Missing Ingredients to Active Shopping List"
+            );
+
+            addMissingIngredientsButton.addEventListener("click", async () => {
+
+                try {
+                    addMissingIngredientsButton.disabled = true;
+                    addMissingIngredientsButton.textContent = "Adding Ingredients...";
+
+                    const response = await fetch("/api/active-shopping-list/missing-items", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            recipe_id: recipe.id,
+                            ingredients: missingIngredients.map(ingredient => ingredient.name)
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || "Unable to add ingredients.");
+                    }
+
+                    missingIngredientsFeedback.textContent =
+                        `${data.added_count} ingredients added. ` +
+                        `${data.updated_count} existing quantities doubled.`;
+
+                    missingIngredientsFeedback.hidden = false;
+                    addMissingIngredientsButton.textContent = "Ingredients Added";
+
+                } catch (error) {
+                    missingIngredientsFeedback.textContent =
+                        error.message || "Unable to add ingredients. Please try again.";
+
+                    missingIngredientsFeedback.hidden = false;
+                    missingIngredientsFeedback.className =
+                        "missing-ingredients-feedback error";
+
+                    addMissingIngredientsButton.disabled = false;
+                    addMissingIngredientsButton.textContent =
+                        "Add Missing Ingredients to Shopping List";
+                }
+            });
+
+            const cartIcon = createElement("i", "fa-solid fa-cart-plus");
+            addMissingIngredientsButton.prepend(cartIcon);
+
+            ingredientsSection.appendChild(addMissingIngredientsButton);
+            // Feedback message
+            const missingIngredientsFeedback = createElement(
+                "p",
+                "missing-ingredients-feedback"
+            );
+
+            missingIngredientsFeedback.hidden = true;
+
+            ingredientsSection.appendChild(missingIngredientsFeedback);
+        }
+
         ingredientsSection.appendChild(ingredientsList);
         generatedRecipe.appendChild(ingredientsSection);
 
@@ -340,6 +413,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         loadGeneratedRecipe(preferences);
     }
-    
+
 
 });

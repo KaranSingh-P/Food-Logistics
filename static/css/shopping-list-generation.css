@@ -33,8 +33,18 @@
     text-transform: uppercase;
 }
 
+.shopping-name {
+    flex: 1;
+}
+
+.shopping-item-count {
+    flex-shrink: 0;
+}
+
 .history-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     padding: 12px;
     margin-bottom: 4px;
@@ -423,10 +433,17 @@
 
 .active-shopping-items {
     min-height: 220px;
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
     border-top: 1px solid hsl(0, 0%, 93%);
+    box-sizing: border-box;
+}
+
+.active-shopping-items>.empty-shopping-message {
+    align-self: center;
 }
 
 .empty-shopping-message {
@@ -577,7 +594,7 @@
     font-size: 12px;
 }
 
-.shopping-progress-bar {
+.shopping-progress-track {
     width: 100%;
     height: 9px;
     overflow: hidden;
@@ -586,6 +603,7 @@
 }
 
 .shopping-progress-fill {
+    width: 0;
     height: 100%;
     border-radius: 20px;
     background-color: hsl(137, 50%, 29%);
@@ -788,4 +806,367 @@
     font-size: 14px;
     text-align: center;
     padding: 20px;
+}
+
+/* ACTIVE SHOPPING ITEM */
+
+.active-shopping-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 12px;
+    border-bottom: 1px solid hsl(0, 0%, 93%);
+}
+
+.active-shopping-item input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: hsl(137, 50%, 29%);
+}
+
+.active-shopping-item-name {
+    flex: 1;
+    color: hsl(225, 6%, 18%);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.active-shopping-item-quantity {
+    min-width: 100px;
+    color: hsl(0, 0%, 48%);
+    font-size: 13px;
+    text-align: right;
+}
+
+.active-shopping-item.completed .active-shopping-item-name {
+    color: hsl(0, 0%, 60%);
+    text-decoration: line-through;
+}
+
+.remove-shopping-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: hsl(0, 65%, 48%);
+    cursor: pointer;
+}
+
+.remove-shopping-item:hover {
+    background: hsl(0, 80%, 96%);
+}
+
+/* ADD SHOPPING ITEM FORM */
+
+.add-shopping-item-form {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    margin-bottom: 22px;
+    background: hsl(220, 23%, 98%);
+    border: 1px solid hsl(220, 13%, 90%);
+    border-radius: 9px;
+}
+
+.add-shopping-item-form[hidden] {
+    display: none !important;
+}
+
+.add-item-input-group {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.add-item-input-group label {
+    color: hsl(225, 6%, 20%);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.add-item-input-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 13px;
+    border: 1px solid hsl(0, 0%, 83%);
+    border-radius: 7px;
+    background: white;
+    color: hsl(225, 6%, 15%);
+    font-size: 13px;
+    outline: none;
+}
+
+.add-item-input-group input:focus {
+    border-color: hsl(0, 0%, 40%);
+}
+
+.add-item-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.add-item-form-actions button {
+    padding: 11px 17px;
+    border: 1px solid hsl(0, 0%, 82%);
+    border-radius: 7px;
+    background: white;
+    color: hsl(0, 0%, 25%);
+    font-size: 13px;
+    font-weight: 550;
+    cursor: pointer;
+}
+
+#confirmAddShoppingItemButton {
+    background: hsl(137, 50%, 29%);
+    border-color: hsl(137, 50%, 29%);
+    color: white;
+}
+
+#confirmAddShoppingItemButton:hover {
+    background: hsl(137, 50%, 24%);
+}
+
+#cancelAddShoppingItemButton:hover {
+    background: hsl(0, 0%, 94%);
+}
+
+/* FOOD ITEM AUTOCOMPLETE */
+
+.shopping-item-suggestions {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    max-height: 190px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid hsl(0, 0%, 85%);
+    border-radius: 7px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+.shopping-food-suggestion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 11px 13px;
+    border: none;
+    border-bottom: 1px solid hsl(0, 0%, 94%);
+    background: white;
+    text-align: left;
+    cursor: pointer;
+}
+
+.shopping-food-suggestion:hover {
+    background: hsl(220, 23%, 97%);
+}
+
+.shopping-food-suggestion span {
+    color: hsl(225, 6%, 18%);
+    font-size: 13px;
+}
+
+.shopping-food-suggestion small {
+    color: hsl(0, 0%, 52%);
+    font-size: 11px;
+}
+
+/* EDIT AND REMOVE BUTTONS */
+
+.edit-shopping-item,
+.remove-shopping-item,
+.save-edited-item,
+.cancel-edited-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.edit-shopping-item {
+    color: hsl(220, 8%, 45%);
+}
+
+.edit-shopping-item:hover {
+    background: hsl(220, 14%, 94%);
+}
+
+.save-edited-item {
+    color: hsl(137, 50%, 29%);
+}
+
+.save-edited-item:hover {
+    background: hsl(137, 45%, 93%);
+}
+
+.cancel-edited-item {
+    color: hsl(0, 65%, 48%);
+}
+
+.cancel-edited-item:hover {
+    background: hsl(0, 80%, 96%);
+}
+
+/* EDIT INPUTS */
+
+.edit-item-name,
+.edit-item-quantity {
+    padding: 8px 10px;
+    border: 1px solid hsl(0, 0%, 83%);
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.edit-item-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.edit-item-quantity {
+    width: 120px;
+}
+
+.edit-item-name:focus,
+.edit-item-quantity:focus {
+    border-color: hsl(0, 0%, 40%);
+}
+
+/* Historical Shopping List Modal */
+
+.history-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.history-modal-overlay[hidden] {
+    display: none;
+}
+
+.history-modal {
+    background: #fff;
+    width: 100%;
+    max-width: 550px;
+    max-height: 80vh;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.history-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.history-modal-header p {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.history-modal-header button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.history-modal-items {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.history-modal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
+}
+
+.history-modal-item:last-child {
+    border-bottom: none;
+}
+
+.history-modal-item.completed .history-modal-item-name {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.history-modal-item-name {
+    font-weight: 500;
+}
+
+.history-modal-item-quantity {
+    color: #777;
+    font-size: 14px;
+}
+
+.delete-history-button {
+    border: none;
+    background: transparent;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.delete-history-button:hover {
+    color: #d32f2f;
+}
+
+.history-modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history-modal-header-actions button {
+    border: none;
+    background: transparent;
+    color: #333;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.history-modal-header-actions button:hover {
+    color: #777;
 }

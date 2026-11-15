@@ -228,3 +228,96 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_user_recipe_history_user_generated
             ON user_recipe_history(user_id, generated_at DESC)
         """)
+
+
+        # Store each user's active shopping list
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS active_shopping_lists (
+                list_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER NOT NULL UNIQUE,
+
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        # Store items belonging to active shopping lists
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS active_shopping_items (
+                item_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                list_id INTEGER NOT NULL,
+                food_id INTEGER,
+
+                item_name TEXT NOT NULL,
+                quantity TEXT NOT NULL DEFAULT '',
+                is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (list_id)
+                    REFERENCES active_shopping_lists(list_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (food_id)
+                    REFERENCES food_suggestions(food_id)
+                    ON DELETE SET NULL
+            )
+        """)
+
+        # Store saved shopping list history
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS shopping_history (
+                history_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER NOT NULL,
+                saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        # Store items belonging to historical shopping lists
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS shopping_history_items (
+                history_item_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                history_id INTEGER NOT NULL,
+                food_id INTEGER,
+
+                item_name TEXT NOT NULL,
+                quantity TEXT NOT NULL DEFAULT '',
+                is_completed BOOLEAN NOT NULL DEFAULT FALSE,
+
+                FOREIGN KEY (history_id)
+                    REFERENCES shopping_history(history_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (food_id)
+                    REFERENCES food_suggestions(food_id)
+                    ON DELETE SET NULL
+            )
+        """)
+
+        # Indexes for shopping list queries
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_active_shopping_items_list
+            ON active_shopping_items(list_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_shopping_history_user_saved
+            ON shopping_history(user_id, saved_at DESC)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_shopping_history_items_history
+            ON shopping_history_items(history_id)
+        """)

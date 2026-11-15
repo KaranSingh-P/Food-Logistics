@@ -1,15 +1,28 @@
-document.getElementById("hamburger").onclick = function(){
-    if (document.querySelector("#menu").style.display == "none"){
-        document.querySelector("#menu").style.display="flex";
-    }else{
-        document.querySelector("#menu").style.display="none";
-    }
-};
+const hamburger = document.getElementById("hamburger");
 
-document.getElementById("showPreferencesButton").onclick = function(){
-    if (document.querySelector("#generate-recipe-preferences").style.display == "none"){
-        document.querySelector("#generate-recipe-preferences").style.display="block";
-    }else{
-        document.querySelector("#generate-recipe-preferences").style.display="none";
-    }
-};
+if (hamburger) {
+    hamburger.onclick = function () {
+        const menu = document.querySelector("#menu");
+
+        if (menu.style.display === "none") {
+            menu.style.display = "flex";
+        } else {
+            menu.style.display = "none";
+        }
+    };
+}
+
+
+const showPreferencesButton = document.getElementById("showPreferencesButton");
+
+if (showPreferencesButton) {
+    showPreferencesButton.onclick = function () {
+        const preferences = document.querySelector("#generate-recipe-preferences");
+
+        if (preferences.style.display === "none") {
+            preferences.style.display = "block";
+        } else {
+            preferences.style.display = "none";
+        }
+    };
+}
