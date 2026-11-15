@@ -1,72 +1,170 @@
-document.addEventListener("DOMContentLoaded", () => {
+async function loadRecipeHistory() {
     const recipeHistory = document.getElementById("recipeHistory");
     if (!recipeHistory) return;
+
+    try {
+        const response = await fetch("/api/recipe-history");
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to load recipe history.");
+        }
+
+        displayRecipeHistory(data.recipes);
+    }
+    catch (error) {
+        console.error("Recipe history error:", error);
+        recipeHistory.classList.add("error-message");
+        recipeHistory.textContent = "Unable to load recipe history.";
+    }
+}
+
+async function loadHistoricalRecipe(historyId) {
+    const generatedRecipe = document.getElementById("generatedRecipe");
+    document.getElementById("generate-recipe-preferences").style.display = "none";
+    try {
+        generatedRecipe.className = "loading-message";
+        generatedRecipe.textContent = "Loading recipe...";
+
+        const response = await fetch(`/api/recipe-history/${historyId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to load recipe.");
+        }
+
+        displayGeneratedRecipe(data.recipe);
+        await loadRecipeHistory();
+    }
+    catch (error) {
+        console.error("Historical recipe error:", error);
+        generatedRecipe.className = "error-message";
+        generatedRecipe.textContent = "Unable to load recipe. Please try again.";
+    }
+}
+
+async function deleteRecipeHistory(historyId) {
+    try {
+        const response = await fetch(`/api/recipe-history/${historyId}`, {
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Unable to delete recipe.");
+        }
+
+        await loadRecipeHistory();
+    }
+    catch (error) {
+        console.error("Recipe deletion error:", error);
+        alert("Unable to delete recipe from history. Please try again.");
+    }
+}
+
+function displayRecipeHistory(recipes) {
+    const recipeHistory = document.getElementById("recipeHistory");
+    if (!recipeHistory) return;
+
+    recipeHistory.classList.remove("loading-message", "error-message");
+    recipeHistory.replaceChildren();
+
+    if (!recipes || recipes.length === 0) {
+        recipeHistory.className = "empty-message";
+        recipeHistory.textContent = "No recipes generated yet.";
+        return;
+    }
+
+    const groupedRecipes = {};
+
+    recipes.forEach(recipe => {
+        if (!groupedRecipes[recipe.date]) {
+            groupedRecipes[recipe.date] = [];
+        }
+
+        groupedRecipes[recipe.date].push(recipe);
+    });
+
+    Object.entries(groupedRecipes).forEach(([date, recipes]) => {
+        const dateHeading = document.createElement("div");
+        dateHeading.className = "history-date";
+        dateHeading.textContent = date;
+        recipeHistory.appendChild(dateHeading);
+
+        recipes.forEach(recipe => {
+            const historyItem = document.createElement("div");
+            historyItem.className = "history-item";
+
+            const recipeButton = document.createElement("button");
+            recipeButton.className = "history-recipe-button";
+            recipeButton.type = "button";
+
+            const recipeName = document.createElement("div");
+            recipeName.className = "recipe-name";
+            recipeName.textContent = recipe.name;
+
+            const recipeTime = document.createElement("div");
+            recipeTime.className = "recipe-time";
+            recipeTime.textContent = recipe.time;
+
+            recipeButton.append(recipeName, recipeTime);
+            recipeButton.addEventListener("click", () => {
+                loadHistoricalRecipe(recipe.id);
+            });
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "history-delete-button";
+            deleteButton.type = "button";
+            deleteButton.title = "Delete recipe from history";
+            deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            deleteButton.addEventListener("click", () => {
+                deleteRecipeHistory(recipe.id);
+            });
+
+            historyItem.append(recipeButton, deleteButton);
+            recipeHistory.appendChild(historyItem);
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const recipeHistory = document.getElementById("recipeHistory");
+
+    if (recipeHistory) {
+        recipeHistory.classList.add("loading-message");
+        recipeHistory.textContent = "Loading recipe history...";
+    }
+
     loadRecipeHistory();
 
-    async function loadRecipeHistory() {
-        try {
-            recipeHistory.classList.add("loading-message");
-            recipeHistory.textContent = "Loading recipe history...";
-            const response = await fetch("/api/recipe-history");
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.error || "Unable to load recipe history.");
-            }
-            recipeHistory.classList.remove("loading-message");
-            displayRecipeHistory(data.recipes);
+    // Automatically select meal type based on local time
+    function setMealTypeByTime() {
+        const hour = new Date().getHours();
+
+        let mealType;
+
+        if (hour >= 5 && hour < 11) {
+            mealType = "Breakfast";
+        } else if (hour >= 11 && hour < 15) {
+            mealType = "Lunch";
+        } else if (hour >= 15 && hour < 18) {
+            mealType = "Snack";
+        } else if (hour >= 18 && hour < 22) {
+            mealType = "Dinner";
+        } else {
+            mealType = "Snack";
         }
-        catch (error) {
-            console.error("Recipe history error:", error);
-            recipeHistory.classList.remove("loading-message");
-            recipeHistory.classList.add("error-message");
-            recipeHistory.textContent = "Unable to load recipe history.";
+
+        const mealTypeInput = document.querySelector(
+            `input[name="mealType"][value="${mealType}"]`
+        );
+
+        if (mealTypeInput) {
+            mealTypeInput.checked = true;
         }
     }
 
-    function displayRecipeHistory(recipes) {
-        recipeHistory.classList.remove("loading-message", "error-message");
-        recipeHistory.replaceChildren();
-
-        if (!recipes || recipes.length === 0) {
-            recipeHistory.className = "empty-message";
-            recipeHistory.textContent = "No recipes generated yet.";
-            return;
-        }
-
-        const groupedRecipes = {};
-        recipes.forEach(recipe => {
-            if (!groupedRecipes[recipe.date]) {
-                groupedRecipes[recipe.date] = [];
-            }
-            groupedRecipes[recipe.date].push(recipe);
-        });
-
-        Object.entries(groupedRecipes).forEach(([date, recipes]) => {
-
-            const dateHeading = document.createElement("div");
-            dateHeading.className = "history-date";
-            dateHeading.textContent = date;
-            recipeHistory.appendChild(dateHeading);
-
-            recipes.forEach(recipe => {
-                const historyItem = document.createElement("div");
-                historyItem.className = "history-item";
-
-                const recipeName = document.createElement("div");
-                recipeName.className = "recipe-name";
-                recipeName.textContent = recipe.name;
-
-                const recipeTime = document.createElement("div");
-                recipeTime.className = "recipe-time";
-                recipeTime.textContent = recipe.time;
-
-                historyItem.appendChild(recipeName);
-                historyItem.appendChild(recipeTime);
-
-                recipeHistory.appendChild(historyItem);
-            });
-        });
-    }
+    setMealTypeByTime();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -99,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(data.error || "Unable to generate recipe.");
             }
             displayGeneratedRecipe(data.recipe);
+            await loadRecipeHistory();
         }
         catch (error) {
             console.error("Recipe generation error:", error);
@@ -120,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return element;
     }
 
-    function displayGeneratedRecipe(recipe) {
+    window.displayGeneratedRecipe = function (recipe) {
         if (
             !recipe ||
             !Array.isArray(recipe.ingredients) ||
@@ -205,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         instructionsSection.appendChild(instructionsList);
         generatedRecipe.appendChild(instructionsSection);
-    }
+    };
 
     function collectRecipePreferences() {
         const mealType = document.querySelector(
@@ -226,4 +325,21 @@ document.addEventListener("DOMContentLoaded", () => {
             dietaryPreferences: dietaryPreferences
         };
     }
+
+    // Check if the user came from the Expiring Soon section
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromExpiringSoon = urlParams.get("expiring") === "true";
+
+    if (fromExpiringSoon) {
+        document.getElementById("useInventory").checked = true;
+        document.getElementById("expiringIngredients").checked = true;
+
+        const preferences = collectRecipePreferences();
+
+        document.getElementById("generate-recipe-preferences").style.display = "none";
+
+        loadGeneratedRecipe(preferences);
+    }
+    
+
 });

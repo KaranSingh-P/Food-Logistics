@@ -141,4 +141,90 @@ def init_db():
             ON inventory(user_id, expiration_date);
         """)
 
+        # Store recipe information
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS recipes (
+                recipe_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                recipe_name TEXT NOT NULL,
+                description TEXT,
 
+                meal_type VARCHAR(20) NOT NULL
+                    CHECK (
+                        meal_type IN (
+                            'Breakfast',
+                            'Lunch',
+                            'Dinner',
+                            'Brunch',
+                            'Snack',
+                            'Dessert'
+                        )
+                    ),
+
+                dietary_preferences TEXT[] NOT NULL DEFAULT '{}',
+
+                preparation_time INTEGER,
+                servings INTEGER,
+
+                calories NUMERIC(8, 2),
+                protein NUMERIC(8, 2),
+                carbohydrates NUMERIC(8, 2),
+                fat NUMERIC(8, 2),
+
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        # Store ingredients belonging to each recipe
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS recipe_ingredients (
+                recipe_ingredient_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                recipe_id INTEGER NOT NULL,
+                ingredient_name TEXT NOT NULL,
+                amount TEXT NOT NULL,
+
+                FOREIGN KEY (recipe_id)
+                    REFERENCES recipes(recipe_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        # Store step-by-step cooking instructions
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS recipe_instructions (
+                instruction_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                recipe_id INTEGER NOT NULL,
+                step_number INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+
+                FOREIGN KEY (recipe_id)
+                    REFERENCES recipes(recipe_id)
+                    ON DELETE CASCADE,
+
+                UNIQUE (recipe_id, step_number)
+            )
+        """)
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS user_recipe_history (
+                history_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER NOT NULL,
+                recipe_id INTEGER NOT NULL,
+
+                generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (recipe_id)
+                    REFERENCES recipes(recipe_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_user_recipe_history_user_generated
+            ON user_recipe_history(user_id, generated_at DESC)
+        """)

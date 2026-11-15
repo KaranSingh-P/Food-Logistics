@@ -60,6 +60,39 @@ Stores manual allergen verification decisions for individual inventory items.
 |---------|------------|
 | 5       | NULL       |
 
+### recipes (Needs Scaling)
+Stores the main information about each recipe.
+| recipe_id	| recipe_name |	meal_type |	preparation_time |	servings |
+|-----------|-------------|-----------|------------------|-----------|
+| 1         |	Paneer Butter Masala |	Dinner   | 35    |	4        |
+| 2         |	Vegetable Sandwich   |	Breakfast| 15    |	2        |
+
+Additional columns: description, dietary_preferences, calories, protein, carbohydrates, fat, created_at.
+
+### recipe_ingredients (Scales with recipes)
+Stores the ingredients required for each recipe, including their individual amounts.
+| recipe_ingredient_id | recipe_id |	ingredient_name |	amount |
+|----------------------|-----------|--------------------|----------|
+| 1                    | 1         | Paneer             | 200 g    |
+| 2                    | 1         | Tomatoes           | 3 medium |
+| 3                    | 2         | Bread              | 4 slices |
+| 4                    | 2         | Butter             | 2 tbsp   |
+
+### recipe_instructions (Scales with recipes)
+Stores the step-by-step cooking instructions for each recipe.
+| instruction_id |	recipe_id |	step_number |	title |	description |
+|----------------|------------|-------------|---------|-------------|
+| 1 | 1 | 1 | Prepare ingredients |	Chop the tomatoes and paneer.|
+|2 | 1 | 2 |Cook the gravy | Heat butter and prepare the gravy. |
+|3 | 2 | 1 |Prepare bread | Apply butter to the bread slices. |
+
+### user_recipe_history
+Contains history of all generated recipe.
+| history_id | user_id | recipe_id | generated_at |
+|------------|---------|-----------|--------------|
+|            |         |           |              |
+
+
 ## Dashboard
 
 The allergen alerts Table is functioning.
@@ -91,53 +124,46 @@ The following columns have functional sorting ability:
 The delete button and edit button are functional.
 Pagination works correctly.
 
+
+Food suggestions and allergen detection:
+
+    Food Name              -> food_suggestions
+    Food Category          -> food_suggestions
+    Food ID                -> food_suggestions (Primary Key)
+    Food Allergens         -> food_allergens (food_id, allergy_id)
+    Allergy ID             -> allergies
+    Verification Status    -> inventory_verifications
+    Inventory ID           -> inventory_verifications
+
+Inventory:
+
+    Food Item              -> inventory
+    Quantity / Category    -> inventory
+    Purchase Date          -> inventory
+    Expiration Date        -> inventory
+    User ID                -> inventory (Foreign Key to users)
+
+
+
 ## Recipe Generation
 
-The webpage gets Recipe history from flask in the following json format. For now the data is hard coded in the array `recipe_history`.
+The recipe generation system first filters recipes according to user preferences, then scores them based on inventory availability and expiring ingredients, avoids recent repetitions where possible, and finally selects one using weighted randomness.
 
-        {
-        "id": 1,
-        "name": "Creamy Garlic Chicken Pasta",
-        "date": "10 Nov 2026",
-        "time": "8:42 PM"
-    },
+Curently it has very few recipes, causing the recipes to often repeat.
 
-The Generate recipe sends User preferences to the server in the following json format. The recipe is hard coded in the array `generated_recipe`.
+    Recipe Details         -> recipes
+    Recipe Ingredients     -> Recipe Ingredients Table
+    Recipe Instructions   -> Recipe Instructions Table
+    Generated Recipe       -> recipe_history
+    User ID                -> recipe_history (Foreign Key to users)
+    Recipe ID              -> recipe_history (Foreign Key to recipes)
 
-    {
-    "id": 1,
-    "name": "Creamy Garlic Chicken Pasta",
-    "description": "A creamy and comforting chicken pasta made with garlic, herbs, and Parmesan cheese.",
-    "preparation_time": "35 minutes",
-    "servings": 4,
-
-    "ingredients": [
-        {
-            "name": "Chicken Breast",
-            "amount": "500 g",
-            "available": True
-        },
-                {
-            "name": "Salt & Pepper",
-            "amount": "To taste",
-            "available": True
-        }
-    ]
-    "instructions": [
-        {
-            "title": "Cook the pasta",
-            "description": "Bring a large pot of salted water to a boil. Cook the pasta according to the package instructions until al dente. Drain and set aside."
-        },
-        {
-            "title": "Prepare the chicken",
-            "description": "Cut the chicken breast into bite-sized pieces. Season with salt, pepper, and Italian herbs."
-        }
-    ]
-    }
-
-To do: Turn the history to buttons.
+To do: Add an option to add missing recipes to active shopping list.
+To do: Use AI to generate missing recipes and then add them in DB. 
 
 ## Shopping List Generation
+To do: Add an option to add missing recipes to active shopping list.
+
 
 Webpage gets shopping list History from `shopping_history` array in the format: 
 
@@ -165,9 +191,9 @@ To do: Turn the history to buttons.
 
 The User setting is stored in permanently using the PostgreSQL tables - users, user_allergies, user_settings
 
-Username -> user_setting <br>
-Email(Fixed) <- users <br>
-Password -> users <br>
-Theme -> user_setting <br>
-Allergies -> user_allergies (as allergy_id of allergies table)
+    Username -> user_setting 
+    Email(Fixed) <- users 
+    Password -> users 
+    Theme -> user_setting 
+    Allergies -> user_allergies (as allergy_id of allergies table)
 

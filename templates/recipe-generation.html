@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ current_theme }}">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Logistics | Recipe Generation</title>
     <link rel="stylesheet" href="../static/css/navbar.css">
     <link rel="stylesheet" href="../static/css/recipe-generation.css">
+    <script>
+        const hour = new Date().getHours();
+
+        let mealType;
+
+        if (hour >= 5 && hour < 11) {
+            mealType = "Breakfast";
+        } else if (hour >= 11 && hour < 15) {
+            mealType = "Lunch";
+        } else if (hour >= 15 && hour < 18) {
+            mealType = "Snack";
+        } else if (hour >= 18 && hour < 22) {
+            mealType = "Dinner";
+        } else {
+            mealType = "Snack";
+        }
+
+        document.write(`
+        <style>
+            input[name="mealType"][value="${mealType}"] {
+                /* Used to identify the default selection */
+            }
+        </style>
+    `);
+    </script>
 </head>
 
 <body>
@@ -91,7 +116,7 @@
                         </span>
                     </label>
                     <label class="option-card">
-                        <input type="radio" name="mealType" value="Dinner" checked>
+                        <input type="radio" name="mealType" value="Dinner">
                         <span>
                             <i class="fa-solid fa-utensils"></i>
                             Dinner

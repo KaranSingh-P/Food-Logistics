@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ current_theme }}">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,7 +84,9 @@
 
                     <div class="section-actions">
                         <a href="{{ url_for('inventory.inventory') }}" class="inventory-btn">VIEW FULL INVENTORY</a>
-                        <a href="{{ url_for('recipes.recipe_generation') }}" class="recipe-btn">GENERATE RECIPE</a>
+                        <a href="{{ url_for('recipes.recipe_generation', expiring='true') }}" class="recipe-btn">
+                            GENERATE RECIPE
+                        </a>
                     </div>
                 </div>
 
@@ -112,7 +114,7 @@
 
             <div class="shopping-list-generation">
                 <div class="shopping-list-header">
-                    <span>Shopping List</span>
+                    <span>Active Shopping List</span>
                     <a href="{{ url_for('shopping.shopping_list') }}" class="history-btn">GENERATED LIST HISTORY</a>
                 </div>
 
