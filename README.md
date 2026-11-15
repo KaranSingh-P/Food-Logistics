@@ -7,6 +7,7 @@ To open the functional version, open the `app.py` and run the python file.
 For Login create your own account.
 
 Note: You need Flask(python) and PostgreSQL for this project.
+Note: The project needs a .env file to access the DB. Check `.env.example`.
 
 ## Tables in PostgreSQL
 (The following values are examples.)
