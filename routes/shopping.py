@@ -191,38 +191,6 @@ def get_shopping_history():
     finally:
         connection.close()
 
-
-generated_shopping_list = {
-    "id": 1,
-    "name": "Weekly Grocery Shopping",
-    "description": "A grocery list of food items based on your selected categories and inventory needs.",
-    "shopping_type": "Weekly Shopping",
-
-    "items": [
-        {"id": 1, "name": "Milk", "quantity": "2 litres", "completed": True},
-        {"id": 2, "name": "Bread", "quantity": "2 packets", "completed": True},
-        {"id": 3, "name": "Eggs", "quantity": "12 pieces", "completed": True},
-        {"id": 4, "name": "Rice", "quantity": "2 kg", "completed": False},
-        {"id": 5, "name": "Potatoes", "quantity": "1 kg", "completed": False},
-        {"id": 6, "name": "Tomatoes", "quantity": "1 kg", "completed": False},
-        {"id": 7, "name": "Onions", "quantity": "1 kg", "completed": False},
-        {"id": 8, "name": "Cooking Oil", "quantity": "1 litre", "completed": False},
-        {"id": 9, "name": "Sugar", "quantity": "1 kg", "completed": False},
-        {"id": 10, "name": "Tea Powder", "quantity": "250 g", "completed": False},
-        {"id": 11, "name": "Apples", "quantity": "1 kg", "completed": False},
-        {"id": 12, "name": "Biscuits", "quantity": "2 packets", "completed": False}
-    ]
-}
-
-
-@shopping_bp.route("/api/generated-shopping-list", methods=["GET"])
-def get_generated_shopping_list():
-
-    if "user_id" not in session:
-        return jsonify({"error": "Not logged in"}), 401
-
-    return jsonify({"shopping_list": generated_shopping_list})
-
 @shopping_bp.route("/api/shopping-food-suggestions", methods=["GET"])
 def get_shopping_food_suggestions():
 
@@ -259,6 +227,92 @@ def get_shopping_food_suggestions():
     except Exception as error:
         print("Food suggestions error:", error)
         return jsonify({"error": "Unable to fetch food suggestions."}), 500
+
+    finally:
+        connection.close()
+
+@shopping_bp.route("/api/shopping-suggestions", methods=["GET"])
+def get_shopping_suggestions():
+
+    if "user_id" not in session:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user_id = session["user_id"]
+
+    connection = get_db_connection()
+
+    try:
+
+        # ESSENTIAL FOODS
+        essential_result = connection.execute("""
+            SELECT
+                fs.food_id,
+                fs.food_name,
+                fs.category
+            FROM essential_foods ef
+            JOIN food_suggestions fs
+                ON fs.food_id = ef.food_id
+            ORDER BY ef.display_order
+        """).fetchall()
+
+        # NEAR-EXPIRY INVENTORY ITEMS
+        near_expiry_result = connection.execute("""
+            SELECT
+                i.inventory_id,
+                fs.food_id,
+                i.item_name AS food_name,
+                i.category,
+                i.expiration_date
+            FROM inventory i
+            LEFT JOIN food_suggestions fs
+                ON LOWER(TRIM(fs.food_name)) = LOWER(TRIM(i.item_name))
+            WHERE i.user_id = %s
+              AND i.expiration_date BETWEEN CURRENT_DATE
+                  AND CURRENT_DATE + INTERVAL '7 days'
+            ORDER BY i.expiration_date ASC
+        """, (user_id,)).fetchall()
+
+        # PREVIOUSLY BOUGHT ITEMS
+        previously_bought_result = connection.execute("""
+            SELECT DISTINCT ON (LOWER(TRIM(shi.item_name)))
+                shi.food_id,
+                shi.item_name AS food_name,
+                fs.category
+            FROM shopping_history_items shi
+            JOIN shopping_history sh
+                ON sh.history_id = shi.history_id
+            LEFT JOIN food_suggestions fs
+                ON fs.food_id = shi.food_id
+            WHERE sh.user_id = %s
+              AND shi.is_completed = TRUE
+            ORDER BY
+                LOWER(TRIM(shi.item_name)),
+                sh.saved_at DESC
+        """, (user_id,)).fetchall()
+
+        suggestions = {
+            "essential": [
+                dict(row) for row in essential_result
+            ],
+
+            "near_expiry": [
+                dict(row) for row in near_expiry_result
+            ],
+
+            "previously_bought": [
+                dict(row) for row in previously_bought_result
+            ],
+
+            "templates": []
+        }
+
+        return jsonify({"suggestions": suggestions})
+
+    except Exception as error:
+        print("Shopping suggestions error:", error)
+        return jsonify({
+            "error": "Unable to fetch shopping suggestions."
+        }), 500
 
     finally:
         connection.close()

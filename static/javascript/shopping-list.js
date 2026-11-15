@@ -250,6 +250,34 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedSuggestion = null;
     let suggestionRequestId = 0;
 
+    // Suggested Items section
+    const suggestionFilter = document.getElementById("suggestionFilter");
+    const suggestionTags = document.getElementById("suggestionTags");
+    const noSuggestionsMessage = document.getElementById("noSuggestionsMessage");
+
+    // Load suggested items
+    loadSuggestedItems();
+
+    async function loadSuggestedItems() {
+
+        try {
+            suggestionTags.textContent = "Loading suggestions...";
+
+            const response = await fetch("/api/shopping-suggestions");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Unable to load suggestions.");
+            }
+
+            console.log("Shopping suggestions:", data.suggestions);
+
+        } catch (error) {
+            console.error("Shopping suggestions error:", error);
+            suggestionTags.textContent = "Unable to load suggestions.";
+        }
+    }
+
     // Shopping list data
     let shoppingItems = [];
     let nextItemId = 1;

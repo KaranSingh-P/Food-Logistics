@@ -57,9 +57,10 @@ Maps recognized food items to their associated allergens.
 
 ### inventory_verifications
 Stores manual allergen verification decisions for individual inventory items.
-| food_id | allergy_id |
-|---------|------------|
-| 5       | NULL       |
+| inventory_id | verification_status | allergy_id | verified_at          |
+|--------------|---------------------|------------|----------------------|
+| 5            | allergen_free        | NULL       | 2026-11-15 12:00:00  |
+| 6            | allergic            | 3          | 2026-11-15 12:05:00  |
 
 ### recipes (Needs Scaling)
 Stores the main information about each recipe.
@@ -123,6 +124,15 @@ Stores the individual items and their bought status at the time a shopping list 
 |---|---|---|---|---|---|
 | 1 | 1 | 1 | Apple | 2 kg | FALSE |
 | 2 | 1 | NULL | Homemade Bread | 1 loaf | TRUE |
+
+### essential_foods
+Stores the predefined essential food items displayed in the shopping list suggestions section, along with their display order.
+
+| food_id | display_order |
+|---------|---------------|
+| 1       | 1             |
+| 2       | 2             |
+| 3       | 3             |
 
 
 ## Dashboard

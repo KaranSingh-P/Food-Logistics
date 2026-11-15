@@ -32,6 +32,13 @@ def init_db():
             )
         """)
 
+        # Ensure existing databases also have the created_at column
+        connection.execute("""
+            ALTER TABLE users
+            ADD COLUMN IF NOT EXISTS created_at TIMESTAMP
+            DEFAULT CURRENT_TIMESTAMP
+        """)
+
         # Global allergies table
         connection.execute("""
             CREATE TABLE IF NOT EXISTS allergies (
@@ -39,6 +46,13 @@ def init_db():
                 allergy_name TEXT UNIQUE NOT NULL
             )
         """)
+
+        # Ensure existing databases also have the is_active column
+        connection.execute("""
+            ALTER TABLE allergies
+            ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE
+        """)
+
         # Insert the 14 main food allergen categories.
         connection.cursor().executemany(
             """
@@ -141,6 +155,42 @@ def init_db():
             ON inventory(user_id, expiration_date);
         """)
 
+        # Store inventory allergen verification results
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS inventory_verifications (
+                inventory_id INTEGER PRIMARY KEY,
+                
+
+                verification_status VARCHAR(20) NOT NULL
+                    CHECK (
+                        verification_status IN (
+                            'allergen_free',
+                            'allergic'
+                        )
+                    ),
+
+                allergy_id INTEGER,
+
+                verified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (inventory_id)
+                    REFERENCES inventory(inventory_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (allergy_id)
+                    REFERENCES allergies(allergy_id),
+
+                CONSTRAINT valid_verification_allergy
+                    CHECK (
+                        (
+                            verification_status = 'allergen_free'
+                            AND allergy_id IS NULL
+                        )
+                        OR verification_status = 'allergic'
+                    )
+            )
+        """)
+
         # Store recipe information
         connection.execute("""
             CREATE TABLE IF NOT EXISTS recipes (
@@ -229,6 +279,208 @@ def init_db():
             ON user_recipe_history(user_id, generated_at DESC)
         """)
 
+        # Store predefined food suggestions
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS food_suggestions (
+                food_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                food_name VARCHAR(100) UNIQUE NOT NULL,
+                category VARCHAR(30) NOT NULL
+            )
+        """)
+
+        # Insert predefined food suggestions
+        connection.execute("""
+            WITH predefined_foods (food_name, category) AS (
+                VALUES
+                    ('Rice', 'Non-perishable'),
+                    ('Wheat Flour', 'Non-perishable'),
+                    ('Cooking Oil', 'Non-perishable'),
+                    ('Salt', 'Non-perishable'),
+                    ('Sugar', 'Non-perishable'),
+
+                    ('Toor Dal', 'Non-perishable'),
+                    ('Moong Dal', 'Non-perishable'),
+                    ('Chana Dal', 'Non-perishable'),
+                    ('Chickpeas', 'Non-perishable'),
+                    ('Kidney Beans', 'Non-perishable'),
+
+                    ('Milk', 'Perishable'),
+                    ('Eggs', 'Perishable'),
+                    ('Bread', 'Highly perishable'),
+                    ('Butter', 'Perishable'),
+                    ('Curd', 'Perishable'),
+
+                    ('Onion', 'Semi-perishable'),
+                    ('Tomato', 'Highly perishable'),
+                    ('Potato', 'Semi-perishable'),
+                    ('Garlic', 'Semi-perishable'),
+                    ('Ginger', 'Semi-perishable'),
+                    ('Green Chilli', 'Highly perishable'),
+
+                    ('Turmeric Powder', 'Non-perishable'),
+                    ('Red Chilli Powder', 'Non-perishable'),
+                    ('Coriander Powder', 'Non-perishable'),
+                    ('Cumin Seeds', 'Non-perishable'),
+
+                    ('Apple', 'Highly perishable'),
+                    ('Banana', 'Highly perishable'),
+                    ('Canned Beans', 'Canned'),
+                    ('Frozen Peas', 'Frozen'),
+                    ('Raisins', 'Dehydrated'),
+                    ('Bhujia Namkeen', 'Non-perishable'),
+                    ('Butter Cookies', 'Non-perishable'),
+                    ('Chocolate Biscuits', 'Non-perishable'),
+                    ('Chocolate Wafer', 'Non-perishable'),
+                    ('Cream Biscuits', 'Non-perishable'),
+                    ('Masala Noodles', 'Non-perishable'),
+                    ('Milk Rusk', 'Non-perishable'),
+                    ('Peanut Cookies', 'Non-perishable'),
+                    ('Sesame Crackers', 'Non-perishable'),
+                    ('Spicy Mixture', 'Non-perishable')
+            )
+
+            INSERT INTO food_suggestions (food_name, category)
+            SELECT
+                predefined.food_name,
+                predefined.category
+            FROM predefined_foods AS predefined
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM food_suggestions AS existing
+                WHERE LOWER(TRIM(existing.food_name)) =
+                    LOWER(TRIM(predefined.food_name))
+            )
+        """)
+
+        # Map food items to their allergens
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS food_allergens (
+                food_id INTEGER NOT NULL,
+                allergy_id INTEGER NOT NULL,
+
+                PRIMARY KEY (food_id, allergy_id),
+
+                FOREIGN KEY (food_id)
+                    REFERENCES food_suggestions(food_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (allergy_id)
+                    REFERENCES allergies(allergy_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        # Predefined food allergen mappings
+        connection.execute("""
+            WITH predefined_mappings (food_name, allergy_name) AS (
+                VALUES
+                    ('Bhujia Namkeen', 'Peanuts'),
+                    ('Bhujia Namkeen', 'Wheat'),
+
+                    ('Butter Cookies', 'Eggs'),
+                    ('Butter Cookies', 'Milk'),
+                    ('Butter Cookies', 'Wheat'),
+
+                    ('Chocolate Biscuits', 'Milk'),
+                    ('Chocolate Biscuits', 'Soy'),
+                    ('Chocolate Biscuits', 'Wheat'),
+
+                    ('Chocolate Wafer', 'Milk'),
+                    ('Chocolate Wafer', 'Soy'),
+                    ('Chocolate Wafer', 'Wheat'),
+
+                    ('Cream Biscuits', 'Milk'),
+                    ('Cream Biscuits', 'Soy'),
+                    ('Cream Biscuits', 'Wheat'),
+
+                    ('Masala Noodles', 'Soy'),
+                    ('Masala Noodles', 'Wheat'),
+
+                    ('Milk', 'Milk'),
+
+                    ('Milk Rusk', 'Milk'),
+                    ('Milk Rusk', 'Wheat'),
+
+                    ('Peanut Cookies', 'Milk'),
+                    ('Peanut Cookies', 'Peanuts'),
+                    ('Peanut Cookies', 'Wheat'),
+
+                    ('Sesame Crackers', 'Sesame'),
+                    ('Sesame Crackers', 'Wheat'),
+
+                    ('Spicy Mixture', 'Peanuts'),
+                    ('Spicy Mixture', 'Wheat')
+            )
+            INSERT INTO food_allergens (food_id, allergy_id)
+            SELECT
+                fs.food_id,
+                a.allergy_id
+            FROM predefined_mappings AS pm
+            JOIN food_suggestions AS fs
+                ON LOWER(TRIM(fs.food_name)) = LOWER(TRIM(pm.food_name))
+            JOIN allergies AS a
+                ON LOWER(TRIM(a.allergy_name)) = LOWER(TRIM(pm.allergy_name))
+            ON CONFLICT (food_id, allergy_id) DO NOTHING
+        """)
+
+        # Store predefined essential food items
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS essential_foods (
+                food_id INTEGER PRIMARY KEY
+                    REFERENCES food_suggestions(food_id)
+                    ON DELETE CASCADE,
+
+                display_order INTEGER NOT NULL
+            )
+        """)
+
+        # Link predefined foods to the essential foods list
+        connection.execute("""
+            WITH predefined_foods (food_name, display_order) AS (
+                VALUES
+                    ('Rice', 1),
+                    ('Wheat Flour', 2),
+                    ('Cooking Oil', 3),
+                    ('Salt', 4),
+                    ('Sugar', 5),
+                    ('Toor Dal', 6),
+                    ('Moong Dal', 7),
+                    ('Chana Dal', 8),
+                    ('Chickpeas', 9),
+                    ('Kidney Beans', 10),
+                    ('Milk', 11),
+                    ('Eggs', 12),
+                    ('Bread', 13),
+                    ('Butter', 14),
+                    ('Curd', 15),
+                    ('Onion', 16),
+                    ('Tomato', 17),
+                    ('Potato', 18),
+                    ('Garlic', 19),
+                    ('Ginger', 20),
+                    ('Green Chilli', 21),
+                    ('Turmeric Powder', 22),
+                    ('Red Chilli Powder', 23),
+                    ('Coriander Powder', 24),
+                    ('Cumin Seeds', 25)
+            )
+
+            INSERT INTO essential_foods (food_id, display_order)
+            SELECT
+                food.food_id,
+                predefined.display_order
+            FROM predefined_foods AS predefined
+            JOIN food_suggestions AS food
+                ON LOWER(TRIM(food.food_name)) =
+                LOWER(TRIM(predefined.food_name))
+            ON CONFLICT (food_id) DO NOTHING
+        """)
+
+        # Index essential foods by display order
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_essential_foods_display_order
+            ON essential_foods (display_order)
+        """)
 
         # Store each user's active shopping list
         connection.execute("""
@@ -320,4 +572,34 @@ def init_db():
         connection.execute("""
             CREATE INDEX IF NOT EXISTS idx_shopping_history_items_history
             ON shopping_history_items(history_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_user_allergies_allergy
+            ON user_allergies(allergy_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_recipe_ingredients_recipe
+            ON recipe_ingredients(recipe_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_recipe_instructions_recipe
+            ON recipe_instructions(recipe_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_shopping_history_items_food
+            ON shopping_history_items(food_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_active_shopping_items_food
+            ON active_shopping_items(food_id)
+        """)
+
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_food_allergens_allergy
+            ON food_allergens(allergy_id)
         """)
