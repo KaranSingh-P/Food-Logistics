@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ current_theme }}">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,6 +68,55 @@
                 <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password">
             </div>
         </section>
+        <section class="settings-section">
+            <h2>Account Recovery</h2>
+            {% if recovery_configured %}
+            <p class="recovery-status configured">
+                Account Recovery is configured.
+                To change your recovery details, fill in all four fields below.
+            </p>
+            {% else %}
+            <p class="recovery-status not-configured">
+                Account Recovery is not configured yet.
+            </p>
+            {% endif %}
+            <p class="recovery-description">
+                Set up your security question and PIN to recover your account
+                if you forget your password.
+            </p>
+
+            <div class="setting-field">
+                <label for="security-question">Security Question</label>
+                <select id="security-question" name="security-question">
+                    <option value="">Select a security question</option>
+                    <option value="first_school">What was the name of your first school?</option>
+                    <option value="first_pet">What was the name of your first pet?</option>
+                    <option value="birth_city">In which city were you born?</option>
+                    <option value="childhood_friend">What was the name of your childhood best friend?</option>
+                    <option value="favourite_food">What was your favourite childhood food?</option>
+                </select>
+            </div>
+
+            <div class="setting-field">
+                <label for="security-answer">Security Answer</label>
+                <input type="text" id="security-answer" name="security-answer" placeholder="Enter your answer"
+                    autocomplete="off">
+            </div>
+
+            <div class="setting-field">
+                <label for="security-pin">Security PIN (6 digits)</label>
+                <input type="password" id="security-pin" name="security-pin" placeholder="Create a 6-digit PIN"
+                    inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off">
+            </div>
+
+            <div class="setting-field">
+                <label for="confirm-security-pin">Confirm Security PIN</label>
+                <input type="password" id="confirm-security-pin" name="confirm-security-pin"
+                    placeholder="Confirm your PIN" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                    autocomplete="off">
+            </div>
+        </section>
+
         <hr>
         <section class="settings-section">
             <h2>Theme</h2>

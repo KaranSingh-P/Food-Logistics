@@ -47,6 +47,15 @@ Stores user-specific preferences.
 |---------|----------|-------|
 | 1       | Gamer    | Dark  |
 
+### user_security
+
+4. user_security
+Stores users' security and account recovery information.
+
+| user_id | security_question | security_answer_hash | security_pin_hash | updated_at |
+| - | - | - | - | - |
+1 | first_pet | Hashed answer | Hashed PIN | 2026-11-16 |
+
 ### inventory
 Stores food items added by users.
 |inventory_id | user_id | item_name | category  | purchase_date | expiration_date | created_at |
@@ -263,6 +272,7 @@ The system maintains one active shopping list per user. Users can save their act
     Food ID                   -> active_shopping_items (Foreign Key to food_suggestions)
     Food ID                   -> shopping_history_items (Foreign Key to food_suggestions)
     Food ID                   -> shopping_template_items (Foreign Key to food_suggestions)
+    Food ID                   -> essential_foods (Foreign Key to food_suggestions)
 
 ## User Settings
 

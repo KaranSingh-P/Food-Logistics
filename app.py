@@ -6,7 +6,6 @@ from routes.settings import settings_bp
 from routes.dashboard import dashboard_bp
 from routes.inventory import inventory_bp
 from routes.recipes import recipes_bp
-from routes.alerts import alerts_bp
 from routes.shopping import shopping_bp
 
 app = Flask(__name__)
@@ -19,7 +18,6 @@ app.register_blueprint(settings_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(inventory_bp)
 app.register_blueprint(recipes_bp)
-app.register_blueprint(alerts_bp)
 app.register_blueprint(shopping_bp)
 
 

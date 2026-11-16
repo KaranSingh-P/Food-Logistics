@@ -81,23 +81,84 @@ document.addEventListener("click", (event) => {
 });
 updateSelectedAllergies();
 
+
 const settingsForm = document.getElementById("settings-form");
+
 settingsForm.addEventListener("submit", (event) => {
+
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
-    if (password !== confirmPassword) {
+
+    const securityQuestion = document.getElementById("security-question").value;
+    const securityAnswer = document.getElementById("security-answer").value.trim();
+    const securityPin = document.getElementById("security-pin").value;
+    const confirmSecurityPin = document.getElementById("confirm-security-pin").value;
+
+    // Display validation errors.
+    function showError(message) {
         event.preventDefault();
+
         let errorBox = document.querySelector(".settings-error");
+
         if (!errorBox) {
             errorBox = document.createElement("div");
             errorBox.className = "settings-error";
-            document.getElementById("save-settings")
-                .before(errorBox);
+
+            document.getElementById("save-settings").before(errorBox);
         }
-        errorBox.textContent = "Passwords do not match!";
+
+        errorBox.textContent = message;
+    }
+
+    // Remove any previous error.
+    const previousError = document.querySelector(".settings-error");
+
+    if (previousError) {
+        previousError.remove();
+    }
+
+    // Remove previous success messages.
+    document.querySelectorAll(".settings-success").forEach(message => {
+        message.remove();
+    });
+
+    // Validate password confirmation.
+    if (password !== confirmPassword) {
+        showError("Passwords do not match!");
         return;
     }
 
+    // Check whether recovery details have been entered.
+    const recoveryFields = [
+        securityQuestion,
+        securityAnswer,
+        securityPin,
+        confirmSecurityPin
+    ];
+
+    const filledFields = recoveryFields.filter(value => value !== "").length;
+
+    // Either all recovery fields must be filled or all must be empty.
+    if (filledFields !== 0 && filledFields !== 4) {
+        showError("Please complete all Account Recovery fields.");
+        return;
+    }
+
+    // Validate the security PIN.
+    if (filledFields === 4) {
+
+        if (!/^\d{6}$/.test(securityPin)) {
+            showError("Security PIN must contain exactly 6 digits.");
+            return;
+        }
+
+        if (securityPin !== confirmSecurityPin) {
+            showError("Security PINs do not match!");
+            return;
+        }
+    }
+
+    // Save selected allergies.
     document.getElementById("allergies-input").value =
         JSON.stringify(selectedAllergies);
 });

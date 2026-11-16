@@ -265,3 +265,28 @@ hr {
     font-size: 14px;
     font-weight: 500;
 }
+
+.recovery-description {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.recovery-status {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 5px;
+    margin: 10px 0 18px;
+}
+
+.recovery-status.configured {
+    color: #027a48;
+    background-color: #ecfdf3;
+    border: 1px solid #abefc6;
+}
+
+.recovery-status.not-configured {
+    color: #b54708;
+    background-color: #fffaeb;
+    border: 1px solid #fedf89;
+}

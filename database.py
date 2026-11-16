@@ -115,6 +115,21 @@ def init_db():
             ON CONFLICT (user_id) DO NOTHING
         """)
 
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS user_security (
+                user_id INTEGER PRIMARY KEY
+                    REFERENCES users(user_id) ON DELETE CASCADE,
+
+                security_question TEXT NOT NULL,
+
+                security_answer_hash TEXT NOT NULL,
+
+                security_pin_hash TEXT NOT NULL,
+
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
         # Inventory table
         connection.execute("""
             CREATE TABLE IF NOT EXISTS inventory (

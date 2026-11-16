@@ -38,6 +38,16 @@ def user_settings_page():
             (user_id,)
         ).fetchone()
 
+        # Check whether the user has configured Account Recovery.
+        security_record = connection.execute(
+            """
+            SELECT security_question
+            FROM user_security
+            WHERE user_id = %s
+            """,
+            (user_id,)
+        ).fetchone()
+
         # Retrieve all available allergies.
         allergy_records = connection.execute(
             """
@@ -59,6 +69,8 @@ def user_settings_page():
             """,
             (user_id,)
         ).fetchall()
+
+        recovery_configured = security_record is not None
 
     if not user or not settings_record:
         return "User settings could not be found.", 404
@@ -113,7 +125,8 @@ def user_settings_page():
                 "user-setting.html",
                 email=email,
                 settings=settings,
-                available_allergies=available_allergies
+                available_allergies=available_allergies,
+                recovery_configured=recovery_configured
             )
 
         # Validate theme.
@@ -128,12 +141,43 @@ def user_settings_page():
                     "theme": settings["theme"],
                     "allergies": allergies
                 },
-                available_allergies=available_allergies
+                available_allergies=available_allergies,
+                recovery_configured=recovery_configured
             )
 
         # Check password confirmation.
         if password != confirm_password:
             flash("Passwords do not match!", "error")
+
+
+        # Read Account Recovery fields.
+        security_question = request.form.get("security-question", "").strip()
+        security_answer = request.form.get("security-answer", "").strip()
+        security_pin = request.form.get("security-pin", "")
+        confirm_security_pin = request.form.get("confirm-security-pin", "")
+
+        # Available security questions.
+        allowed_security_questions = {
+            "first_school",
+            "first_pet",
+            "birth_city",
+            "childhood_friend",
+            "favourite_food"
+        }
+
+        # Check whether recovery details have been entered.
+        recovery_fields = [
+            security_question,
+            security_answer,
+            security_pin,
+            confirm_security_pin
+        ]
+
+        filled_fields = sum(bool(value) for value in recovery_fields)
+
+        # All recovery fields must be filled or all must be empty.
+        if filled_fields not in [0, 4]:
+            flash("Please complete all Account Recovery fields.", "error")
 
             return render_template(
                 "user-setting.html",
@@ -143,9 +187,76 @@ def user_settings_page():
                     "theme": theme,
                     "allergies": allergies
                 },
-                available_allergies=available_allergies
+                available_allergies=available_allergies,
+                recovery_configured=recovery_configured
             )
 
+
+        # Validate recovery details if provided.
+        if filled_fields == 4:
+
+            if security_question not in allowed_security_questions:
+                flash("Please select a valid security question.", "error")
+
+                return render_template(
+                    "user-setting.html",
+                    email=email,
+                    settings={
+                        "username": username,
+                        "theme": theme,
+                        "allergies": allergies
+                    },
+                    available_allergies=available_allergies,
+                    recovery_configured=recovery_configured
+                )
+
+            if not security_answer:
+                flash("Security answer cannot be empty.", "error")
+
+                return render_template(
+                    "user-setting.html",
+                    email=email,
+                    settings={
+                        "username": username,
+                        "theme": theme,
+                        "allergies": allergies
+                    },
+                    available_allergies=available_allergies,
+                    recovery_configured=recovery_configured
+                )
+
+            if len(security_pin) != 6 or not security_pin.isdigit():
+                flash("Security PIN must contain exactly 6 digits.", "error")
+
+                return render_template(
+                    "user-setting.html",
+                    email=email,
+                    settings={
+                        "username": username,
+                        "theme": theme,
+                        "allergies": allergies
+                    },
+                    available_allergies=available_allergies,
+                    recovery_configured=recovery_configured
+                )
+
+            if security_pin != confirm_security_pin:
+                flash("Security PINs do not match!", "error")
+
+                return render_template(
+                    "user-setting.html",
+                    email=email,
+                    settings={
+                        "username": username,
+                        "theme": theme,
+                        "allergies": allergies
+                    },
+                    available_allergies=available_allergies,
+                    recovery_configured=recovery_configured
+                )
+
+        # Continue to database saving if validation succeeds.
+        print("DEBUG: Reached database-saving section.")
         # Convert allergy names into their database IDs.
         allergy_ids = [
             allergy_ids_by_name[name] for name in allergies
@@ -178,6 +289,43 @@ def user_settings_page():
                     (password_hash, user_id)
                 )
 
+            # Save Account Recovery details if all fields were provided.
+            if filled_fields == 4:
+
+                # Normalize the answer so capitalization doesn't matter.
+                normalized_answer = security_answer.strip().casefold()
+
+                answer_hash = generate_password_hash(normalized_answer)
+                pin_hash = generate_password_hash(security_pin)
+
+                connection.execute(
+                    """
+                    INSERT INTO user_security (
+                        user_id,
+                        security_question,
+                        security_answer_hash,
+                        security_pin_hash,
+                        updated_at
+                    )
+                    VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+
+                    ON CONFLICT (user_id)
+                    DO UPDATE SET
+                        security_question = EXCLUDED.security_question,
+                        security_answer_hash = EXCLUDED.security_answer_hash,
+                        security_pin_hash = EXCLUDED.security_pin_hash,
+                        updated_at = CURRENT_TIMESTAMP
+                    """,
+                    (
+                        user_id,
+                        security_question,
+                        answer_hash,
+                        pin_hash
+                    )
+                )
+
+
+
             # Remove previous allergy selections.
             connection.execute(
                 """
@@ -208,5 +356,6 @@ def user_settings_page():
         "user-setting.html",
         email=email,
         settings=settings,
-        available_allergies=available_allergies
+        available_allergies=available_allergies,
+        recovery_configured=recovery_configured
     )
