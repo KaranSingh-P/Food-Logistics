@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{ current_theme }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Logistics | Nutrition Tracker</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='SVG/white-apple-logo.svg') }}">
+    <link rel="stylesheet" href="../static/css/navbar.css">
+    <link rel="stylesheet" href="../static/css/nutrition-tracker.css">
+</head>
+
+<body>
+    <header>
+        <div class="navbar">
+            <div class="v-navbar">
+                <button id="hamburger">☰</button>
+                <span class="navbar-title">Food Logistics</span>
+                <a href="{{ url_for('dashboard.dashboard') }}" class="switch-link">
+                    Switch to Food Management →
+                </a>
+            </div>
+            <div class="account">
+                <a href="{{ url_for('settings.user_settings_page') }}" id="navbar-email-id">
+                    {{ navbar_username }}
+                </a>
+                <a href="{{ url_for('auth.logout') }}" class="logout-link">
+                    Log Out
+                </a>
+            </div>
+        </div>
+        <div class="navbar-spacer"></div>
+    </header>
+
+    <nav id="menu" style="display: none;">
+        <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('inventory.inventory') }}">Inventory</a>
+        <a href="{{ url_for('recipes.recipe_generation') }}">Recipe Generation</a>
+        <a href="{{ url_for('shopping.shopping_list') }}">Shopping List Generation</a>
+        <hr>
+        <a href="{{ url_for('nutrition_tracker.nutrition_tracker_page') }}" class="active-menu">Nutrition Tracker</a>
+    </nav>
+
+
+    <main class="nutrition-main">
+
+
+        <!-- SECTION 1: DAILY NUTRITION OVERVIEW -->
+        <section class="nutrition-overview">
+            <div class="nutrition-details">
+
+                <div class="nutrition-heading">
+                    <h1>Today's Nutrition</h1>
+                    <p>Track your daily nutritional intake.</p>
+                </div>
+
+                <button type="button" id="edit-nutrition-goals">
+                    Edit Daily Goals
+                </button>
+
+                <div id="nutrition-goals-form" style="display: none;">
+
+                    <h3>Set Daily Nutrition Goals</h3>
+
+                    <label for="goal-calories">Calories (kcal)</label>
+                    <input type="number" id="goal-calories" min="1" step="any">
+
+                    <label for="goal-protein">Protein (g)</label>
+                    <input type="number" id="goal-protein" min="1" step="any">
+
+                    <label for="goal-carbs">Carbohydrates (g)</label>
+                    <input type="number" id="goal-carbs" min="1" step="any">
+
+                    <label for="goal-fats">Fats (g)</label>
+                    <input type="number" id="goal-fats" min="1" step="any">
+
+                    <div class="nutrition-goals-actions">
+                        <button type="button" id="save-nutrition-goals">
+                            Save Goals
+                        </button>
+
+                        <button type="button" id="cancel-nutrition-goals">
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Calories -->
+                <div class="nutrition-item calories">
+                    <div class="nutrition-item-info">
+                        <span>Calories</span>
+                        <span id="total-calories">0 / 2000 kcal</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-fill" style="width: 62.5%;"></div>
+                    </div>
+                </div>
+
+                <!-- Protein -->
+                <div class="nutrition-item protein">
+                    <div class="nutrition-item-info">
+                        <span>Protein</span>
+                        <span id="total-protein"> 0 / 75 g</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+
+                <!-- Carbohydrates -->
+                <div class="nutrition-item carbohydrates">
+                    <div class="nutrition-item-info">
+                        <span>Carbohydrates</span>
+                        <span id="total-carbs">0 / 250 g</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-fill" style="width: 56%;"></div>
+                    </div>
+                </div>
+
+                <!-- Fats -->
+                <div class="nutrition-item fats">
+                    <div class="nutrition-item-info">
+                        <span>Fats</span>
+                        <span id="total-fats">0 / 65 g</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-fill" style="width: 58.5%;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- DAILY CALORIE ODOMETER -->
+            <div class="nutrition-odometer">
+
+                <div class="odometer-content">
+                    <span class="odometer-percentage" id="odometer-percentage">0%</span>
+                    <span class="odometer-label">Daily Calories</span>
+                    <span class="odometer-consumed" id="odometer-consumed">0 kcal</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SECTION 2: FOOD LOG -->
+        <section class="food-log-section">
+
+            <div class="food-log-header">
+
+                <div>
+                    <h2>Food Log</h2>
+                    <p>Keep track of everything you eat throughout the day.</p>
+                </div>
+
+                <div class="nutrition-date-controls">
+
+                    <button type="button" id="previous-day">
+                        &lt;
+                    </button>
+
+                    <input type="date" id="nutrition-date">
+
+                    <button type="button" id="next-day">
+                        &gt;
+                    </button>
+
+                    <button type="button" id="today-button">
+                        Today
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- ADD FOOD BUTTON -->
+            <button id="add-food-button">
+                + Add Food Log
+            </button>
+
+            <!-- FOOD ENTRIES -->
+            <div class="food-log-container">
+                <div class="food-log-list" id="food-log-list">
+                    <!-- Food entries will be loaded dynamically from the database -->
+                </div>
+            </div>
+
+            <!-- DOWNLOAD BUTTONS -->
+            <div class="food-log-downloads">
+
+                <button id="download-30-days">
+                    Download Last 30 Days
+                </button>
+
+                <button id="download-last-year">
+                    Download Last Year
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- ADD FOOD LOG POPUP -->
+        <div class="food-modal" id="food-modal" style="display: none;">
+
+            <div class="food-modal-content">
+
+                <div class="food-modal-header">
+                    <div>
+                        <h2>Add Food Log</h2>
+                        <p>Add something you've eaten today.</p>
+                    </div>
+
+                    <button type="button" id="close-food-modal">&times;</button>
+                </div>
+
+
+                <!-- FOOD SELECTION -->
+                <div class="food-form-section" id="food-selection-section">
+
+                    <label for="food-select">Select Food or Recipe</label>
+
+                    <div class="food-search-container">
+
+                        <input type="text" id="food-select" placeholder="Search foods or recipes..." autocomplete="off">
+
+                        <div id="food-search-results" style="display: none;">
+
+                            <!-- Matching foods and recipes will appear here dynamically. -->
+
+                        </div>
+
+                    </div>
+
+                    <button type="button" id="create-custom-food">
+                        + Create Custom Food
+                    </button>
+
+                    <button type="button" id="manage-custom-foods">
+                        Manage Custom Foods
+                    </button>
+
+                    <div id="custom-food-list" style="display: none;">
+
+                        <!-- Custom foods will be loaded here dynamically. -->
+
+                    </div>
+
+                </div>
+
+                <!-- QUANTITY -->
+                <div class="food-form-section" id="food-quantity-section">
+
+                    <label for="food-quantity">Quantity (servings)</label>
+
+                    <input type="number" id="food-quantity" min="0.1" step="0.1" value="1">
+
+                </div>
+
+                <!-- NUTRITION PREVIEW -->
+                <div class="food-nutrition-preview" id="food-nutrition-preview">
+
+                    <h3>Nutrition Preview</h3>
+
+                    <div class="preview-nutrients">
+
+                        <div class="preview-nutrient calories">
+                            <span>Calories</span>
+                            <strong id="preview-calories">0 kcal</strong>
+                        </div>
+
+                        <div class="preview-nutrient protein">
+                            <span>Protein</span>
+                            <strong id="preview-protein">0 g</strong>
+                        </div>
+
+                        <div class="preview-nutrient carbohydrates">
+                            <span>Carbohydrates</span>
+                            <strong id="preview-carbs">0 g</strong>
+                        </div>
+
+                        <div class="preview-nutrient fats">
+                            <span>Fats</span>
+                            <strong id="preview-fats">0 g</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CUSTOM FOOD FORM -->
+                <div class="custom-food-form" id="custom-food-form" style="display: none;">
+
+                    <h3>Create Custom Food</h3>
+
+                    <div class="food-form-section">
+                        <label for="custom-food-name">Food Name</label>
+                        <input type="text" id="custom-food-name" placeholder="e.g. Homemade Chapati" minlength="2">
+                    </div>
+
+                    <p class="custom-food-note">
+                        Enter nutritional values for one serving.
+                    </p>
+
+                    <div class="custom-nutrition-grid">
+
+                        <div class="food-form-section">
+                            <label for="custom-calories">Calories (kcal)</label>
+                            <input type="number" id="custom-calories" min="0" step="0.1">
+                        </div>
+
+                        <div class="food-form-section">
+                            <label for="custom-protein">Protein (g)</label>
+                            <input type="number" id="custom-protein" min="0" step="0.1">
+                        </div>
+
+                        <div class="food-form-section">
+                            <label for="custom-carbs">Carbohydrates (g)</label>
+                            <input type="number" id="custom-carbs" min="0" step="0.1">
+                        </div>
+
+                        <div class="food-form-section">
+                            <label for="custom-fats">Fats (g)</label>
+                            <input type="number" id="custom-fats" min="0" step="0.1">
+                        </div>
+
+                    </div>
+
+                    <button type="button" id="save-custom-food">
+                        Save Custom Food
+                    </button>
+
+                </div>
+
+                <!-- POPUP ACTIONS -->
+                <div class="food-modal-actions">
+
+                    <button type="button" id="cancel-food-modal">
+                        Cancel
+                    </button>
+
+                    <button type="button" id="confirm-add-food">
+                        Add to Food Log
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="../static/javascript/app.js"></script>
+    <script src="https://kit.fontawesome.com/29c59c4f0c.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='javascript/nutrition-tracker.js') }}" defer></script>
+</body>
+
+</html>

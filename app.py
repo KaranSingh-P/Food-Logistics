@@ -7,6 +7,7 @@ from routes.dashboard import dashboard_bp
 from routes.inventory import inventory_bp
 from routes.recipes import recipes_bp
 from routes.shopping import shopping_bp
+from routes.nutrition import nutrition_tracker_bp
 
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ app.register_blueprint(dashboard_bp)
 app.register_blueprint(inventory_bp)
 app.register_blueprint(recipes_bp)
 app.register_blueprint(shopping_bp)
+app.register_blueprint(nutrition_tracker_bp)
 
 
 @app.context_processor

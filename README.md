@@ -166,6 +166,29 @@ Stores individual food items belonging to saved shopping templates, including th
 |2                | 1           | 2       | Banana          | 1 dozen  | occasional |
 |3                | 1           | NULL    | Homemade Bread  | 1 loaf   | frequent |
 
+### nutrition_foods
+Stores the available food items and user-created custom foods, along with their nutritional values per serving.
+
+|food_id | user_id | food_name | calories | protein | carbohydrates | fats | is_custom |
+|1 | NULL | Chapati | 120 | 3.5 | 20 | 3 | FALSE | 
+|2 | NULL | Rice | 130 | 2.7 | 28 | 0.3 | FALSE |
+|5 | 1 | Homemade Smoothie | 180 | 8 | 25 | 5 | TRUE |
+
+### nutrition_food_log
+Stores the food and recipe entries logged by users, including their quantities and nutritional values.
+
+|log_id | user_id | food_id | food_name | quantity | calories | protein | carbohydrates | fats | logged_at |
+|1 | 1 | 1 | Chapati | 2 | 240 | 7 | 40 | 6 | 2026-11-16 09:00:00 |
+|2 | 1 | 2 | Rice | 1.5 | 195 | 4.05 | 42 | 0.45 | 2026-11-16 13:00:00 |
+|3 | 1 | NULL | Vegetable Pulao | 1 | 250 | 6 | 40 | 8 | 2026-11-16 19:00:00 |
+
+### nutrition_goals
+Stores each user's personalized daily nutrition targets.
+
+| user_id | calories | protein | carbohydrates | fats | updated_at | 
+| 1 | 2000 | 75 | 250 | 65 | 2026-11-16 23:40:00 |
+| 2 | 1800 | 90 | 200 | 60 | 2026-11-16 23:45:00 |
+
 ## Dashboard
 
 ## Dashboard
@@ -282,3 +305,25 @@ The User setting is stored in permanently using the PostgreSQL tables - users, u
     Theme -> user_settings
     Allergies -> user_allergies (as allergy_id of allergies table)
 
+## Nutrition Tracker
+
+The Nutrition Tracker allows users to log foods and recipes, track daily calories, protein, carbohydrates, and fats, and compare their intake against personalized daily nutrition goals. Users can create and manage custom foods, view previous daily logs, and download nutrition reports for the last 30 days or the last year.
+
+    Available Food Items       -> nutrition_foods
+    Daily Food Entries         -> nutrition_food_log
+    Daily Nutrition Goals      -> nutrition_goals
+
+    User ID                    -> nutrition_foods (Foreign Key to users, nullable for global foods)
+    User ID                    -> nutrition_food_log (Foreign Key to users)
+    User ID                    -> nutrition_goals (Foreign Key to users)
+
+    Food ID                    -> nutrition_food_log (Foreign Key to nutrition_foods, nullable)
+
+    Recipe ID                  -> Not stored in nutrition_food_log;
+                                   recipe nutrition is stored as a snapshot.
+
+    Recipe Name                -> recipes
+    Recipe Calories            -> recipes
+    Recipe Protein             -> recipes
+    Recipe Carbohydrates       -> recipes
+    Recipe Fats                -> recipes

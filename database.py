@@ -697,3 +697,144 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_food_allergens_allergy
             ON food_allergens(allergy_id)
         """)
+
+
+        # =========================================
+        # NUTRITION TRACKER
+        # =========================================
+
+        # Store predefined and user-created foods.
+        # NULL user_id means the food is available to everyone.
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS nutrition_foods (
+                food_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE,
+
+                food_name VARCHAR(100) NOT NULL,
+
+                calories NUMERIC(10, 2) NOT NULL CHECK (calories >= 0),
+                protein NUMERIC(10, 2) NOT NULL CHECK (protein >= 0),
+                carbohydrates NUMERIC(10, 2) NOT NULL CHECK (carbohydrates >= 0),
+                fats NUMERIC(10, 2) NOT NULL CHECK (fats >= 0),
+
+                is_custom BOOLEAN NOT NULL DEFAULT FALSE,
+
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        # Prevent duplicate predefined food names.
+        connection.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_nutrition_foods_global_name
+            ON nutrition_foods (LOWER(food_name))
+            WHERE user_id IS NULL
+        """)
+
+        # Prevent users from creating duplicate custom food names.
+        connection.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_nutrition_foods_user_name
+            ON nutrition_foods (user_id, LOWER(food_name))
+            WHERE user_id IS NOT NULL
+        """)
+
+        # Store each user's food log entries.
+        # Nutritional values are snapshots calculated when food is logged.
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS nutrition_food_log (
+                log_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER NOT NULL
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE,
+
+                food_id INTEGER
+                    REFERENCES nutrition_foods(food_id)
+                    ON DELETE SET NULL,
+
+                food_name VARCHAR(100) NOT NULL,
+
+                quantity NUMERIC(8, 2) NOT NULL CHECK (quantity > 0),
+
+                calories NUMERIC(10, 2) NOT NULL CHECK (calories >= 0),
+                protein NUMERIC(10, 2) NOT NULL CHECK (protein >= 0),
+                carbohydrates NUMERIC(10, 2) NOT NULL CHECK (carbohydrates >= 0),
+                fats NUMERIC(10, 2) NOT NULL CHECK (fats >= 0),
+
+                logged_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        # Index food logs by user and date.
+        connection.execute("""
+            CREATE INDEX IF NOT EXISTS idx_nutrition_food_log_user_date
+            ON nutrition_food_log(user_id, logged_at DESC)
+        """)
+
+        # =========================================
+        # PREDEFINED NUTRITION FOODS
+        # =========================================
+
+        # Insert globally available sample foods.
+        connection.execute("""
+            INSERT INTO nutrition_foods (
+                food_name,
+                calories,
+                protein,
+                carbohydrates,
+                fats,
+                is_custom
+            )
+            SELECT
+                predefined.food_name,
+                predefined.calories,
+                predefined.protein,
+                predefined.carbohydrates,
+                predefined.fats,
+                FALSE
+            FROM (
+                VALUES
+                    ('Chapati', 120, 3, 20, 3),
+                    ('Rice', 130, 2.67, 28, 0.33),
+                    ('Dal', 116, 9, 20, 0.4),
+                    ('Banana', 105, 1.3, 27, 0.4)
+            ) AS predefined(
+                food_name,
+                calories,
+                protein,
+                carbohydrates,
+                fats
+            )
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM nutrition_foods AS existing
+                WHERE existing.user_id IS NULL
+                AND LOWER(existing.food_name) =
+                    LOWER(predefined.food_name)
+            )
+        """)
+
+        # User-specific daily nutrition goals
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS nutrition_goals (
+                user_id INTEGER PRIMARY KEY
+                    REFERENCES users(user_id) ON DELETE CASCADE,
+
+                calories NUMERIC(10,2) NOT NULL DEFAULT 2000,
+                protein NUMERIC(10,2) NOT NULL DEFAULT 75,
+                carbohydrates NUMERIC(10,2) NOT NULL DEFAULT 250,
+                fats NUMERIC(10,2) NOT NULL DEFAULT 65,
+
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                CHECK (calories > 0),
+                CHECK (protein > 0),
+                CHECK (carbohydrates > 0),
+                CHECK (fats > 0)
+            )
+        """)
+
+
+

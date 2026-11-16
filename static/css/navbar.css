@@ -5,6 +5,18 @@
     box-sizing: border-box;
 }
 
+/* Active Page in Hamburger Menu */
+
+#menu a.active-menu {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+#menu a.active-menu:hover {
+    color: black;
+    background-color: white;
+}
+
 .navbar {
     color: white;
     background-color: black;
