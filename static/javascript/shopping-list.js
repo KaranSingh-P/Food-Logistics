@@ -5,6 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const historyModalTitle = document.getElementById("historyModalTitle");
     const historyModalDate = document.getElementById("historyModalDate");
     const historyModalItems = document.getElementById("historyModalItems");
+    // Shopping Template Modal
+    const createTemplateButton = document.getElementById("createTemplateButton");
+    const templateModalOverlay = document.getElementById("templateModalOverlay");
+    const closeTemplateModal = document.getElementById("closeTemplateModal");
+    // Add Template Item Modal
+    const templateItemModalOverlay = document.getElementById("templateItemModalOverlay");
+    const closeTemplateItemModal = document.getElementById("closeTemplateItemModal");
+    const templateItemSearch = document.getElementById("templateItemSearch");
+    const templateItemSearchResults = document.getElementById("templateItemSearchResults");
+
+    const addTemplateItemButtons = document.querySelectorAll(".add-template-item-button");
+
+    let activeTemplateFrequency = null;
+
+    let templateItems = {
+        frequent: [],
+        occasional: [],
+        rare: []
+    };
+
+    let savedTemplateItems = {
+        frequent: [],
+        occasional: [],
+        rare: []
+    };
+
+
     let currentHistoricalShoppingList = null;
     const closeHistoryModalButton = document.getElementById("closeHistoryModalButton");
     const downloadHistoryListButton = document.getElementById("downloadHistoryListButton");
@@ -220,6 +247,379 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    // Open template modal and load saved items
+    createTemplateButton.addEventListener("click", async () => {
+
+        templateModalOverlay.hidden = false;
+
+        try {
+
+            const response = await fetch("/api/shopping-template");
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Unable to load template.");
+            }
+
+            templateItems = data.template;
+
+            savedTemplateItems = JSON.parse(JSON.stringify(data.template));
+
+            displayTemplateItems();
+
+        } catch (error) {
+
+            console.error("Load shopping template error:", error);
+
+        }
+
+    });
+
+    // Close template modal
+    closeTemplateModal.addEventListener("click", closeShoppingTemplate);
+
+    // Close when clicking outside the modal
+    templateModalOverlay.addEventListener("click", (event) => {
+        if (event.target === templateModalOverlay) {
+            templateModalOverlay.hidden = true;
+        }
+    });
+
+    // Close with Escape key
+    document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape") {
+
+            // Close Add Template Item popup first
+            if (!templateItemModalOverlay.hidden) {
+                templateItemModalOverlay.hidden = true;
+            }
+
+            // Otherwise close the main Template popup
+            else if (!templateModalOverlay.hidden) {
+                closeShoppingTemplate();
+            }
+
+        }
+
+    });
+
+    // Open Add Item popup
+    addTemplateItemButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            activeTemplateFrequency = button.dataset.frequency;
+
+            templateItemModalOverlay.hidden = false;
+
+            templateItemSearch.value = "";
+            templateItemSearchResults.innerHTML = "";
+
+            templateItemSearch.focus();
+        });
+
+    });
+
+
+    // Close Add Item popup
+    closeTemplateItemModal.addEventListener("click", () => {
+        templateItemModalOverlay.hidden = true;
+    });
+
+
+    // Close when clicking outside
+    templateItemModalOverlay.addEventListener("click", (event) => {
+
+        if (event.target === templateItemModalOverlay) {
+            templateItemModalOverlay.hidden = true;
+        }
+
+    });
+
+    // Search food items for shopping templates
+    templateItemSearch.addEventListener("input", async () => {
+
+        const query = templateItemSearch.value.trim();
+
+        templateItemSearchResults.innerHTML = "";
+
+        if (query.length < 3) {
+            return;
+        }
+
+        templateItemSearchResults.textContent = "Searching...";
+
+        try {
+
+            const response = await fetch(
+                `/api/shopping-food-suggestions?q=${encodeURIComponent(query)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Unable to search food items.");
+            }
+
+            templateItemSearchResults.innerHTML = "";
+
+            if (data.suggestions.length === 0) {
+                templateItemSearchResults.textContent = "No matching food items found.";
+            }
+
+            data.suggestions.forEach(item => {
+
+                const resultButton = document.createElement("button");
+
+                resultButton.type = "button";
+                resultButton.className = "template-item-search-result";
+                resultButton.textContent = item.food_name;
+
+                resultButton.addEventListener("click", () => {
+
+                    // Prevent the same food from appearing in multiple sections
+                    const alreadyAdded = Object.values(templateItems)
+                        .some(items => items.some(existing =>
+                            existing.food_name.trim().toLowerCase() ===
+                            item.food_name.trim().toLowerCase()
+                        ));
+
+                    if (alreadyAdded) {
+                        templateItemSearchResults.textContent = "This item is already in your template.";
+                        return;
+                    }
+
+                    // Add item to the selected frequency section
+                    templateItems[activeTemplateFrequency].push({
+                        food_id: item.food_id,
+                        food_name: item.food_name
+                    });
+
+                    displayTemplateItems();
+
+                    // Close the item picker
+                    templateItemModalOverlay.hidden = true;
+
+                });
+
+                templateItemSearchResults.appendChild(resultButton);
+
+            });
+
+            // Allow users to add a custom food name
+            const customName = query;
+
+            if (customName.length >= 3) {
+
+                const customButton = document.createElement("button");
+
+                customButton.type = "button";
+                customButton.className = "template-item-search-result";
+                customButton.textContent = `Add "${customName}"`;
+
+                customButton.addEventListener("click", () => {
+
+                    const alreadyAdded = Object.values(templateItems)
+                        .some(items => items.some(existing =>
+                            existing.food_name.trim().toLowerCase() ===
+                            customName.toLowerCase()
+                        ));
+
+                    if (alreadyAdded) {
+                        templateItemSearchResults.textContent =
+                            "This item is already in your template.";
+                        return;
+                    }
+
+                    templateItems[activeTemplateFrequency].push({
+                        food_id: null,
+                        food_name: customName
+                    });
+
+                    displayTemplateItems();
+
+                    templateItemModalOverlay.hidden = true;
+
+                });
+
+                customButton.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        customButton.click();
+                    }
+                });
+
+                templateItemSearchResults.appendChild(customButton);
+            }
+
+        } catch (error) {
+
+            console.error("Template food search error:", error);
+            templateItemSearchResults.textContent = "Unable to search food items.";
+
+        }
+
+    });
+
+    templateItemSearch.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+
+        event.preventDefault();
+
+        const customButton = templateItemSearchResults.querySelector(
+            ".template-item-search-result:last-child"
+        );
+
+        if (customButton && customButton.textContent.startsWith('Add "')) {
+            customButton.click();
+        }
+    });
+
+    // Display selected template items
+    function displayTemplateItems() {
+
+        const containers = {
+            frequent: document.getElementById("frequentTemplateItems"),
+            occasional: document.getElementById("occasionalTemplateItems"),
+            rare: document.getElementById("rareTemplateItems")
+        };
+
+        Object.keys(containers).forEach(frequency => {
+
+            const container = containers[frequency];
+            container.innerHTML = "";
+
+            templateItems[frequency].forEach(item => {
+
+                const tag = document.createElement("span");
+                tag.className = "template-item-tag";
+
+                const name = document.createElement("span");
+                name.textContent = item.food_name;
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.className = "remove-template-item";
+                removeButton.textContent = "×";
+                removeButton.title = "Remove item";
+
+                removeButton.addEventListener("click", () => {
+                    templateItems[frequency] =
+                        templateItems[frequency].filter(
+                            existing =>
+                                existing.food_name.trim().toLowerCase() !==
+                                item.food_name.trim().toLowerCase()
+                        );
+
+                    displayTemplateItems();
+
+                });
+
+                tag.appendChild(name);
+                tag.appendChild(removeButton);
+
+                container.appendChild(tag);
+
+            });
+
+        });
+    }
+
+    // Save shopping template to PostgreSQL
+    const saveTemplateButton = document.getElementById("saveTemplateButton");
+
+
+    const templateSaveMessage = document.getElementById("templateSaveMessage");
+    function closeShoppingTemplate() {
+
+        templateModalOverlay.hidden = true;
+
+        templateSaveMessage.textContent = "";
+        templateSaveMessage.classList.remove("error");
+
+    }
+
+    saveTemplateButton.addEventListener("click", async () => {
+
+        try {
+
+            saveTemplateButton.disabled = true;
+            saveTemplateButton.textContent = "Saving...";
+
+            templateSaveMessage.textContent = "";
+            templateSaveMessage.classList.remove("error");
+
+            const response = await fetch("/api/shopping-template", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(templateItems)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Unable to save template.");
+            }
+
+            // Count items that were not present in the previous saved template
+            // Get IDs from the previously saved template
+            const previouslySavedIds = new Set(
+                Object.values(savedTemplateItems)
+                    .flat()
+                    .map(item => item.food_id)
+            );
+
+            // Get IDs from the current template
+            const currentIds = new Set(
+                Object.values(templateItems)
+                    .flat()
+                    .map(item => item.food_id)
+            );
+
+            // Count newly added and removed items
+            const newlyAddedCount = [...currentIds]
+                .filter(id => !previouslySavedIds.has(id)).length;
+
+            const removedCount = [...previouslySavedIds]
+                .filter(id => !currentIds.has(id)).length;
+
+            // Update the saved template snapshot
+            savedTemplateItems = JSON.parse(JSON.stringify(templateItems));
+
+            templateSaveMessage.textContent =
+                `Template saved successfully! ${newlyAddedCount} added, ${removedCount} removed.`;
+
+            // Refresh the Suggested Items section
+            document.dispatchEvent(new Event("shoppingSuggestionsUpdated"));
+
+        } catch (error) {
+
+            console.error("Save template error:", error);
+
+            templateSaveMessage.textContent = error.message;
+            templateSaveMessage.classList.add("error");
+
+        } finally {
+
+            saveTemplateButton.disabled = false;
+            saveTemplateButton.textContent = "Save Template";
+
+        }
+
+    });
+
+    // Close template modal when clicking outside the popup
+    templateModalOverlay.addEventListener("click", (event) => {
+
+        if (event.target === templateModalOverlay) {
+            closeShoppingTemplate();
+        }
+
+    });
+
 });
 
 
@@ -258,10 +658,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load suggested items
     loadSuggestedItems();
 
+    // Load suggested items
+    loadSuggestedItems();
+
+    let allSuggestions = [];
+
     async function loadSuggestedItems() {
 
         try {
             suggestionTags.textContent = "Loading suggestions...";
+            noSuggestionsMessage.hidden = true;
 
             const response = await fetch("/api/shopping-suggestions");
             const data = await response.json();
@@ -270,13 +676,157 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(data.error || "Unable to load suggestions.");
             }
 
-            console.log("Shopping suggestions:", data.suggestions);
+            const suggestions = data.suggestions;
+
+            allSuggestions = [
+                ...suggestions.essential.map(item => ({ ...item, type: "essential" })),
+                ...suggestions.near_expiry.map(item => ({ ...item, type: "near-expiry" })),
+                ...suggestions.previously_bought.map(item => ({ ...item, type: "previously-bought" })),
+                ...suggestions.templates.map(item => ({ ...item, type: "template" }))
+            ];
+
+            // Randomize the placement of all suggestions
+            for (let i = allSuggestions.length - 1; i > 0; i--) {
+
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [allSuggestions[i], allSuggestions[j]] =
+                    [allSuggestions[j], allSuggestions[i]];
+
+            }
+
+            displaySuggestedItems("all");
 
         } catch (error) {
             console.error("Shopping suggestions error:", error);
             suggestionTags.textContent = "Unable to load suggestions.";
         }
     }
+
+    // Refresh suggestions when the shopping template is updated
+    document.addEventListener("shoppingSuggestionsUpdated", () => {
+        loadSuggestedItems();
+    });
+
+
+    // Display suggested items
+    function displaySuggestedItems(filter) {
+
+        suggestionTags.innerHTML = "";
+
+        const filteredSuggestions = filter === "all"
+            ? allSuggestions
+            : allSuggestions.filter(item => item.type === filter);
+
+        if (filteredSuggestions.length === 0) {
+            noSuggestionsMessage.hidden = false;
+            return;
+        }
+
+        noSuggestionsMessage.hidden = true;
+
+        filteredSuggestions.forEach(item => {
+            // Create suggestion wrapper
+            const tag = document.createElement("div");
+            tag.className = "suggestion-tag-wrapper";
+
+            // Create clickable suggestion button
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = `suggestion-tag ${item.type}-tag`;
+            button.textContent = item.food_name;
+
+            // Message displayed after clicking
+            const message = document.createElement("span");
+            message.className = "suggestion-added-message";
+            message.hidden = true;
+
+            if (item.type === "near-expiry" && item.expiration_date) {
+                button.title = `Expires on ${item.expiration_date}`;
+            }
+
+            tag.append(button, message);
+            suggestionTags.appendChild(tag);
+
+
+            button.addEventListener("click", async () => {
+
+                button.disabled = true;
+
+                try {
+
+                    const response = await fetch("/api/active-shopping-list/items", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            name: item.food_name,
+                            quantity: "",
+                            food_id: item.food_id || null
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || "Unable to add item.");
+                    }
+
+                    if (data.already_exists) {
+                        message.textContent = "Already in list";
+                    } else {
+
+                        // Update the active shopping list
+                        shoppingItems.push(data.item);
+                        displayShoppingItems();
+
+                        message.textContent = "Added!";
+                    }
+
+                    // Remove the suggestion from the data
+                    allSuggestions = allSuggestions.filter(
+                        suggestion => suggestion !== item
+                    );
+
+                    // Replace the button text with the feedback
+                    button.textContent = message.textContent;
+                    button.disabled = true;
+
+                    // Hide the button after 2 seconds
+                    setTimeout(() => {
+                        tag.remove();
+                    }, 2000);
+
+                    // Show empty message if no suggestions remain
+                    if (allSuggestions.length === 0) {
+                        noSuggestionsMessage.hidden = false;
+                    }
+
+                } catch (error) {
+
+                    console.error("Add suggested item error:", error);
+                    button.textContent = "Unable to add";
+                    button.disabled = true;
+
+                    setTimeout(() => {
+                        message.remove();
+                    }, 2000);
+
+                    button.disabled = false;
+
+                }
+
+            });
+
+        });
+    }
+
+
+    // Suggestion filter
+    suggestionFilter.addEventListener("change", () => {
+        displaySuggestedItems(suggestionFilter.value);
+    });
 
     // Shopping list data
     let shoppingItems = [];

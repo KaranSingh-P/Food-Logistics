@@ -125,7 +125,7 @@ Stores the individual items and their bought status at the time a shopping list 
 | 1 | 1 | 1 | Apple | 2 kg | FALSE |
 | 2 | 1 | NULL | Homemade Bread | 1 loaf | TRUE |
 
-### essential_foods
+### essential_foods (Needs scaling)
 Stores the predefined essential food items displayed in the shopping list suggestions section, along with their display order.
 
 | food_id | display_order |

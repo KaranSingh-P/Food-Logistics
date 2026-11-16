@@ -245,15 +245,30 @@ def get_shopping_suggestions():
 
         # ESSENTIAL FOODS
         essential_result = connection.execute("""
-            SELECT
-                fs.food_id,
-                fs.food_name,
-                fs.category
-            FROM essential_foods ef
-            JOIN food_suggestions fs
-                ON fs.food_id = ef.food_id
-            ORDER BY ef.display_order
-        """).fetchall()
+        SELECT
+            fs.food_id,
+            fs.food_name,
+            fs.category
+        FROM essential_foods ef
+        JOIN food_suggestions fs
+            ON fs.food_id = ef.food_id
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM inventory i
+            WHERE i.user_id = %s
+            AND LOWER(TRIM(i.item_name)) = LOWER(TRIM(fs.food_name))
+        )
+        AND NOT EXISTS (
+            SELECT 1
+            FROM active_shopping_items asi
+            JOIN active_shopping_lists asl
+                ON asl.list_id = asi.list_id
+            WHERE asl.user_id = %s
+            AND LOWER(TRIM(asi.item_name)) = LOWER(TRIM(fs.food_name))
+        )
+        ORDER BY RANDOM()
+        LIMIT 25
+        """, (user_id, user_id)).fetchall()
 
         # NEAR-EXPIRY INVENTORY ITEMS
         near_expiry_result = connection.execute("""
@@ -267,28 +282,94 @@ def get_shopping_suggestions():
             LEFT JOIN food_suggestions fs
                 ON LOWER(TRIM(fs.food_name)) = LOWER(TRIM(i.item_name))
             WHERE i.user_id = %s
-              AND i.expiration_date BETWEEN CURRENT_DATE
-                  AND CURRENT_DATE + INTERVAL '7 days'
-            ORDER BY i.expiration_date ASC
-        """, (user_id,)).fetchall()
+            AND i.expiration_date BETWEEN CURRENT_DATE
+                AND CURRENT_DATE + INTERVAL '7 days'
+            AND NOT EXISTS (
+                SELECT 1
+                FROM active_shopping_items asi
+                JOIN active_shopping_lists asl
+                    ON asl.list_id = asi.list_id
+                WHERE asl.user_id = %s
+                AND LOWER(TRIM(asi.item_name)) = LOWER(TRIM(i.item_name))
+            )
+            ORDER BY RANDOM()
+            LIMIT 7
+        """, (user_id, user_id)).fetchall()
 
         # PREVIOUSLY BOUGHT ITEMS
         previously_bought_result = connection.execute("""
-            SELECT DISTINCT ON (LOWER(TRIM(shi.item_name)))
-                shi.food_id,
-                shi.item_name AS food_name,
-                fs.category
-            FROM shopping_history_items shi
-            JOIN shopping_history sh
-                ON sh.history_id = shi.history_id
-            LEFT JOIN food_suggestions fs
-                ON fs.food_id = shi.food_id
-            WHERE sh.user_id = %s
-              AND shi.is_completed = TRUE
-            ORDER BY
-                LOWER(TRIM(shi.item_name)),
-                sh.saved_at DESC
-        """, (user_id,)).fetchall()
+            WITH unique_items AS (
+                SELECT DISTINCT ON (LOWER(TRIM(shi.item_name)))
+                    shi.food_id,
+                    shi.item_name AS food_name,
+                    fs.category,
+                    sh.saved_at
+                FROM shopping_history_items shi
+                JOIN shopping_history sh
+                    ON sh.history_id = shi.history_id
+                LEFT JOIN food_suggestions fs
+                    ON fs.food_id = shi.food_id
+                WHERE sh.user_id = %s
+                AND shi.is_completed = TRUE
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM inventory i
+                    WHERE i.user_id = %s
+                        AND LOWER(TRIM(i.item_name)) =
+                            LOWER(TRIM(shi.item_name))
+                )
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM active_shopping_items asi
+                    JOIN active_shopping_lists asl
+                        ON asl.list_id = asi.list_id
+                    WHERE asl.user_id = %s
+                    AND LOWER(TRIM(asi.item_name)) =
+                        LOWER(TRIM(shi.item_name))
+                )
+                ORDER BY
+                    LOWER(TRIM(shi.item_name)),
+                    sh.saved_at DESC
+            )
+
+            SELECT
+                food_id,
+                food_name,
+                category
+            FROM unique_items
+            ORDER BY RANDOM()
+            LIMIT 8
+        """, (user_id, user_id, user_id)).fetchall()
+
+        # USER SHOPPING TEMPLATE ITEMS
+        templates_result = connection.execute("""
+            SELECT
+                items.food_id,
+                items.item_name AS food_name,
+                items.frequency
+            FROM shopping_templates AS templates
+            JOIN shopping_template_items AS items
+                ON templates.template_id = items.template_id
+            WHERE templates.user_id = %s
+            AND NOT EXISTS (
+                SELECT 1
+                FROM inventory i
+                WHERE i.user_id = %s
+                    AND LOWER(TRIM(i.item_name)) =
+                        LOWER(TRIM(items.item_name))
+            )
+            AND NOT EXISTS (
+                SELECT 1
+                FROM active_shopping_items asi
+                JOIN active_shopping_lists asl
+                    ON asl.list_id = asi.list_id
+                WHERE asl.user_id = %s
+                AND LOWER(TRIM(asi.item_name)) =
+                    LOWER(TRIM(items.item_name))
+            )
+            ORDER BY RANDOM()
+            LIMIT 6
+        """, (user_id, user_id, user_id)).fetchall()
 
         suggestions = {
             "essential": [
@@ -303,8 +384,9 @@ def get_shopping_suggestions():
                 dict(row) for row in previously_bought_result
             ],
 
-            "templates": []
-        }
+            "templates": [
+                dict(row) for row in templates_result
+            ]        }
 
         return jsonify({"suggestions": suggestions})
 
@@ -316,6 +398,232 @@ def get_shopping_suggestions():
 
     finally:
         connection.close()
+
+
+@shopping_bp.route("/api/shopping-template", methods=["GET"])
+def get_shopping_template():
+
+    if "user_id" not in session:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user_id = session["user_id"]
+    connection = get_db_connection()
+
+    try:
+        result = connection.execute("""
+            SELECT
+                items.food_id,
+                items.item_name AS food_name,
+                items.frequency
+            FROM shopping_templates AS templates
+            JOIN shopping_template_items AS items
+                ON templates.template_id = items.template_id
+            WHERE templates.user_id = %s
+            ORDER BY items.template_item_id ASC
+        """, (user_id,)).fetchall()
+
+        template = {
+            "frequent": [],
+            "occasional": [],
+            "rare": []
+        }
+
+        for row in result:
+            template[row["frequency"]].append({
+                "food_id": row["food_id"],
+                "food_name": row["food_name"]
+            })
+
+        return jsonify({"template": template})
+
+    except Exception as error:
+        print("Get shopping template error:", error)
+        return jsonify({
+            "error": "Unable to retrieve shopping template."
+        }), 500
+
+    finally:
+        connection.close()
+
+
+@shopping_bp.route("/api/shopping-template", methods=["POST"])
+def save_shopping_template():
+
+    if "user_id" not in session:
+        return jsonify({"error": "Not logged in"}), 401
+
+    user_id = session["user_id"]
+    data = request.get_json()
+
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid request data."}), 400
+
+    frequencies = ["frequent", "occasional", "rare"]
+
+    # Validate the submitted template
+    for frequency in frequencies:
+
+        items = data.get(frequency)
+
+        if not isinstance(items, list):
+            return jsonify({
+                "error": f"Invalid {frequency} items."
+            }), 400
+
+        if not all(
+            isinstance(item, dict)
+            and (
+                (
+                    isinstance(item.get("food_id"), int)
+                    and not isinstance(item.get("food_id"), bool)
+                    and item["food_id"] > 0
+                )
+                or (
+                    item.get("food_id") is None
+                    and isinstance(item.get("food_name"), str)
+                    and len(item["food_name"].strip()) >= 3
+                )
+            )
+            for item in items
+        ):
+            return jsonify({
+                "error": f"Invalid items in {frequency} section."
+            }), 400
+
+    # Prevent the same food from appearing in multiple sections
+    all_food_ids = [
+        item["food_id"]
+        for frequency in frequencies
+        for item in data[frequency]
+        if item["food_id"] is not None
+    ]
+
+    all_food_names = [
+        item["food_name"].strip().lower()
+        for frequency in frequencies
+        for item in data[frequency]
+        if item["food_id"] is None
+    ]
+
+    if (
+        len(all_food_ids) != len(set(all_food_ids))
+        or len(all_food_names) != len(set(all_food_names))
+    ):
+        return jsonify({
+            "error": "An item cannot appear in multiple frequency sections."
+        }), 400
+
+    connection = get_db_connection()
+
+    try:
+
+        # Step 1: Verify that all submitted food IDs exist
+        if all_food_ids:
+
+            valid_foods = connection.execute("""
+                SELECT food_id, food_name
+                FROM food_suggestions
+                WHERE food_id = ANY(%s)
+            """, (all_food_ids,)).fetchall()
+
+            if len(valid_foods) != len(all_food_ids):
+                return jsonify({
+                    "error": "One or more selected food items are invalid."
+                }), 400
+
+            food_names = {
+                row["food_id"]: row["food_name"]
+                for row in valid_foods
+            }
+
+        else:
+            food_names = {}
+
+        # Step 2: Create the user's template if it doesn't exist
+        result = connection.execute("""
+            INSERT INTO shopping_templates (user_id)
+            VALUES (%s)
+            ON CONFLICT (user_id) DO NOTHING
+            RETURNING template_id
+        """, (user_id,)).fetchone()
+
+        if result:
+            template_id = result["template_id"]
+
+        else:
+            result = connection.execute("""
+                SELECT template_id
+                FROM shopping_templates
+                WHERE user_id = %s
+            """, (user_id,)).fetchone()
+
+            template_id = result["template_id"]
+
+        # Step 3: Replace the existing template items
+        connection.execute("""
+            DELETE FROM shopping_template_items
+            WHERE template_id = %s
+        """, (template_id,))
+
+        # Step 4: Insert the updated items
+        saved_count = 0
+
+        for frequency in frequencies:
+
+            for item in data[frequency]:
+
+                food_id = item["food_id"]
+
+                item_name = (
+                    food_names[food_id]
+                    if food_id is not None
+                    else item["food_name"].strip()
+                )
+
+                connection.execute("""
+                    INSERT INTO shopping_template_items (
+                        template_id,
+                        food_id,
+                        item_name,
+                        frequency
+                    )
+                    VALUES (%s, %s, %s, %s)
+                """, (
+                    template_id,
+                    food_id,
+                    item_name,
+                    frequency
+                ))
+
+                saved_count += 1
+
+        # Step 5: Update template modification time
+        connection.execute("""
+            UPDATE shopping_templates
+            SET updated_at = CURRENT_TIMESTAMP
+            WHERE template_id = %s
+        """, (template_id,))
+
+        connection.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Shopping template saved successfully.",
+            "template_id": template_id,
+            "saved_items": saved_count
+        })
+
+    except Exception as error:
+        connection.rollback()
+        print("Save shopping template error:", error)
+
+        return jsonify({
+            "error": "Unable to save shopping template."
+        }), 500
+
+    finally:
+        connection.close()
+
 
 @shopping_bp.route("/api/active-shopping-list", methods=["GET"])
 def get_active_shopping_list():
@@ -414,6 +722,21 @@ def add_active_shopping_item():
             return jsonify({"error": "Active shopping list not found."}), 404
 
         list_id = result["list_id"]
+
+        # Check whether the item already exists in the active shopping list
+        existing_item = connection.execute("""
+            SELECT item_id
+            FROM active_shopping_items
+            WHERE list_id = %s
+            AND LOWER(TRIM(item_name)) = LOWER(TRIM(%s))
+        """, (list_id, item_name)).fetchone()
+
+        if existing_item:
+            return jsonify({
+                "success": False,
+                "already_exists": True,
+                "message": "This item is already in your shopping list."
+            }), 200
 
         # Insert the new item
         result = connection.execute("""

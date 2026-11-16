@@ -72,7 +72,7 @@
                         <option value="essential">Essential Items</option>
                         <option value="near-expiry">Near Expiry</option>
                         <option value="previously-bought">Previously Bought</option>
-                        <option value="template">Templates</option>
+                        <option value="template">Template</option>
                     </select>
                 </div>
             </div>
@@ -94,10 +94,14 @@
                     Previously Bought
                 </span>
 
-                <span class="suggestion-legend-item">
+                <div class="suggestion-legend-item template-legend-item">
                     <span class="legend-color template-color"></span>
-                    Templates
-                </span>
+                    Template
+
+                    <button type="button" id="createTemplateButton">
+                        + Create Template
+                    </button>
+                </div>
             </div>
 
             <!-- SUGGESTION TAGS WILL BE LOADED HERE -->
@@ -109,6 +113,106 @@
             </p>
 
         </section>
+
+        <!-- CREATE TEMPLATE MODAL -->
+        <div class="template-modal-overlay" id="templateModalOverlay" hidden>
+
+            <div class="template-modal">
+
+                <div class="template-modal-header">
+                    <div>
+                        <h2>My Shopping Template</h2>
+                        <p>Organize items by how frequently you want them suggested.</p>
+                    </div>
+
+                    <button type="button" id="closeTemplateModal" class="close-template-modal">
+                        &times;
+                    </button>
+                </div>
+
+
+                <!-- FREQUENTLY SUGGESTED -->
+                <div class="template-frequency-section">
+
+                    <div class="template-frequency-header">
+                        <h3>Frequently Suggested</h3>
+
+                        <button type="button" class="add-template-item-button" data-frequency="frequent">
+                            + Add Item
+                        </button>
+                    </div>
+
+                    <div class="template-item-tags" id="frequentTemplateItems">
+                    </div>
+
+                </div>
+
+
+                <!-- OCCASIONALLY SUGGESTED -->
+                <div class="template-frequency-section">
+
+                    <div class="template-frequency-header">
+                        <h3>Occasionally Suggested</h3>
+
+                        <button type="button" class="add-template-item-button" data-frequency="occasional">
+                            + Add Item
+                        </button>
+                    </div>
+
+                    <div class="template-item-tags" id="occasionalTemplateItems">
+                    </div>
+
+                </div>
+
+
+                <!-- RARELY SUGGESTED -->
+                <div class="template-frequency-section">
+
+                    <div class="template-frequency-header">
+                        <h3>Rarely Suggested</h3>
+
+                        <button type="button" class="add-template-item-button" data-frequency="rare">
+                            + Add Item
+                        </button>
+                    </div>
+
+                    <div class="template-item-tags" id="rareTemplateItems">
+                    </div>
+
+                </div>
+
+                <p id="templateSaveMessage" class="template-save-message" role="status"></p>
+                <div class="template-modal-footer">
+                    <button type="button" id="saveTemplateButton">
+                        Save Template
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ADD TEMPLATE ITEM MODAL -->
+        <div class="template-item-modal-overlay" id="templateItemModalOverlay" hidden>
+
+            <div class="template-item-modal">
+
+                <div class="template-item-modal-header">
+                    <h3>Add Food Item</h3>
+
+                    <button type="button" id="closeTemplateItemModal">
+                        &times;
+                    </button>
+                </div>
+
+                <input type="text" id="templateItemSearch" placeholder="Search food items..." autocomplete="off">
+
+                <div class="template-item-search-results" id="templateItemSearchResults">
+                </div>
+
+            </div>
+
+        </div>
 
 
         <!-- ACTIVE SHOPPING LIST -->

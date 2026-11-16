@@ -558,6 +558,85 @@ def init_db():
             )
         """)
 
+        # Store one shopping template per user
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS shopping_templates (
+                template_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                user_id INTEGER NOT NULL UNIQUE,
+
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (user_id)
+                    REFERENCES users(user_id)
+                    ON DELETE CASCADE
+            )
+        """)
+
+        # Store items belonging to shopping templates
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS shopping_template_items (
+                template_item_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+                template_id INTEGER NOT NULL,
+                food_id INTEGER,
+
+                item_name TEXT NOT NULL,
+                quantity TEXT NOT NULL DEFAULT '',
+
+                frequency VARCHAR(20) NOT NULL
+                    CHECK (frequency IN (
+                        'frequent',
+                        'occasional',
+                        'rare'
+                    )),
+
+                FOREIGN KEY (template_id)
+                    REFERENCES shopping_templates(template_id)
+                    ON DELETE CASCADE,
+
+                FOREIGN KEY (food_id)
+                    REFERENCES food_suggestions(food_id)
+                    ON DELETE SET NULL,
+
+                UNIQUE (template_id, food_id, frequency)
+            )
+        """)
+
+
+        # Migrate existing shopping template tables
+
+        # Remove the old template name column
+        connection.execute("""
+            ALTER TABLE shopping_templates
+            DROP COLUMN IF EXISTS template_name
+        """)
+
+        # Ensure each user can have only one template
+        connection.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_shopping_templates_user
+            ON shopping_templates(user_id)
+        """)
+
+        # Add frequency to existing template items
+        connection.execute("""
+            ALTER TABLE shopping_template_items
+            ADD COLUMN IF NOT EXISTS frequency VARCHAR(20)
+            NOT NULL DEFAULT 'occasional'
+            CHECK (frequency IN (
+                'frequent',
+                'occasional',
+                'rare'
+            ))
+        """)
+
+        # Prevent duplicate items within the same frequency section
+        connection.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_shopping_template_items_frequency
+            ON shopping_template_items(template_id, food_id, frequency)
+        """)
+
         # Indexes for shopping list queries
         connection.execute("""
             CREATE INDEX IF NOT EXISTS idx_active_shopping_items_list
