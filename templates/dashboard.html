@@ -112,39 +112,51 @@
                 </div>
             </div>
 
+
             <div class="shopping-list-generation">
+
                 <div class="shopping-list-header">
                     <span>Shopping List Suggestions</span>
-                    <a href="{{ url_for('shopping.shopping_list') }}" class="history-btn">OPEN ACTIVE SHOPPING LIST</a>
+                    <a href="{{ url_for('shopping.shopping_list') }}" class="history-btn">
+                        OPEN ACTIVE SHOPPING LIST
+                    </a>
                 </div>
 
                 <div class="table-scroll">
-                    <table>
-                        <tr>
-                            <th>Action</th>
-                            <th>S. No.</th>
-                            <th>Item Name</th>
-                        </tr>
+                    <table id="dashboardSuggestionsTable">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
 
-                        <tr>
-                            <td><input type="checkbox" class="shopping-item-checkbox"></td>
-                            <td>1</td>
-                            <td>item 1</td>
-                        </tr>
-
-                        <tr>
-                            <td><input type="checkbox" class="shopping-item-checkbox"></td>
-                            <td>2</td>
-                            <td>item 2</td>
-                        </tr>
+                        <tbody id="dashboardSuggestionsTableBody">
+                        </tbody>
                     </table>
                 </div>
 
-                <div class="shopping-list-actions">
-                    <button type="button" id="selectAllBtn" class="select-btn">SELECT ALL</button>
-                    <button type="button" id="selectNoneBtn" class="select-btn">SELECT NONE</button>
-                    <button type="button" class="generate-btn">ADD TO ACTIVE SHOPPING LIST</button>
+                <div id="noDashboardSuggestionsMessage" style="display: none;">
+                    No suggestions available.
                 </div>
+
+                <div id="dashboardSuggestionsMessage" style="display: none;"></div>
+
+                <div class="shopping-list-actions">
+                    <button type="button" id="selectAllBtn" class="select-btn">
+                        SELECT ALL
+                    </button>
+
+                    <button type="button" id="selectNoneBtn" class="select-btn">
+                        SELECT NONE
+                    </button>
+
+                    <button type="button" id="addDashboardSuggestionsBtn" class="generate-btn">
+                        ADD SELECTED ITEMS TO ACTIVE LIST
+                    </button>
+                </div>
+
             </div>
 
         </div>

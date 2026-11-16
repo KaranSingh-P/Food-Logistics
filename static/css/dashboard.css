@@ -355,12 +355,12 @@ th {
 
 .shopping-list-generation th:nth-child(2),
 .shopping-list-generation td:nth-child(2) {
-    width: 80px;
+    width: auto;
 }
 
 .shopping-list-generation th:nth-child(3),
 .shopping-list-generation td:nth-child(3) {
-    width: auto;
+    width: 120px;
 }
 
 tbody tr:hover {
@@ -487,4 +487,21 @@ tbody tr:hover {
 #setupAllergiesMessage a:hover {
     color: hsl(43, 85%, 35%);
     text-decoration: underline;
+}
+
+#dashboardSuggestionsMessage {
+    display: none;
+    padding: 10px 14px;
+    border: 1px solid #c8dfce;
+    border-radius: 6px;
+    background-color: #f0f7f2;
+    color: #28633b;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.shopping-list-generation .table-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
 }
