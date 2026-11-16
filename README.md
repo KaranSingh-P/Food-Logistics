@@ -48,8 +48,6 @@ Stores user-specific preferences.
 | 1       | Gamer    | Dark  |
 
 ### user_security
-
-4. user_security
 Stores users' security and account recovery information.
 
 | user_id | security_question | security_answer_hash | security_pin_hash | updated_at |

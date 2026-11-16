@@ -1,0 +1,943 @@
+html{
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+#navbar-spacer {
+    height: 3.5rem;
+}
+
+
+.navbar{
+    height: 3.5rem;
+    width: 100%; 
+    color: antiquewhite;
+    background-color: hsl(211, 75%, 12%);
+
+    box-shadow: 0 0 20px hsl(211, 75%, 12%);
+
+    display: flex;
+    justify-content: space-between;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 999;
+
+}
+
+.logo{
+    display: flex;
+    height: 100%;
+    padding: 0 0.8rem;
+
+    align-items: center;
+}
+
+.logo a{
+    padding:0 0.3rem;
+}
+
+#logo{
+    height: 2.5rem;
+    width: auto;
+
+    filter: brightness(0) invert(1);
+    display: block;
+}
+
+.navbar ul{
+    list-style-type: none;
+    display: flex;
+}
+
+.navbar ul a{
+    padding: 0 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar ul a:hover{
+    background-color: hsl(211, 55%, 32%);
+}
+
+.navbar ul a:active{
+    background-color: hsl(212, 79%, 4%);
+}
+
+body{   
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
+}
+
+main{
+    flex: 1;
+}
+
+.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 330px;
+    width: 100%;
+    margin: 0;
+    padding: 130px 0;
+    background: url("../SVG/Hero_BG.svg") center bottom no-repeat;
+}
+    
+.hero h4{
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.hero img{
+    width: 40%;
+}
+
+
+.text{
+    font-size: 28px;
+    padding: 0 1rem;
+}
+
+.button{
+    text-align: center;
+}
+
+.button a{
+    color: white;
+    background-color: hsl(271, 76%, 53%);
+    text-decoration: none;
+
+    display: inline-block;
+    padding: 10px 28px;
+    border: white 4px solid;
+    border-radius: 90px;
+}
+
+.button a:hover{
+    background-color: hsl(271, 85%, 43%);
+}
+
+.next {
+    text-align: center;
+    padding: 0;
+    margin: 12px 0;
+}
+
+.next a {
+    display: inline-block;
+    font-size: 5rem;
+    line-height: 1;
+    text-decoration: none;
+    color: hsl(271, 84%, 35%);
+}
+
+#next-2 a {
+    font-size: 3rem;
+}
+
+
+.next a:hover{
+    color: hsl(271, 85%, 43%);
+}
+
+.about {
+    width: 100%;
+    padding: 80px 5%;
+    box-sizing: border-box;
+}
+
+
+.about-container{
+    color: white;
+    background-color: hsla(271, 60%, 56%, 0.874);
+    background: linear-gradient(135deg,
+                                #7c3aed,
+                                #9333ea);
+    border-radius: 30px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.415);
+
+    max-width: 1800px;
+
+    padding: 60px;
+    margin: 0 auto;
+    gap: 60px;
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+
+}
+
+.about-left{
+    flex:1.3;
+    max-width: 650px;
+}
+
+.about-left p {
+    margin-bottom: 18px;
+    line-height: 1.8;
+}
+
+.about-label{
+    margin-bottom: 1.2rem;
+    font-size: 3.5rem;
+    line-height: 1.1;
+}
+
+.about-right{
+    flex:0.7;
+}
+
+.about-right img{
+    width:100%;
+    max-width: 550px;
+    height: auto;
+}
+
+.features{
+    width: 100%;
+    padding: 40px 5% 0px;
+    box-sizing: border-box;
+}
+
+.feature-container{
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.feature-container h1{
+    display: block;
+    width:fit-content;
+    margin: 3rem auto;
+    padding: 10px 30px;
+    background-color: hsl(271, 81%, 56%);
+    box-shadow: 0 0 12px hsla(0, 0%, 0%, 0.615);
+    border-radius: 40px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.features h3{
+    text-align: center;
+}
+
+.grid{
+    display: grid;
+    max-width: 800px;
+    margin: 0 auto;
+    grid-template-columns: repeat(2, 3fr);
+    gap: 32px;
+    row-gap: 50px;
+
+}
+
+.grid .flex-box{
+    padding: 10px 20px;
+    border-radius: 40px;
+    cursor:pointer;
+    position: relative;
+    box-shadow: 0 0 12px hsla(0, 0%, 0%, 0.685);
+}
+
+.grid .flex-box h3{
+
+    margin-bottom: 1.2rem;
+}
+
+.grid .flex-box p{
+    clear: both;
+}
+
+.f-icon{
+    height: 36px;
+    width: auto;
+    float: left;
+    position: absolute;
+}
+
+.login-page {
+    color: white;
+    min-height: 100vh;
+    padding: 40px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-Container {
+    width: 100%;
+    max-width: 650px;
+}
+
+.account-SignUp,
+.account-login {
+    background-image: linear-gradient(135deg, rgb(124, 58, 237), rgb(147, 51, 234));
+    padding: 60px 60px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px hsla(0, 0%, 0%, 0.08);
+}
+
+.account-SignUp h1,
+.account-login h1 {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.account-SignUp p,
+.account-login p {
+    margin: 4px 0 28px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.form-elements {
+    margin: 6px 0 20px;
+}
+
+.form-elements label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-elements input {
+    box-sizing: border-box;
+    padding: 12px 20px;
+    width: 100%;
+    border: whitesmoke 3px solid;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+.form-elements input:focus {
+    border-color: white;
+    box-shadow: 0 0 20px white;
+}
+
+.form-elements input::placeholder {
+    color: rgba(0, 0, 0, 0.451);
+}
+
+.account-SignUp button,
+.account-login button {
+    Width: 100%;
+    padding: 12px 18px;
+
+    color: white;
+    background:
+        radial-gradient(circle at 50% 0%,
+            hsl(0, 0%, 22%) 0%,
+            hsl(0, 0%, 8%) 35%,
+            hsl(0, 0%, 0%) 75%),
+        hsl(0, 0%, 0%);
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.account-SignUp button:hover,
+.account-login button:hover {
+    transform: scale(1.1);
+}
+
+.account-SignUp button:active,
+.account-login button:active {
+    transform: scale(0.9);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin: 25px 0;
+
+    color: #9ca3af;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #d1d5db;
+}
+
+.forgot-password {
+    text-align: right;
+    margin: -8px 0 20px;
+}
+
+.forgot-password a {
+    color: black;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+
+.auth-message {
+    display: none;
+    font-size: 13px;
+    margin: 10px 0;
+    padding: 10px 12px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.auth-message.error {
+    display: block;
+    color: #b42318;
+    background-color: #fef3f2;
+    border: 1px solid #fecdca;
+}
+
+.auth-message.success {
+    display: block;
+    color: #027a48;
+    background-color: #ecfdf3;
+    border: 1px solid #abefc6;
+}
+
+.auth-message:empty {
+    display: none;
+}
+
+
+/* Forgot Password Popup */
+
+.forgot-password-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.forgot-password-modal {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    max-width: 430px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+}
+
+.forgot-password-modal h2 {
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.forgot-password-modal>p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+.close-forgot-modal {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 27px;
+    cursor: pointer;
+    color: #555;
+}
+
+.forgot-password-modal .form-elements {
+    margin-bottom: 16px;
+}
+
+.forgot-password-modal .form-elements input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.forgot-password-modal .form-elements input[readonly] {
+    background-color: #f2f2f2;
+    cursor: not-allowed;
+}
+
+.forgot-password-modal button[type="submit"] {
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media (max-width: 480px) {
+    .forgot-password-modal {
+        padding: 25px 20px;
+    }
+}
+
+
+/* Forgot Password Verify Button */
+
+.forgot-password-modal button[type="submit"] {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.forgot-password-modal button[type="submit"]:hover {
+    background-color: #333;
+}
+
+.forgot-password-modal button[type="submit"]:active {
+    background-color: #444;
+}
+
+
+.footer {
+    color:white;
+    background-color: hsl(211, 75%, 12%);
+    box-shadow: 0 0 20px hsl(211, 75%, 12%);
+    font-size: 1.2rem;
+
+    height: 12rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.footer h4{
+    margin-bottom: 1rem;
+}
+
+.footer ul{
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.footer li{
+    padding-bottom: 0.5rem;
+}
+
+.footer a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer a:hover{
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1024px) {
+
+    /* Hero Section */
+    .hero {
+        padding: 90px 3%;
+        height: auto;
+        min-height: 400px;
+        box-sizing: border-box;
+        gap: 20px;
+    }
+
+    .hero h4 {
+        font-size: 3rem;
+    }
+
+    .text {
+        font-size: 22px;
+    }
+
+    .hero img {
+        width: 42%;
+    }
+
+    /* About Section */
+    .about-container {
+        padding: 40px;
+        gap: 35px;
+    }
+
+    .about-label {
+        font-size: 3rem;
+    }
+
+    /* Login Section */
+    .login-page {
+        padding: 30px;
+    }
+
+    .account-SignUp,
+    .account-login {
+        padding: 45px;
+    }
+}
+
+
+/* Tablets and mobile devices */
+@media (max-width: 768px) {
+
+    /* Navbar */
+    .navbar {
+        height: auto;
+        min-height: 3.5rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #navbar-spacer {
+        height: 6.5rem;
+    }
+
+    .logo {
+        height: 3rem;
+        padding: 0;
+    }
+
+    .navbar ul {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .navbar ul a {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* Hero Section */
+    .hero {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 65px 5%;
+        gap: 35px;
+        min-height: auto;
+    }
+
+    .hero > div {
+        width: 100%;
+    }
+
+    .hero h4 {
+        font-size: 2.6rem;
+    }
+
+    .text {
+        font-size: 19px;
+        padding: 0;
+    }
+
+    .hero img {
+        width: 75%;
+        max-width: 450px;
+    }
+
+    /* Features Section */
+    .features {
+        padding: 30px 5%;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 25px;
+    }
+
+    .grid .flex-box {
+        padding: 18px;
+        border-radius: 25px;
+    }
+
+    /* About Section */
+    .about {
+        padding: 45px 5%;
+    }
+
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 30px;
+        gap: 30px;
+    }
+
+    .about-left {
+        max-width: 100%;
+    }
+
+    .about-label {
+        font-size: 2.8rem;
+    }
+
+    .about-right {
+        width: 100%;
+    }
+
+    .about-right img {
+        max-width: 400px;
+    }
+
+    /* Login Section */
+    .login-page {
+        padding: 35px 5%;
+    }
+
+    .login-Container {
+        max-width: 550px;
+    }
+
+    .account-SignUp,
+    .account-login {
+        padding: 40px 35px;
+    }
+
+    /* Footer */
+    .footer {
+        height: auto;
+        padding: 35px 15px;
+        gap: 30px;
+        flex-wrap: wrap;
+        font-size: 1rem;
+    }
+}
+
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+
+    /* Navbar */
+    .logo {
+        font-size: 15px;
+    }
+
+    #logo {
+        height: 2rem;
+    }
+
+    .navbar ul a {
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    #navbar-spacer {
+        height: 6rem;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 50px 6%;
+    }
+
+    .hero h4 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .text {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .hero img {
+        width: 95%;
+    }
+
+    .button a {
+        padding: 9px 24px;
+        font-size: 14px;
+        border-width: 3px;
+    }
+
+    /* Section Navigation Arrows */
+    .next a {
+        font-size: 3.5rem;
+    }
+
+    #next-2 a {
+        font-size: 2.5rem;
+    }
+
+    /* Features Section */
+    .feature-container h1 {
+        margin: 2rem auto;
+        padding: 9px 25px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .grid .flex-box {
+        padding: 20px;
+    }
+
+    .grid .flex-box h3 {
+        margin-bottom: 1rem;
+    }
+
+    .f-icon {
+        height: 30px;
+    }
+
+    /* About Section */
+    .about {
+        padding: 35px 5%;
+    }
+
+    .about-container {
+        padding: 30px 22px;
+        border-radius: 22px;
+        gap: 25px;
+    }
+
+    .about-label {
+        font-size: 2.2rem;
+    }
+
+    .about-left p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .about-left h3 {
+        font-size: 18px;
+    }
+
+    .team-members {
+        font-size: 14px;
+    }
+
+    .about-right img {
+        width: 100%;
+    }
+
+    /* Login and Registration */
+    .login-page {
+        padding: 25px 5%;
+        min-height: auto;
+    }
+
+    .account-SignUp,
+    .account-login {
+        padding: 30px 22px;
+        border-radius: 16px;
+    }
+
+    .account-SignUp h1,
+    .account-login h1 {
+        font-size: 24px;
+    }
+
+    .account-SignUp p,
+    .account-login p {
+        font-size: 1rem;
+        margin-bottom: 22px;
+    }
+
+    .form-elements input {
+        padding: 11px 15px;
+        font-size: 14px;
+    }
+
+    .forgot-password a {
+        font-size: 15px;
+    }
+
+    .divider {
+        margin: 20px 0;
+        font-size: 15px;
+    }
+
+    /* Forgot Password Popup */
+    .forgot-password-overlay {
+        padding: 12px;
+    }
+
+    .forgot-password-modal {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 430px;
+        max-height: 85vh;
+        padding: 25px 18px;
+    }
+
+    .forgot-password-modal h2 {
+        font-size: 21px;
+        padding-right: 20px;
+    }
+
+    .forgot-password-modal > p {
+        font-size: 13px;
+    }
+
+    /* Footer */
+    .footer {
+        justify-content: space-around;
+        align-items: flex-start;
+        gap: 25px 15px;
+        padding: 30px 15px;
+        font-size: 14px;
+    }
+
+    .footer-column h4 {
+        margin-bottom: 12px;
+    }
+
+    .footer li {
+        padding-bottom: 8px;
+    }
+}
+
+
+/* Prevent accidental horizontal scrolling */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .forgot-password-modal {
+        box-sizing: border-box;
+    }
+}

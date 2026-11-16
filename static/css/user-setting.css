@@ -290,3 +290,224 @@ hr {
     background-color: #fffaeb;
     border: 1px solid #fedf89;
 }
+
+
+/* =========================================
+   RESPONSIVE DESIGN - USER SETTINGS
+   ========================================= */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1024px) {
+    .settings-container {
+        width: 85%;
+        max-width: 750px;
+        margin: 40px auto;
+        padding: 30px 35px;
+    }
+
+    .settings-header {
+        margin: -30px -35px 20px;
+    }
+}
+
+
+/* Tablets and mobile devices */
+@media (max-width: 768px) {
+    .settings-container {
+        width: 90%;
+        margin: 30px auto;
+        padding: 25px 28px;
+        border-radius: 12px;
+    }
+
+    .settings-header {
+        margin: -25px -28px 18px;
+        padding: 17px 20px;
+        gap: 14px;
+    }
+
+    .settings-header h1 {
+        font-size: 23px;
+    }
+
+    .settings-section {
+        padding: 18px 0;
+    }
+
+    .settings-section h2 {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .setting-field {
+        margin-bottom: 17px;
+    }
+
+    .setting-field input,
+    .setting-field select,
+    .allergy-search-container input {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .selected-allergies-container {
+        margin-top: 20px;
+    }
+}
+
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .settings-container {
+        width: 94%;
+        margin: 20px auto;
+        padding: 20px 17px;
+        border-radius: 10px;
+    }
+
+    .settings-header {
+        margin: -20px -17px 15px;
+        padding: 15px 16px;
+        gap: 12px;
+        border-radius: 9px 9px 0 0;
+    }
+
+    .settings-header h1 {
+        font-size: 20px;
+    }
+
+    .back-button {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        font-size: 22px;
+    }
+
+    .settings-section {
+        padding: 16px 0;
+    }
+
+    .settings-section h2 {
+        font-size: 17px;
+        margin-bottom: 16px;
+    }
+
+    .setting-field {
+        gap: 7px;
+        margin-bottom: 16px;
+    }
+
+    .setting-field label {
+        font-size: 13px;
+    }
+
+    .setting-field input,
+    .setting-field select,
+    .allergy-search-container input {
+        padding: 11px 12px;
+        font-size: 13px;
+    }
+
+    .static-field {
+        padding: 11px 12px;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .recovery-description,
+    .recovery-status {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .theme-options {
+        gap: 25px;
+    }
+
+    .theme-options label {
+        font-size: 14px;
+    }
+
+    .selected-allergies-container {
+        margin-top: 18px;
+    }
+
+    .selected-allergies-container h3 {
+        font-size: 13px;
+    }
+
+    .selected-allergies {
+        gap: 8px;
+    }
+
+    .allergy-tag {
+        gap: 7px;
+        padding: 7px 10px;
+        font-size: 12px;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .allergy-tag button {
+        flex-shrink: 0;
+        font-size: 17px;
+    }
+
+    .settings-error,
+    .settings-success {
+        padding: 11px 12px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .save-button {
+        padding: 12px;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+}
+
+
+/* Very small mobile devices */
+@media (max-width: 360px) {
+    .settings-container {
+        width: 96%;
+        padding: 17px 13px;
+    }
+
+    .settings-header {
+        margin: -17px -13px 14px;
+        padding: 13px;
+    }
+
+    .settings-header h1 {
+        font-size: 18px;
+    }
+
+    .settings-section h2 {
+        font-size: 16px;
+    }
+
+    .theme-options {
+        gap: 18px;
+    }
+
+    .allergy-tag {
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+}
+
+
+/* Prevent horizontal overflow */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .settings-container,
+    .settings-section,
+    .setting-field {
+        min-width: 0;
+    }
+}

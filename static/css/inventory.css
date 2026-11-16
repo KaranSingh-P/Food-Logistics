@@ -854,3 +854,371 @@ main {
     color: hsl(43, 85%, 35%);
     text-decoration: underline;
 }
+
+
+/* =========================================
+   RESPONSIVE DESIGN - INVENTORY
+   ========================================= */
+
+/* Tablets and smaller laptops */
+@media (max-width: 1024px) {
+    .vertical-tools {
+        margin: 30px 8%;
+    }
+
+    .allergen-section {
+        padding: 0 4%;
+    }
+
+    .inventory-table th,
+    .table-container td {
+        padding: 10px 12px;
+    }
+
+    .scroll-inventory-btn {
+        right: 5%;
+    }
+
+    .pagination {
+        gap: 8px;
+    }
+}
+
+/* Tablets and mobile devices */
+@media (max-width: 768px) {
+    .vertical-tools {
+        margin: 25px 4%;
+        border-radius: 18px;
+    }
+
+    #type-item {
+        font-size: 16px;
+        padding: 12px 55px 12px 18px;
+    }
+
+    #automatic-insert {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .item-details {
+        gap: 12px;
+    }
+
+    .add-item-date,
+    .add-item-expiry {
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+
+    .select-item-tag select {
+        font-size: 14px;
+    }
+
+    #add-item-button {
+        font-size: 16px;
+        padding: 13px 22px;
+    }
+
+    .allergen-section {
+        padding: 0 4%;
+        gap: 16px;
+    }
+
+    .allergen-alerts,
+    .unverified-alerts {
+        border-radius: 12px;
+    }
+
+    .allergen-section .section-header {
+        padding: 0 14px;
+    }
+
+    .allergen-section .section-header > span {
+        font-size: 1rem;
+    }
+
+    .allergen-section .table-scroll {
+        overflow-x: auto;
+    }
+
+    .allergen-section table {
+        min-width: 520px;
+    }
+
+    .allergen-section th,
+    .allergen-section td {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .allergen-section th:nth-child(1),
+    .allergen-section td:nth-child(1) {
+        width: 110px;
+    }
+
+    .allergen-section th:nth-child(3),
+    .allergen-section td:nth-child(3) {
+        width: 200px;
+    }
+
+    .tooltip-text {
+        left: auto;
+        right: -20px;
+        transform: none;
+        width: 220px !important;
+    }
+
+    /* Inventory table */
+    .table-container {
+        width: 96%;
+        overflow-x: auto;
+    }
+
+    .table-container table {
+        min-width: 950px;
+    }
+
+    .inventory-table th,
+    .table-container td {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .sort-header {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .pagination {
+        gap: 8px;
+        padding: 12px 6px;
+    }
+
+    .pagination-summary,
+    .pagination-controls,
+    .page-size {
+        padding: 7px 10px;
+        font-size: 13px;
+    }
+
+    .pagination button {
+        min-width: 34px;
+        height: 34px;
+        padding: 0 9px;
+        font-size: 13px;
+    }
+
+    .scroll-inventory-btn {
+        top: 85px;
+        right: 4%;
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .vertical-tools {
+        margin: 20px 3%;
+        border-radius: 15px;
+    }
+
+    #type-item {
+        font-size: 14px;
+        padding: 12px 52px 12px 12px;
+    }
+
+    #automatic-insert {
+        width: 42px;
+        height: 42px;
+        font-size: 17px;
+    }
+
+    .item-suggestion button {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .item-details {
+        padding-top: 12px;
+        gap: 10px;
+    }
+
+    .select-item-tag select {
+        width: calc(100% - 20px);
+        margin: 0 10px;
+        padding: 11px;
+        font-size: 13px;
+    }
+
+    .add-item-date,
+    .add-item-expiry {
+        font-size: 14px;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .add-item-date input,
+    .add-item-expiry input {
+        padding: 11px;
+        font-size: 14px;
+        min-width: 0;
+    }
+
+    #purchase-today,
+    .expiry-shortcuts button {
+        padding: 8px 11px;
+        font-size: 13px;
+    }
+
+    .expiry-shortcuts {
+        gap: 7px;
+        padding: 0 8px;
+    }
+
+    #add-item-button {
+        width: calc(100% - 20px);
+        align-self: center;
+        margin: 10px;
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    #item-feedback {
+        font-size: 13px;
+    }
+
+    .allergen-section {
+        padding: 0 3%;
+        gap: 14px;
+    }
+
+    .allergen-section .section-header {
+        height: 50px;
+        min-height: 50px;
+        padding: 0 12px;
+    }
+
+    .allergen-section .section-header > span {
+        font-size: 0.9rem;
+    }
+
+    .allergen-section th,
+    .allergen-section td {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+
+    #noAllergensMessage,
+    #noUnverifiedMessage,
+    #setupAllergiesMessage {
+        padding: 22px 12px;
+        font-size: 14px;
+    }
+
+    .verify-safe,
+    .verify-allergic,
+    .confirm-allergy {
+        padding: 7px 9px;
+        font-size: 11px;
+        margin-left: 4px;
+    }
+
+    .table-container {
+        width: 96%;
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+
+    .table-container table {
+        min-width: 900px;
+    }
+
+    .inventory-table th,
+    .table-container td {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+
+    .tag {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+
+    .pagination {
+        gap: 7px;
+        padding: 10px 4px;
+    }
+
+    .pagination-summary,
+    .pagination-controls,
+    .page-size {
+        padding: 6px 9px;
+        font-size: 12px;
+    }
+
+    .pagination button {
+        min-width: 30px;
+        height: 30px;
+        padding: 0 7px;
+        font-size: 12px;
+    }
+
+    .page-size select {
+        font-size: 12px;
+    }
+
+    .scroll-inventory-btn {
+        top: 80px;
+        right: 3%;
+        width: 32px;
+        height: 32px;
+        border-width: 2px;
+    }
+}
+
+/* Very narrow mobile screens */
+@media (max-width: 360px) {
+    .vertical-tools {
+        margin: 16px 2%;
+    }
+
+    .expiry-shortcuts {
+        gap: 6px;
+    }
+
+    .expiry-shortcuts button {
+        padding: 8px 9px;
+        font-size: 12px;
+    }
+
+    .pagination {
+        gap: 5px;
+    }
+
+    .pagination-summary,
+    .pagination-controls,
+    .page-size {
+        padding: 6px 7px;
+    }
+
+    .pagination button {
+        min-width: 28px;
+        height: 28px;
+        padding: 0 6px;
+    }
+}
+
+/* Prevent page-level horizontal scrolling */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .table-container,
+    .allergen-section .table-scroll {
+        max-width: 100%;
+    }
+}
