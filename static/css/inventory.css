@@ -1222,3 +1222,80 @@ main {
         max-width: 100%;
     }
 }
+
+
+/* Image Recognition */
+
+#image-recognition-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#camera-preview {
+    display: none;
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin: 12px 0;
+    border-radius: 8px;
+    background: #eeeeee;
+}
+
+#image-recognition-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#image-recognition-actions button {
+    padding: 10px 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: white;
+    color: black;
+    cursor: pointer;
+}
+
+#image-recognition-actions button:hover {
+    background: black;
+    color: white;
+}
+
+#recognition-feedback {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+#image-preview-placeholder {
+    width: 100%;
+    height: 250px;
+    margin: 12px 0;
+    border-radius: 8px;
+    background: #eeeeee;
+}
+
+#food-image-preview {
+    display: none;
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    margin: 12px 0;
+    border-radius: 8px;
+    background: #eeeeee;
+}
+
+#recognition-disclaimer {
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+    margin: 8px 0 15px;
+    line-height: 1.5;
+}

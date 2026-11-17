@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="{{ current_theme }}">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -98,6 +98,49 @@
             <button type="button" id="automatic-insert">
                 <i class="fa-regular fa-camera"></i>
             </button>
+
+            <input type="file" id="food-image-input" accept="image/*" hidden>
+
+            <div id="image-recognition-container" style="display: none;">
+
+                <video id="camera-preview" autoplay playsinline></video>
+
+                <canvas id="camera-canvas" hidden></canvas>
+
+                <div id="image-preview-placeholder"></div>
+
+                <img id="food-image-preview" alt="Food image preview" style="display: none;">
+                <p id="recognition-disclaimer">
+                    Image recognition works best with natural foods such as fruits and vegetables.
+                    Packaged, processed, or mixed foods may not be identified accurately.
+                </p>
+                <div id="image-recognition-actions">
+
+                    <button type="button" id="take-photo-button">
+                        Take Photo
+                    </button>
+
+                    <button type="button" id="upload-image-button">
+                        Upload Image from Device
+                    </button>
+
+                    <button type="button" id="capture-photo-button" style="display: none;">
+                        Capture
+                    </button>
+
+                    <button type="button" id="recognize-food-button">
+                        Recognize Food
+                    </button>
+
+                    <button type="button" id="cancel-recognition-button">
+                        Cancel
+                    </button>
+
+                </div>
+
+                <div id="recognition-feedback"></div>
+
+            </div>
         </div>
     </section>
 

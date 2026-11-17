@@ -18,6 +18,7 @@ Backend        -> Python, Flask
 Database       -> PostgreSQL
 Database Driver -> Psycopg
 Environment Variables -> python-dotenv
+Image recognition -> Ollama
 
 ## Tables in PostgreSQL
 (The following values are examples.)
@@ -170,6 +171,7 @@ Stores individual food items belonging to saved shopping templates, including th
 Stores the available food items and user-created custom foods, along with their nutritional values per serving.
 
 |food_id | user_id | food_name | calories | protein | carbohydrates | fats | is_custom |
+|-|-|-|-|-|-|-|-|
 |1 | NULL | Chapati | 120 | 3.5 | 20 | 3 | FALSE | 
 |2 | NULL | Rice | 130 | 2.7 | 28 | 0.3 | FALSE |
 |5 | 1 | Homemade Smoothie | 180 | 8 | 25 | 5 | TRUE |
@@ -178,6 +180,7 @@ Stores the available food items and user-created custom foods, along with their 
 Stores the food and recipe entries logged by users, including their quantities and nutritional values.
 
 |log_id | user_id | food_id | food_name | quantity | calories | protein | carbohydrates | fats | logged_at |
+|-|-|-|-|-|-|-|-|-|-|
 |1 | 1 | 1 | Chapati | 2 | 240 | 7 | 40 | 6 | 2026-11-16 09:00:00 |
 |2 | 1 | 2 | Rice | 1.5 | 195 | 4.05 | 42 | 0.45 | 2026-11-16 13:00:00 |
 |3 | 1 | NULL | Vegetable Pulao | 1 | 250 | 6 | 40 | 8 | 2026-11-16 19:00:00 |
@@ -186,6 +189,7 @@ Stores the food and recipe entries logged by users, including their quantities a
 Stores each user's personalized daily nutrition targets.
 
 | user_id | calories | protein | carbohydrates | fats | updated_at | 
+|-|-|-|-|-|-|
 | 1 | 2000 | 75 | 250 | 65 | 2026-11-16 23:40:00 |
 | 2 | 1800 | 90 | 200 | 60 | 2026-11-16 23:45:00 |
 

@@ -1,6 +1,10 @@
 from flask import Blueprint, jsonify, render_template, request, redirect, session
 from datetime import datetime
 from database import get_db_connection
+import base64
+import json
+import urllib.request
+import urllib.error
 inventory_bp = Blueprint("inventory", __name__)
 
 @inventory_bp.route("/api/add-item-inventory", methods=["POST"])
@@ -648,4 +652,185 @@ def edit_item_inventory():
         return jsonify({
             "success": False,
             "message": "Unable to update item."
+        }), 500
+
+@inventory_bp.route("/api/recognize-food", methods=["POST"])
+def recognize_food():
+
+    # Check whether the user is logged in
+    if "user_id" not in session:
+        return jsonify({
+            "success": False,
+            "message": "Please log in first."
+        }), 401
+
+    # Get uploaded image
+    image = request.files.get("image")
+
+    if not image:
+        return jsonify({
+            "success": False,
+            "message": "Please select an image."
+        }), 400
+
+    # Validate image type
+    if image.mimetype not in [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ]:
+        return jsonify({
+            "success": False,
+            "message": "Please upload a JPG, PNG, or WEBP image."
+        }), 400
+
+    # Read image and check size (10 MB maximum)
+    image_bytes = image.read()
+
+    if not image_bytes:
+        return jsonify({
+            "success": False,
+            "message": "The uploaded image is empty."
+        }), 400
+
+    if len(image_bytes) > 10 * 1024 * 1024:
+        return jsonify({
+            "success": False,
+            "message": "Image size must be below 10 MB."
+        }), 400
+
+    # Convert image to Base64
+    image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+
+    # Allowed inventory categories
+    allowed_categories = [
+        "perishable",
+        "highly-perishable",
+        "semi-perishable",
+        "non-perishable",
+        "canned",
+        "frozen",
+        "dehydrated",
+        "fermented"
+    ]
+
+    # Instructions for LLaVA
+    prompt = """
+    Look carefully at the image and identify the main food item.
+
+    You must identify the food whenever a recognizable food item is visible.
+    Do not return an empty result just because the image is unfamiliar.
+
+    Return ONLY valid JSON in this exact format:
+
+    {
+        "food_name": "Apple",
+        "category": "perishable"
+    }
+
+    Choose exactly one category:
+
+    - perishable
+    - highly-perishable
+    - semi-perishable
+    - non-perishable
+    - canned
+    - frozen
+    - dehydrated
+    - fermented
+
+    Category guidance:
+    - Fresh fruits and vegetables: perishable
+    - Meat, fish and highly short-lived foods: highly-perishable
+    - Bread and foods with moderate shelf life: semi-perishable
+    - Rice, flour, pulses and dry packaged foods: non-perishable
+    - Canned foods: canned
+    - Frozen foods: frozen
+    - Dried fruits and dehydrated foods: dehydrated
+    - Fermented foods: fermented
+
+    If multiple foods are visible, identify the most prominent one.
+
+    If no food is visible at all, return:
+    {"food_name": "", "category": ""}
+
+    Do not include explanations or Markdown.
+    """
+    # Prepare Ollama request
+    ollama_data = {
+        "model": "llava",
+        "stream": False,
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt,
+                "images": [image_base64]
+            }
+        ]
+    }
+
+    try:
+        request_data = json.dumps(ollama_data).encode("utf-8")
+
+        ollama_request = urllib.request.Request(
+            "http://localhost:11434/api/chat",
+            data=request_data,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+
+        with urllib.request.urlopen(ollama_request, timeout=180) as response:
+            result = json.loads(response.read().decode("utf-8"))
+
+        # Extract model response
+        model_response = result["message"]["content"].strip()
+# temporary
+        print("\n========== LLAVA RAW RESPONSE ==========")
+        print(model_response)
+        print("========================================\n")
+
+        # Parse JSON returned by LLaVA
+        start = model_response.find("{")
+        end = model_response.rfind("}")
+
+        if start == -1 or end == -1:
+            raise ValueError("Invalid model response.")
+
+        food_data = json.loads(model_response[start:end + 1])
+        # temporary
+        print("Parsed food data:", food_data)
+        food_name = food_data.get("food_name", "").strip()
+        category = food_data.get("category", "").strip().lower()
+
+        # Validate model output
+        if not food_name or category not in allowed_categories:
+            return jsonify({
+                "success": False,
+                "message": "Could not identify a food item. Please try another image."
+            }), 422
+
+        if len(food_name) > 100:
+            return jsonify({
+                "success": False,
+                "message": "The recognized food name is too long."
+            }), 422
+
+        return jsonify({
+            "success": True,
+            "food_name": food_name,
+            "category": category
+        })
+
+    except urllib.error.URLError:
+        return jsonify({
+            "success": False,
+            "message": "Unable to connect to Ollama. Make sure Ollama is running."
+        }), 503
+
+    except Exception as e:
+        print("Food recognition error:", e)
+
+        return jsonify({
+            "success": False,
+            "message": "Food recognition failed. Please try again."
         }), 500

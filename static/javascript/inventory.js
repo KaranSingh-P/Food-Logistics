@@ -1178,3 +1178,257 @@ scrollInventoryBtn.addEventListener("click", () => {
     });
 
 });
+
+
+// ==========================================
+// IMAGE RECOGNITION - CAMERA AND UPLOAD
+// ==========================================
+
+const automaticInsertButton = document.getElementById("automatic-insert");
+const recognitionContainer = document.getElementById("image-recognition-container");
+
+const foodImageInput = document.getElementById("food-image-input");
+const cameraPreview = document.getElementById("camera-preview");
+const cameraCanvas = document.getElementById("camera-canvas");
+const foodImagePreview = document.getElementById("food-image-preview");
+
+const takePhotoButton = document.getElementById("take-photo-button");
+const uploadImageButton = document.getElementById("upload-image-button");
+const capturePhotoButton = document.getElementById("capture-photo-button");
+const cancelRecognitionButton = document.getElementById("cancel-recognition-button");
+
+let cameraStream = null;
+let selectedFoodImage = null;
+
+
+// Open image recognition panel
+automaticInsertButton.addEventListener("click", () => {
+    itemDetails.style.display = "none";
+    recognitionContainer.style.display = "block";
+    foodImagePreview.removeAttribute("src");
+    foodImagePreview.style.display = "none";
+
+    document.getElementById("image-preview-placeholder").style.display = "block";
+});
+
+
+// Start webcam
+takePhotoButton.addEventListener("click", async () => {
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: "environment"
+            },
+            audio: false
+        });
+
+        cameraPreview.srcObject = cameraStream;
+
+        cameraPreview.style.display = "block";
+        foodImagePreview.style.display = "none";
+
+        capturePhotoButton.style.display = "inline-block";
+        takePhotoButton.style.display = "none";
+
+    } catch (error) {
+        console.error("Camera error:", error);
+        showRecognitionFeedback("Unable to access the camera. Check your camera permissions.", "error");
+    }
+});
+
+
+// Capture photo
+capturePhotoButton.addEventListener("click", () => {
+    if (!cameraStream) return;
+
+    cameraCanvas.width = cameraPreview.videoWidth;
+    cameraCanvas.height = cameraPreview.videoHeight;
+
+    const context = cameraCanvas.getContext("2d");
+
+    context.drawImage(
+        cameraPreview,
+        0,
+        0,
+        cameraCanvas.width,
+        cameraCanvas.height
+    );
+
+    cameraCanvas.toBlob((blob) => {
+        if (!blob) {
+            showRecognitionFeedback("Unable to capture the image.", "error");
+            return;
+        }
+
+        selectedFoodImage = new File(
+            [blob],
+            "captured-food.jpg",
+            { type: "image/jpeg" }
+        );
+
+        showFoodImagePreview(selectedFoodImage);
+        stopCamera();
+
+        capturePhotoButton.style.display = "none";
+        takePhotoButton.style.display = "inline-block";
+
+    }, "image/jpeg", 0.9);
+});
+
+
+// Open file picker
+uploadImageButton.addEventListener("click", () => {
+    foodImageInput.click();
+});
+
+
+// Handle uploaded image
+foodImageInput.addEventListener("change", () => {
+    const file = foodImageInput.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        showRecognitionFeedback("Please select a valid image.", "error");
+        foodImageInput.value = "";
+        return;
+    }
+
+    selectedFoodImage = file;
+
+    stopCamera();
+    showFoodImagePreview(file);
+
+    capturePhotoButton.style.display = "none";
+    takePhotoButton.style.display = "inline-block";
+});
+
+
+// Display selected image
+function showFoodImagePreview(file) {
+    const imageURL = URL.createObjectURL(file);
+
+    foodImagePreview.src = imageURL;
+    foodImagePreview.style.display = "block";
+
+    document.getElementById("image-preview-placeholder").style.display = "none";
+
+    cameraPreview.style.display = "none";
+}
+
+
+// Stop webcam
+function stopCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+
+    cameraPreview.srcObject = null;
+    cameraPreview.style.display = "none";
+}
+
+
+// Display recognition feedback
+function showRecognitionFeedback(message, type) {
+    const feedback = document.getElementById("recognition-feedback");
+
+    feedback.textContent = message;
+    feedback.style.color = type === "error" ? "red" : "green";
+}
+
+
+// Cancel image recognition
+cancelRecognitionButton.addEventListener("click", () => {
+    stopCamera();
+
+    selectedFoodImage = null;
+    foodImageInput.value = "";
+
+    foodImagePreview.removeAttribute("src");
+    foodImagePreview.style.display = "none";
+
+    document.getElementById("image-preview-placeholder").style.display = "block";
+    cameraPreview.style.display = "none";
+
+    capturePhotoButton.style.display = "none";
+    takePhotoButton.style.display = "inline-block";
+
+    recognitionContainer.style.display = "none";
+
+    document.getElementById("recognition-feedback").textContent = "";
+});
+
+
+// ==========================================
+// SEND IMAGE TO OLLAMA FOR RECOGNITION
+// ==========================================
+
+const recognizeFoodButton = document.getElementById("recognize-food-button");
+
+recognizeFoodButton.addEventListener("click", async () => {
+
+    if (!selectedFoodImage) {
+        showRecognitionFeedback("Please capture or upload an image first.", "error");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedFoodImage);
+
+    recognizeFoodButton.disabled = true;
+    recognizeFoodButton.textContent = "Recognizing...";
+
+    showRecognitionFeedback("Analyzing your image. Please wait...", "success");
+
+    try {
+        const response = await fetch("/api/recognize-food", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Food recognition failed.");
+        }
+
+        // Fill the existing inventory form
+        itemInput.value = result.food_name;
+        categorySelect.value = result.category;
+
+        // Make the food name editable
+        itemInput.readOnly = false;
+
+        // Clear previous suggestions
+        document.getElementById("item-suggestions").innerHTML = "";
+        document.getElementById("item-suggestions").style.display = "none";
+
+        // Show the existing item details section
+        itemDetails.style.display = "flex";
+
+
+        // Close image recognition panel
+        stopCamera();
+
+        recognitionContainer.style.display = "none";
+
+        selectedFoodImage = null;
+        foodImageInput.value = "";
+        foodImagePreview.src = "";
+
+        showItemFeedback(
+            "Food recognized successfully! Verify the details before adding.",
+            "success"
+        );
+
+    } catch (error) {
+        console.error("Recognition error:", error);
+
+        showRecognitionFeedback(error.message, "error");
+
+    } finally {
+        recognizeFoodButton.disabled = false;
+        recognizeFoodButton.textContent = "Recognize Food";
+    }
+});
