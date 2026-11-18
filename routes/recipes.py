@@ -120,27 +120,32 @@ def filter_recipes_by_dietary_preferences(
     return [recipe["recipe_id"] for recipe in recipes]
 
 
+
 def filter_recipes_by_allergies(connection, recipe_ids, user_id):
 
     if not recipe_ids:
         return []
 
-    # Retrieve the user's selected allergies
-    user_allergies = connection.execute("""
-        SELECT a.allergy_name
-        FROM allergies a
+    # Retrieve ingredients associated with the user's selected allergens
+    allergenic_foods = connection.execute("""
+        SELECT DISTINCT fs.food_name
+        FROM food_suggestions fs
+        JOIN food_allergens fa
+            ON fs.food_id = fa.food_id
         JOIN user_allergies ua
-            ON a.allergy_id = ua.allergy_id
+            ON fa.allergy_id = ua.allergy_id
         WHERE ua.user_id = %s
     """, (user_id,)).fetchall()
 
-    if not user_allergies:
+    # If the user has no mapped allergens, allow all recipes
+    if not allergenic_foods:
         return recipe_ids
 
-    allergy_names = [
-        normalize_ingredient_name(allergy["allergy_name"])
-        for allergy in user_allergies
-    ]
+    # Normalize allergenic ingredient names
+    unsafe_ingredients = {
+        normalize_ingredient_name(food["food_name"])
+        for food in allergenic_foods
+    }
 
     # Retrieve ingredients belonging to the selected recipes
     ingredients = connection.execute("""
@@ -149,17 +154,15 @@ def filter_recipes_by_allergies(connection, recipe_ids, user_id):
         WHERE recipe_id = ANY(%s)
     """, (recipe_ids,)).fetchall()
 
-    # Exclude recipes containing the user's selected allergens
+    # Identify recipes containing allergenic ingredients
     unsafe_recipe_ids = {
         item["recipe_id"]
         for item in ingredients
-        if any(
-            allergy in normalize_ingredient_name(item["ingredient_name"])
-            or normalize_ingredient_name(item["ingredient_name"]) in allergy
-            for allergy in allergy_names
-        )
+        if normalize_ingredient_name(item["ingredient_name"])
+        in unsafe_ingredients
     }
 
+    # Return only recipes without the user's selected allergens
     return [
         recipe_id
         for recipe_id in recipe_ids

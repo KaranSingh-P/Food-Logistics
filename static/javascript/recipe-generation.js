@@ -171,6 +171,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const generatedRecipe = document.getElementById("generatedRecipe");
     const generateRecipeButton = document.getElementById("generateRecipeButton");
     if (!generatedRecipe) return;
+    // Show / Hide recipe preferences
+    const preferencesSection = document.getElementById(
+        "generate-recipe-preferences"
+    );
+
+    const showPreferencesButton = document.getElementById(
+        "showPreferencesButton"
+    );
+
+    showPreferencesButton.addEventListener("click", () => {
+
+        const isHidden = preferencesSection.style.display === "none";
+
+        preferencesSection.style.display = isHidden ? "block" : "none";
+
+        showPreferencesButton.querySelector("span").textContent =
+            isHidden ? "Hide Preferences" : "Show Preferences";
+    });
+
     generateRecipeButton.addEventListener("click", () => {
         const preferences = collectRecipePreferences();
         document.getElementById("generate-recipe-preferences").style.display = "none";
